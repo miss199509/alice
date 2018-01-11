@@ -1,0 +1,355 @@
+<template>
+	<div id="liveList_id">
+
+	  <div class="liveList">
+
+	    <header>
+		    <ul class="headerNav">
+				<li class="floatLeft">
+					
+					<router-link :to="{ name: 'Personal'}">
+						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+					</router-link>
+				</li>
+				<li style="display: inline-block;">
+					<strong class="color_aimai" v-if="$store.state.language">Reload</strong>
+					<strong class="color_aimai" v-else>充值</strong>
+				</li>
+				<li class="floatRight">
+				</li>
+		    </ul>
+	    </header>
+
+
+		
+		<div class="shoppingl_global recharge">
+
+			<div class="rechargeText">
+				<p>
+					<img width="20px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>&nbsp;
+					<strong class="color_aimai">{{$store.state.balance_talk}}</strong>
+				</p>
+				<p>
+					<span v-if="$store.state.language">as of 0 days</span>
+					<span v-else>距上次充值0天</span>
+					&nbsp;
+					<img width="20px;" src="../assets/liveBroadcast/btnreload1i6.png"/>
+				</p>
+				<p class="">
+					1&nbsp;
+					<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>&nbsp;
+					<strong>=￥1.00</strong>
+				</p>
+			</div>
+
+			<div class="nav_recharge_box">
+				<ul class="nav_recharge">
+					
+					<li>
+
+						<span class="color_aimai" v-if="$store.state.language">Reload</span>
+						<span class="color_aimai" v-else>充值</span>
+						<input class="inputMye" type="text" v-model="num" placeholder="￥10" style="text-align:right" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)"/>
+					
+					</li>
+
+					<router-link :to="{ name: 'Record'}">
+						<li>
+							<span v-if="$store.state.language">Reload History</span>
+							<span v-else>充值记录</span>
+							<strong>
+								<img width="23px" src="../assets/liveBroadcast/proceed_button.png"/>
+							</strong>
+						</li>
+					</router-link>
+				</ul>
+			
+				<div class="payment_select">
+					<p>
+						选择支付
+					</p>
+					<div>
+						<span>
+							<img width="20px" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
+							<img style="margin-left: 17px" width="35px" src="../assets/liveBroadcast/logo_wechat@2x_5.png"/>
+						</span>
+						<img width="23px" src="../assets/liveBroadcast/icon_arrow1.png"/>
+					</div>
+				</div>
+				
+				<div id="reload">
+					<div class="">
+						<p class="email">
+							<span>
+								<label v-if="$store.state.language">Email：</label>
+								<label v-else>邮箱：</label>
+								<input tyle="text" placeholder="Please enter your email address" v-model="email_val" v-if="$store.state.language"/>
+								<input tyle="text" placeholder="请输入邮箱地址" v-model="email_val" v-else/>
+							</span>
+							<img @click="show_emailboll" width="23px;" src="../assets/liveBroadcast/btn_info@2x.png"/>
+						</p>
+						<p class="productBet" @click="payment()" v-if="$store.state.language">Reload</p>
+						<p class="productBet" @click="payment()" v-else>充值</p>
+					</div>
+				</div>
+			</div>
+			
+			<!-- <div id="paypal-button-container"></div> -->
+			<!-- <div id="paypal-button-container" @click="payment()"></div> -->
+			<div id="boxPopup" style="z-index: 11" v-show="emailboll"></div>
+			<div class="explainPopup productPopup" v-show="emailboll">
+			  	<h3 class="tips_title color_aimai">
+			  		<span></span>
+			  		<strong v-if="$store.state.language">Email</strong>
+			  		<strong v-else>邮箱</strong>
+			  		<img @click="hide_emailboll()" width="17px;" src="../assets/liveBroadcast/btn_close.png"/>
+			  	</h3>
+			  	<ul class="transaction">
+					<li>
+						<p class="recharge_tips color_aimai" v-if="$store.state.language">
+							we need your email so we cansend you a confirmation of yourreload
+						</p>
+						<p class="recharge_tips color_aimai" v-else>
+							我们需要您的电子邮件，我们可以向您发送充值信息
+						</p>
+					</li>
+				</ul>
+			</div>
+
+
+		
+		</div>
+
+
+
+	  </div>
+	
+	</div>
+</template>
+
+
+<script>
+import axios from 'axios'
+import qs from 'qs'
+//1购买2充值
+/*
+String url = ConfigModel.getInstance().current.mAppPrefix +"/order/register-paypal?cid=" + CustomerModel.getInstance().getOwner().mId + "&shippingaddressid="+addressId+"&cart_id=" +cartId+"&paymentform="+paymentform+"&sessionid="+CustomerModel.getInstance().getOwner().mSessionId;
+
+final String url = ConfigModel.getInstance().current.mAppPrefix +"/wallet/prepay-paypal?cid=" + id + "&item=1&num=" +coins;
+ */
+
+export default {
+  name: 'liveList',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      payment_list:[{'img':require('../assets/liveBroadcast/checkedi6.png'),'imgae':require('../assets/liveBroadcast/logopaypali6.png'),'bull':true}],
+      num:10,
+      idOrder:0,
+      email_val:'',
+      emailboll:false
+    }
+  },
+  created(){
+
+    var _this = this
+    //充值记录
+    axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
+	.then(function(dataJson){
+		//console.log(JSON.stringify(dataJson.data.balance))
+		let balance = dataJson.data.balance/100
+		_this.$store.state.balance_talk = balance.toFixed(2);
+
+	})
+	.catch(function(err){
+		alert(err);
+	});
+
+
+  },
+  methods: {
+  	payment(){
+
+  		let _this = this;
+  		if(_this.email_val==''){
+  			return false
+  		}
+  		//发送邮件
+  		axios.post(_this.$store.state.url_talk+'/wallet/prepay-cloud-moolah',qs.stringify({
+	  		cid:localStorage.getItem('cid'),
+	  		email:_this.email_val,
+	  		sessionid:localStorage.getItem('session_id')
+	  	}))
+		.then(function(dataJson){
+			console.log(JSON.stringify(dataJson.data))
+		})
+		.catch(function(err){
+			alert(err);
+		});
+		//充值
+  		axios.post(_this.$store.state.url_talk+'/wallet/prepay-cloud-moolah',qs.stringify({
+	  		cid:localStorage.getItem('cid'),
+	  		item:1,
+	  		num:_this.num*100,
+	  		sessionid:localStorage.getItem('session_id')
+	  	}))
+		.then(function(dataJson){
+			console.log(JSON.stringify(dataJson.data.data.Payment_URL))
+			window.location.href = dataJson.data.data.Payment_URL; 
+
+		})
+		.catch(function(err){
+			alert(err);
+		});
+
+  	},
+  	show_emailboll(){
+  		this.emailboll = true;
+  	},
+  	hide_emailboll(){
+  		this.emailboll = false;
+  	}
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+.rechargeText{
+	height: 90px;
+	text-align:center;
+	padding: 45px 0px;
+	margin: 45px 7px 0px 7px;
+	background-color: #EFEFEF;
+	border-radius: 3px;
+}
+.rechargeText p{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+    margin-top: 7px;
+    color: #ccc;
+}
+.rechargeText span{
+	font-size: 12px;
+	color: #ccc;
+}
+
+.nav_recharge_box{
+	padding: 0px 7px;
+}
+.nav_recharge{
+	background-color: #fff;
+	padding: 0px 11px;
+}
+.nav_recharge li{
+	height: 47px;
+	line-height: 47px;
+	border-top: 1px solid #ccc;
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+}
+.inputMye{
+	border: none;
+	font-size: 18px;
+	color: #E0B553;
+}
+.nav_recharge span{
+	font-size: 15px;
+}
+.nav_recharge a span{
+	color: #888;
+}
+
+
+#reload{
+	position: absolute;
+    width: 100%;
+    bottom: 7px;
+}
+
+
+.payment_select{
+	background-color: #fff;
+	border-radius: 3px;
+	margin: 9px 0px;
+	padding: 5px 11px;
+}
+.payment_select p{
+	border-bottom: 1px solid #ccc;
+	padding: 7px 0px;
+	font-size: 15px;
+	color: #888;
+}
+
+
+.payment_select span{
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+}
+.payment_select div{
+	padding: 7px 0px;
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+}
+
+.email{
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+    padding: 7px 7px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.email label{
+	color: #888;
+}
+.email input{
+	border: none;
+	font-size: 15px;
+}
+.productBet{
+	background:url('../assets/loading/btn_GetCod@2x.png');
+	background-position: center center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	width: 130px;
+	height: 37px;
+	line-height: 37px;
+	text-align: center;
+	color: #fff;
+	margin: 17px auto 0px auto;
+}
+
+
+.productPopup{
+	height: auto;
+    width: 85%;
+    border-radius: 3px;
+    padding: 10px 13px;
+    background:url('../assets/liveBroadcast/bg_Spopup@2x@2x.png');
+	background-position: center center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	padding-bottom: 31px;
+}
+.productPopup h3{
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+    padding-bottom: 11px;
+    font-size: 17px;
+    font-weight: 100;
+}
+.transaction li{
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 11px;
+	background-color: #fff;
+	padding-bottom: 88px;
+}
+</style>
