@@ -322,10 +322,10 @@
 					<img @click="removeNumber()" width="55px" src="../assets/liveBroadcast/icon_minusbet.png"/>
 				</p>
 			</li>
-			<li class="productNumber">
+			<li class="productNumber" v-show="gift_if_presentation">
 				<span @click="productNumber_eve(val,key)" v-for="(val,key) in productNumber_list" :class="{ boll:val.boll}">{{val.text}}</span>
 			</li>
-			<li class="text_align choice_class">
+			<li class="text_align choice_class" v-show="gift_if_presentation">
 				<div class="overflowRemove" v-for="(val,key) in choice_list" @click="choice_eve(val,key)">
 					<p class="piaochecked on_check" :class="{new_on_check:val.boll}">
 						<input name="need_inv" type="checkbox" style="height:20px;width:20px;" class="radioclass input" value="1"/>
@@ -641,6 +641,7 @@ export default {
       },
       //实体礼物
       gift_presentation:false,
+      gift_if_presentation:true,
       //结算购买的钱数
       gift_presentationJson:{
       	commodity_price:0,
@@ -700,7 +701,7 @@ export default {
 		              var json = {"cmd":4,"cid":_this.giftsData.fid,"roomid":_this.giftsData.roomId,"type":1,"content":_this.chatVal}
 		              ws.send(JSON.stringify(json));
 		              //弹幕发言调用函数
-		              _this.barrage(_this.chatVal);
+		              _this.barrage(_this.chatVal,false);
 		              console.log("数据发送中...");
 		              _this.chatVal = '';
 	              }
@@ -757,17 +758,17 @@ export default {
   	this.HAND_SHAKE = JSON.stringify({"cmd":2,"cid":this.$route.query.cid,"roomId":this.$route.query.roomid,"roomType":2,'sessionId':localStorage.getItem('session_id')})
   	//var _this = this
   	//礼物
-  	axios.post(_this.$store.state.url_talk+'/gift/fetch-gifts',qs.stringify({cid:_this.$route.query.cid}))
-	.then(function(dataJson){
-		console.log(JSON.stringify(dataJson.data))
-		_this.aimai_gift = dataJson.data.info;
-		for(let id in _this.aimai_gift){
-			_this.aimai_gift[id]['boll'] = false;
-		}
-	})
-	.catch(function(err){
-		alert(err);
-	});
+ 	//  axios.post(_this.$store.state.url_talk+'/gift/fetch-gifts',qs.stringify({cid:_this.$route.query.cid}))
+	// .then(function(dataJson){
+	// 	console.log(JSON.stringify(dataJson.data))
+	// 	_this.aimai_gift = dataJson.data.info;
+	// 	for(let id in _this.aimai_gift){
+	// 		_this.aimai_gift[id]['boll'] = false;
+	// 	}
+	// })
+	// .catch(function(err){
+	// 	alert(err);
+	// });
 	
 	//------------------------------------------------------------------
 
@@ -1002,35 +1003,8 @@ export default {
 	          			if(received_msg.cmds[key].content.coolDown==0){
 	          				_this.prohibit_boll = true;
 	          				_this.straight_commodity_boll = false;
-	          				//alert(received_msg.cmds[key].content.coolDown)
-	          				//红牌
-	          				// if(_this.bet_red_values==''){
-	          				// 	_this.bet_red_type = require('../assets/liveBroadcast/REDbtn2_2@2x.png')
-	          				// }else{
-	          				// 	_this.bet_red_type = require('../assets/liveBroadcast/REDbtn1_bg@2x.png')
-	          				// }
-	          				// //黑牌
-	          				// if(_this.bet_black_values){
-	          				// 	_this.bet_black_type = require('../assets/liveBroadcast/BLACKbtn2_2@2x.png')
-	          				// }else{
-	          				// 	_this.bet_black_type = require('../assets/liveBroadcast/BLACKbtn1_bg@2x.png')
-	          				// }
-	          				// _this.choice_bet_type = true
 	          			}else{
 	          				_this.prohibit_boll = false;
-	          				//红牌
-	          				// if(_this.bet_red_values==''){
-	          				// 	_this.bet_red_type = require('../assets/liveBroadcast/REDbtn2@2x.png')
-	          				// }else{
-	          				// 	_this.bet_red_type = require('../assets/liveBroadcast/btn_red@2x.png')
-	          				// }
-	          				// //黑牌
-	          				// if(_this.bet_black_values){
-	          				// 	_this.bet_black_type = require('../assets/liveBroadcast/btn_black@2x.png')
-	          				// }else{
-	          				// 	_this.bet_black_type = require('../assets/liveBroadcast/btn_black@2x.png')
-	          				// }
-	          				// _this.choice_bet_type = false
 	          			}
 	          			//在线人数online
 	          			_this.audience = received_msg.cmds[key].content.online;
@@ -1059,7 +1033,7 @@ export default {
 	          		//接收当前聊天数据
 	          		if(received_msg.cmds[key].id==11){
 	          			for(let content_id in received_msg.cmds[key].content){
-	          				 _this.barrage(received_msg.cmds[key].content[content_id].content);
+	          				 _this.barrage(received_msg.cmds[key].content[content_id].content,false);
 
 	          				_this.chatData.push({'uesName':received_msg.cmds[key].content[content_id].name,'content':received_msg.cmds[key].content[content_id].content,'image':''});
 
@@ -1159,6 +1133,7 @@ export default {
   		}
   	},
   	gifts_content(val,key){
+  		this.number_int = 1;
   		for(let index in this.aimai_gift){
   			this.aimai_gift[index].boll = false;
   		}
@@ -1173,12 +1148,14 @@ export default {
   		for(let key in this.aimai_gift){
   			if(this.aimai_gift[key].boll){
   				this.give = this.aimai_gift[key]
+  				this.gift_presentation = true;
+  				this.gift_if_presentation = true;
   				if(this.give.quantity<=0){
-  					this.gift_presentation = true;
   					return false;
   				};
-  				this.giftSend();
-  				this.popupJson.giftPopup = false;
+  				this.gift_if_presentation = false;
+  				//this.giftSend();
+  				//this.popupJson.giftPopup = false;
   			}
   		}
   		//console.log(JSON.stringify(this.give))
@@ -1197,6 +1174,15 @@ export default {
   		this.number_int = val.text;
   	},
   	addNumber(){
+  		if(!this.gift_if_presentation){
+  			for(let i = 0;i<this.aimai_gift.length;i++){
+  				if(this.aimai_gift[i].boll){
+  					if(this.number_int>=this.aimai_gift[i].quantity){
+  						return false;
+  					}
+  				}
+  			}
+  		}
   		this.number_int+=1;
   	},
   	collect_splist_eve(){
@@ -1207,7 +1193,11 @@ export default {
   	},
   	//去支付
   	productBet_eve(){
-
+  		if(!this.gift_if_presentation){
+  			let _this = this;
+  			this.giftSend(_this.number_int);
+  			return false;
+  		}
   		this.productPopup = true;
   		this.gift_presentation = false;
   		//支付数据
@@ -1463,7 +1453,7 @@ export default {
   		this.listGifts[key].giftsBull = true;
   	},
   	//提交礼物信息
-  	giftSend(){
+  	giftSend(num){
   		var _this = this;
   		for(let key in this.listGifts){
   			if(this.listGifts[key].giftsBull){
@@ -1476,8 +1466,8 @@ export default {
 			
            ws.onopen = function(){
               //Web Socket 已连接上，使用 send() 方法发送数据
-              var json = {"cmd":5,"roomid":_this.giftsData.roomId,"fid":_this.giftsData.fid,"tid":_this.giftsData.tid,"gift":_this.give.id,"num":1}
-              //console.log(JSON.stringify(json))
+              var json = {"cmd":5,"roomid":_this.giftsData.roomId,"fid":_this.giftsData.fid,"tid":_this.giftsData.tid,"gift":_this.give.id,"num":num}
+              console.log(JSON.stringify(json))
               ws.send(JSON.stringify(json));
               console.log("数据发送中...");
            };
@@ -1488,11 +1478,21 @@ export default {
               if(received_msg.cmd==5){
               	for(let id in received_msg.cmds){
               		if(received_msg.cmds[id].id==12){
-              			console.log(JSON.stringify(received_msg.cmds[id].content))
+              			//console.log(JSON.stringify(received_msg.cmds[id].content))
               			for(let thisId in received_msg.cmds[id].content){
               				//console.log(received_msg.cmds[id].content[thisId].fromName)
-              				console.log(JSON.stringify(_this.give))
-              				_this.chatData.push({"uesName":received_msg.cmds[id].content[thisId].fromName,"content":"","image":_this.give.image})
+              				//发送礼物成功
+              				if(received_msg.result){
+              					_this.gift_presentation = false;
+              					_this.popupJson.giftPopup = false;
+
+              					_this.barrage(received_msg.cmds[id].content[thisId].fromName,true,_this.give.image,'x'+num)
+              					_this.chatData.push({
+              						"uesName":received_msg.cmds[id].content[thisId].fromName,
+              						"content":"",
+              						"image":_this.give.image
+              					})
+              				}
               			}
               		}
               	}
@@ -1550,18 +1550,17 @@ export default {
 
   	},
   	//jquery
-  	barrage(text){
+  	barrage(text,boll,image,image_num){
   		var $value=text;
 		
 		var $p=$("<p></p>");
 		
-		var $a = $("<a href='https://jq.qq.com/?_wv=1027&k=467fPNu'>点我看看</a>")
-		
-		$p.append($a);
-		
-		$p.addClass("aaa");
-		
 		$p.text($value);
+		if(boll){
+			var $a = $("<img width='30px' src='"+image+"'/><span>"+image_num+"</span>")
+
+			$p.append($a);
+		}
 		
 		var _top=Math.floor(Math.random()*($(".the_game").innerHeight()-30));
 		
@@ -1584,7 +1583,6 @@ export default {
 		$(".the_game").append($p);
 		
 		var _timer=Math.ceil(Math.random()*4000)+3000;
-		
 		$p.stop().animate({"left":"-500px"},_timer,function(){
 			$(this).remove();
 		}); 
@@ -2072,7 +2070,7 @@ export default {
 .product_purchase_button span{
 	display: block;
 	width: 130px;
-	margin: auto;
+	margin: 13px auto 0px auto;
 	text-align: center;
 }
 
@@ -2300,9 +2298,9 @@ export default {
 	padding: 2px;
 }
 .gifts_img span{
-	width: 15px;
-    height: 15px;
-    line-height: 15px;
+	width: 23px;
+    height: 23px;
+    line-height: 23px;
 	border-radius: 50%;
 	background-color: #ef7c2a;
 	color: #fff;
