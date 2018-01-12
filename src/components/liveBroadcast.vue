@@ -758,17 +758,17 @@ export default {
   	this.HAND_SHAKE = JSON.stringify({"cmd":2,"cid":this.$route.query.cid,"roomId":this.$route.query.roomid,"roomType":2,'sessionId':localStorage.getItem('session_id')})
   	//var _this = this
   	//礼物
- 	//  axios.post(_this.$store.state.url_talk+'/gift/fetch-gifts',qs.stringify({cid:_this.$route.query.cid}))
-	// .then(function(dataJson){
-	// 	console.log(JSON.stringify(dataJson.data))
-	// 	_this.aimai_gift = dataJson.data.info;
-	// 	for(let id in _this.aimai_gift){
-	// 		_this.aimai_gift[id]['boll'] = false;
-	// 	}
-	// })
-	// .catch(function(err){
-	// 	alert(err);
-	// });
+ 	 axios.post(_this.$store.state.url_talk+'/gift/fetch-gifts',qs.stringify({cid:_this.$route.query.cid}))
+	.then(function(dataJson){
+		console.log(JSON.stringify(dataJson.data))
+		_this.aimai_gift = dataJson.data.info;
+		for(let id in _this.aimai_gift){
+			_this.aimai_gift[id]['boll'] = false;
+		}
+	})
+	.catch(function(err){
+		alert(err);
+	});
 	
 	//------------------------------------------------------------------
 
@@ -1041,16 +1041,20 @@ export default {
 	          		};
 	          		if(received_msg.cmds[key].id==12){
 
-	          			console.log(JSON.stringify(received_msg.cmds[key].content))
+	          			//console.log(JSON.stringify(received_msg.cmds[key].content))
 
 	          			for(let image_id in received_msg.cmds[key].content){
+
 	          				for(let this_img_id in _this.aimai_gift){
 
 	          					//console.log(JSON.stringify( _this.aimai_gift));
 
 	          					if(_this.aimai_gift[this_img_id].id==received_msg.cmds[key].content[image_id].gift){
 	          						
-	          						//console.log(JSON.stringify(_this.aimai_gift[this_img_id]));
+	          						console.log(JSON.stringify(received_msg.cmds[key].content));
+	          						_this.giftJquery_eve(received_msg.cmds[key].content[image_id].num,_this.aimai_gift[this_img_id].image)
+
+	          						_this.barrage(received_msg.cmds[key].content[image_id].fromName,true,_this.aimai_gift[this_img_id].image,'x'+received_msg.cmds[key].content[image_id].num);
 
 	          						_this.chatData.push({
 	          							'uesName':received_msg.cmds[key].content[image_id].fromName,
@@ -1486,7 +1490,10 @@ export default {
               					_this.gift_presentation = false;
               					_this.popupJson.giftPopup = false;
 
-              					_this.barrage(received_msg.cmds[id].content[thisId].fromName,true,_this.give.image,'x'+num)
+              					_this.barrage(received_msg.cmds[id].content[thisId].fromName,true,_this.give.image,'x'+num);
+              					//礼物掉落
+              					_this.giftJquery_eve(num,_this.give.image);
+
               					_this.chatData.push({
               						"uesName":received_msg.cmds[id].content[thisId].fromName,
               						"content":"",
@@ -1588,7 +1595,22 @@ export default {
 		}); 
 
   	},
-
+  	//jquery
+  	giftJquery_eve(num,image){
+  		for(let i = 0;i<num;i++){
+			var img_top=Math.floor(Math.random()*($("body").width()-30));
+			let $img = $("<img width='30px' src="+image+">");
+			$img.css({
+				'position':'absolute',
+				'top':'-'+i*30+'px',
+				'left':img_top+'px'
+			})
+			$('body').append($img);
+			$img.stop().animate({'top':$("body").height()+'px'},3000+i*30+30,function(){
+				$(this).remove();
+			})
+		}
+  	},
   	//跳转充值
   	lade(){
   		this.$router.push({ name: 'Recharge'})
