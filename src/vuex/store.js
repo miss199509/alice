@@ -17,7 +17,7 @@ const state = {
   //获取头像链接
   portrait:localStorage.getItem('portrait'),
   //语言
-  language:0//parseInt(localStorage.getItem('language'))
+  language:parseInt(localStorage.getItem('language'))
 }
 const mutations = {
   increment(state) {

@@ -37,10 +37,10 @@
 			<img width="60px;" src="../assets/liveBroadcast/movie_star.png"/>
 	      </div>
 	    </div>
-		<router-link :to="{ name: 'video'}">
-			<div class="videoBox the_game" :style="{ height: height_img + 'px' }">
+		<!-- <router-link :to="{ name: 'video'}"> -->
+			<div @click="video_eve()" class="videoBox the_game" :style="{ height: height_img + 'px' }">
 			</div>
-		</router-link>
+		<!-- </router-link> -->
 
 	</div>
 	
@@ -337,8 +337,8 @@
 			<li>
 			</li>
 			<li class="product_purchase_button">
-				<span class="productBet" @click="productBet_eve()" v-if="$store.state.language">购买</span>
-				<span class="productBet" @click="productBet_eve()" v-else>BUY</span>
+				<span class="productBet" @click="productBet_eve()" v-if="$store.state.language">BUY</span>
+				<span class="productBet" @click="productBet_eve()" v-else>购买</span>
 			</li>
 		</ul>
 	</div>
@@ -1610,6 +1610,11 @@ export default {
 				$(this).remove();
 			})
 		}
+  	},
+  	//跳转到视频页面
+  	video_eve(){
+  		this.$router.push({ name: 'video'});
+  		window.location.reload();
   	},
   	//跳转充值
   	lade(){

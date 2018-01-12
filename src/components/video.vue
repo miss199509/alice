@@ -31,6 +31,23 @@
   	mounted(){
 
 
+  		window.addEventListener("load",getVideoEvent);
+		function getVideoEvent(){
+			var videoes=document.getElementsByTagName("video");
+			for (var i = 0; i < videoes.length; i++) {
+				showEventLog("video"+(i+1),videoes[i]);
+			}
+		}
+
+		function showEventLog(videoNum,Media){
+			 function eventTester(e){Media.addEventListener(e,function(){
+			 		console.log(0)
+					history.go(-1);
+				});
+			}
+
+			eventTester("pause");    //pause()触发
+		}
 
   	}
   }

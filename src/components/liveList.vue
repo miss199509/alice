@@ -105,46 +105,56 @@
 							<router-link :to="{ name: 'Personal'}">
 								<li>
 										<img width="23px;" src="../assets/liveBroadcast/btn_profile@2x.png"/>
-										<span class="color_aimai">个人信息</span>
+										<span class="color_aimai" v-if="$store.state.language">Profile</span>
+										<span class="color_aimai" v-else>个人信息</span>
 								</li>
 							</router-link>
 							<li @click="popup_box_boll = !popup_box_boll">
 								<img width="23px;" src="../assets/liveBroadcast/btnhomei6.png"/>
-								<span class="color_aimai">大厅</span>
+								<span class="color_aimai" v-if="$store.state.language">Home</span>
+								<span class="color_aimai"  v-else>大厅</span>
 							</li>
 							
 							<router-link :to="{ name: 'information'}">
 								<li>
 									<img width="23px;" src="../assets/liveBroadcast/btn_event@2x.png"/>
-									<span class="color_aimai">新闻</span>
+									<span class="color_aimai" v-if="$store.state.language">News</span>
+									<span class="color_aimai" v-else>新闻</span>
 								</li>
 							</router-link>
 
 							<li @click="video_eve()">
 								<img width="23px;" src="../assets/liveBroadcast/icon_tutorial@2x.png"/>
-								<span class="color_aimai">新手引导</span>
+								<span class="color_aimai" v-if="$store.state.language">Tutroial</span>
+								<span class="color_aimai" v-else>新手引导</span>
 							</li>
 							<li @click="popup_tipsPlay = !popup_tipsPlay">
 								<img width="23px;" src="../assets/liveBroadcast/icon_gameplay@2x.png"/>
-								<span class="color_aimai">游戏玩法</span>
+								<span class="color_aimai">{{parseInt($store.state.language)?'GamePlay':'游戏玩法'}}</span>
 							</li>
 							<li @click="questions_boll = !questions_boll">
 								<img width="23px;" src="../assets/liveBroadcast/icon_faq@2x.png"/>
-								<span class="color_aimai">帮助</span>
+								<span class="color_aimai">
+									{{parseInt($store.state.language)?'FAQ':'帮助'}}
+								</span>
 							</li>
 						</ul>
 					</nav>
 
 					<div class="sign_out_box">
-						<p>
-							<img width="33" src="../assets/liveBroadcast/btn_Bullet-Screen@2x.png"/>
+						<p class="language_css" @click="language_select()">
+
+							<span :class="{ hove:!language_boll}">EN</span>
+							<span :class="{ hove:language_boll}">CN</span>
 						</p>
 						<p class="sign_out_click">
 							<img width="23px;" src="../assets/liveBroadcast/icon_logout@2x.png"/>
-							<span class="color_aimai" @click="sign_out()">退出</span>
+							<span class="color_aimai" @click="sign_out()">
+								{{parseInt($store.state.language)?'Logout':'退出'}}
+							</span>
 						</p>
 						<p style="margin: 7px 0px;">
-							版本  0.0.1
+							{{parseInt($store.state.language)?'Version':'版本'}}0.0.1
 						</p>
 					</div>
 				</div>
@@ -299,7 +309,8 @@ export default {
       questions_boll:false,
       popup_box_boll:false,
       show: true,
-      loginBoll:true
+      loginBoll:true,
+      language_boll:true
     }
   },
   mounted(){
@@ -378,6 +389,18 @@ export default {
   		//localStorage.clear();
 		this.$router.push({ name: 'Hello'});
 		window.location.reload();
+  	},
+  	language_select(){
+  		if(this.language_boll){
+  			console.log('英文');
+  			localStorage.setItem(1,'language');
+
+  		}else{
+  			console.log('中文')
+  			localStorage.setItem(0,'language')
+  		}
+  		window.location.reload();
+  		this.language_boll?this.language_boll = false:this.language_boll = true;
   	}
   }
 }
@@ -634,7 +657,25 @@ export default {
 	font-size: 12px;
 	color: #444;
 }
+.language_css{
+	background: url(../assets/liveBroadcast/btn_Bullet-Screen@2x.png);
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 43px;
+    margin: auto;
+    line-height: 20px;
+    color: #fff;
+}
+.language_css span{
+	font-size: 12px;
+}
 
+
+.language_css .hove{
+	 color: #fff;
+}
 
 
 .slide-fade-enter-active {
