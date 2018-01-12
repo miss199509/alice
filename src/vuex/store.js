@@ -19,6 +19,7 @@ const state = {
   //语言
   language:parseInt(localStorage.getItem('language'))
 }
+
 const mutations = {
   increment(state) {
     state.count = state.count + 5

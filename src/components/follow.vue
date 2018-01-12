@@ -14,8 +14,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai" v-if="$store.state.language">Following</strong>
-					<strong class="color_aimai" v-else>关注</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Following':'关注'}}</strong>
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement'}">
@@ -34,16 +33,19 @@
 						<img width="40px;" :src='val.head_image' style="border-radius: 50%;" />
 						<span class="color_aimai">{{val.nickname}}</span>
 					</div>
-					<p v-show="val.is_line" class="followTips">
-						直播中
-					</p>
 					<div class="operation">
-						<img width="100%;" :src="val.image"/>
+						<img style="display: block;" width="100%;" :src="val.image"/>
 						<div class="operation_layer">
+							<img v-show="val.is_line" width="50px;" style="margin-top: 5px;" src="../assets/liveBroadcast/live.png"/>
 							<h4>{{val.nickname}}</h4>
 							<hr/>
 							<p>{{val.description}}</p>
-							<img width="33px;" src="../assets/liveBroadcast/btn_follow@2x.png"/>
+							<div class="video_box">
+								<span class="video_buttom" @click="video_href(val,key)">
+									{{parseInt($store.state.language)?'VIEW STREAM':'视屏'}}
+								</span>
+								<img @click="followEve(val,key)" width="37px;" height="30px" src="../assets/liveBroadcast/btn_follow@2x.png"/>
+							</div>
 						</div>
 					</div>
 				</li>
@@ -88,6 +90,33 @@ export default {
 
   },
   methods: {
+  	followEve(val,key){
+  		let _this = this;
+  		axios.post(_this.$store.state.url_talk+'/customer/cancel-follow-dealer',qs.stringify({
+  			cid:_this.$route.query.cid,
+  			dealerid:val.dealer_id
+  		}))
+		.then(function(dataJson){
+			if(dataJson.data.result){
+				window.location.reload();
+			}else{
+				alert('取消关注失败！');
+			}
+		})
+		.catch(function(err){
+			alert(err);
+		});
+  	},
+  	//视频跳转
+  	video_href(val,key){
+  		this.$router.push({ 
+  			name: 'liveBroadcast',query: {
+  				cid:this.$store.state.cid_talk,
+  				dealerid:val.dealer_id,
+  				roomid:val.room_id
+  			}
+  		})
+  	}
   }
 }
 </script>
@@ -121,7 +150,7 @@ export default {
     height: 100%;
     background: #000;
     opacity: 0.5;
-    padding: 1px 17px;
+    padding: 0px 13px;
 	color: #fff;
 }
 .operation_layer h4{
@@ -141,6 +170,20 @@ export default {
 }
 .operation_layer img{
 	float: right;
-    margin-top: 11px;
+}
+.video_box{
+	margin-top: 12px;
+}
+.video_buttom{
+	background: url('../assets/loading/btn_GetCod@2x.png');
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    font-size: 12px;
+    text-align: center;
+    width: 130px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
 }
 </style>

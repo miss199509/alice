@@ -11,8 +11,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai" v-if="$store.state.language">Checkout</strong>
-					<strong class="color_aimai" v-else>支付</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Checkout':'支付'}}</strong>
 				</li>
 				<li class="floatRight">
 				</li>
@@ -23,8 +22,7 @@
 			<div class="shoppingl_global  overflowRemove">
 				<div class="is_default settlement_nav">
 					<h4 class="floatLeft">
-						<strong v-if="$store.state.language">Ship to</strong>
-						<strong v-else>寄到</strong>
+						<strong>{{parseInt($store.state.language)?'hip to':'寄到'}}</strong>
 					</h4>
 					<div class="is_default_val">
 						<div class="floatLeft">
@@ -45,10 +43,11 @@
 
 			<div class="payment_box">
 				<div class="payment_tips">
-					<p>支付方式</p>
+					<p>{{parseInt($store.state.language)?'Select Payment':'支付方式'}}</p>
 				</div>
 				<p class="payment_select">
-					使用余额支付:{{parseFloat($store.state.balance_talk/100).toFixed(2)}}
+					{{parseInt($store.state.language)?'Use balance payment':'使用余额支付'}}:
+					<span>{{parseFloat($store.state.balance_talk/100).toFixed(2)}}</span>
 				</p>
 				<p class="payment_tips">
 					<img width="20px;" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
@@ -59,8 +58,7 @@
 			<nav class="">
 				<div class="commodity_box">
 					<h3 class="overflowRemove title_class">
-						<span class="floatLeft" v-if="$store.state.language">{{shoppingCart.length}} item</span>
-						<span class="floatLeft" v-else>{{shoppingCart.length}} 项</span>
+						<span class="floatLeft">{{shoppingCart.length}} {{parseInt($store.state.language)?'item':'项'}}</span>
 						<img  v-if="commodity_boll" @click="commodity_eve()" class="floatRight" width="20px;" src="../assets/liveBroadcast/btn_collapse.png"/>
 						<img v-else="commodity_boll" @click="commodity_eve()" class="floatRight" width="20px;" src="../assets/liveBroadcast/btn_addWallet@2x.png"/>
 					</h3>
@@ -90,13 +88,11 @@
 								<h4>{{val.ch_name}}</h4>
 								
 								<p>
-									<span v-if="$store.state.language">QTY：{{val.product_size}}</span>
-									<span v-else>大小：{{val.product_size}}</span>
+									<span>{{parseInt($store.state.language)?'QTY':'大小'}}：{{val.product_size}}</span>
 								</p>
 
 								<p>
-									<span v-if="$store.state.language">QTY：{{val.product_amount}}</span>
-									<span v-else>数量：{{val.product_amount}}</span>
+									<span>{{parseInt($store.state.language)?'Size':'数量'}}：{{val.product_amount}}</span>
 								</p>
 								<p>
 									<strong class="floatRight">￥{{parseFloat(val.product_price).toFixed(2)}}</strong>
@@ -115,24 +111,23 @@
 			<div class="checkout">
 				<ul>
 					<li>
-						<span>小计</span>
+						<span>{{parseInt($store.state.language)?'Subtotal':'小计'}}</span>
 						<span>￥{{parseFloat(product_price_val/100).toFixed(2)}}</span>
 					</li>
 					<li>
-						<span>税</span>
+						<span>{{parseInt($store.state.language)?'Tax':'税'}}</span>
 						<span>0</span>
 					</li>
 					<li>
-						<span>运费</span>
+						<span>{{parseInt($store.state.language)?'Shipping':'运费'}}</span>
 						<span>0</span>
 					</li>
 					<li class="checkout_price">
-						<strong>最终价格</strong>
+						<strong>{{parseInt($store.state.language)?'Final Price':'最终价格'}}</strong>
 						<strong>￥{{parseFloat(product_price_val/100).toFixed(2)}}</strong>
 					</li>
 				</ul>
-				<p class="" @click="register()" v-if="$store.state.language">Checkout</p>
-				<p class="" @click="register()" v-else>支付</p>
+				<p class="" @click="register()">{{parseInt($store.state.language)?'PAY':'支付'}}</p>
 			</div>
 
 		</div>
@@ -419,6 +414,9 @@ export default {
     padding: 9px 0px;
     font-size: 14px;
     text-indent: 23px;
+}
+.payment_select span{
+	color: #888;
 }
 .payment_tips{
 	padding: 5px 11px;

@@ -11,8 +11,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong v-if="$store.state.language" class="color_aimai">Shop</strong>
-					<strong v-else class="color_aimai">商店</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Shop':'商店'}}</strong>
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement'}">

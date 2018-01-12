@@ -11,8 +11,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong v-if="$store.state.language" class="color_aimai">Shop</strong>
-					<strong v-else class="color_aimai">商店</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Shop':'商店'}}</strong>
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement'}">
@@ -44,21 +43,19 @@
 
 					<ul class="product_select">
 						<li>
-							<span>选择颜色</span>
+							<span>{{parseInt($store.state.language)?'Choose Color':'选择颜色'}}</span>
 							<p>
-								
 							</p>
 						</li>
 						<li>
-							<span>选择大小</span>
-							
+							<span>{{parseInt($store.state.language)?'Choose Size':'选择大小'}}</span>
 							<p class="product_size">
 								<label v-for="(val,key) in listSize" @click="selectCss(key)" :class='{"labelCss":val.boll}'>{{val.size}}</label>
 							</p>
 
 						</li>
 						<li>
-							<span>选择数量</span>
+							<span>{{parseInt($store.state.language)?'Choose Qty':'选择数量'}}</span>
 							
 							<p class="addPrice">
 								<img @click="removeNumber()" width="22px" src="../assets/liveBroadcast/icon_minusbet.png"/>
@@ -76,7 +73,7 @@
 	    </div>
 
 	    <p class="product_bottom" @click="productBet()">
-			<span>购买</span>
+			<span>{{parseInt($store.state.language)?'EXCHAMGE FOR':'购买'}}</span>
 			<img width="22px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 			<strong>{{parseFloat(price).toFixed(2)}}</strong>
 	    </p>
@@ -86,48 +83,43 @@
 	  <div id="boxPopup" v-show="product_tips"></div>
 		<div class="explainPopup productPopup" v-show="product_tips">
 		  	<h3 class="tips_title color_aimai">
-		  		<strong v-if="$store.state.language">Prompt</strong>
-		  		<strong v-else>警告</strong>
+		  		<strong>{{parseInt($store.state.language)?'Prompt':'警告'}}</strong>
 		  	</h3>
 		  	<ul class="transaction">
 				<li>
 					<p class="productPopup_tips">
 						<img class="floatRigth" width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<strong style="margin-right: 10px;">{{parseFloat(price).toFixed(2)}}</strong>
-						<strong v-if="$store.state.language">will be deducted from your wallet right away. Please complete the process in the cart.</strong>
-						<strong v-else>将会在你的钱包中扣除。请完成购物车中的过程</strong>
+						<strong>
+							{{parseInt($store.state.language)?'will be deducted from your wallet right away. Please complete the process in the cart.':'将会在你的钱包中扣除。请完成购物车中的过程'}}
+						</strong>
 					</p>
 				</li>
 				<li style="height: 13px;"></li>
 				<li class="overflowRemove productPopup_nve">
-					<strong class="floatLeft" v-if="$store.state.language">Wallet</strong>
-					<strong class="floatLeft" v-else>钱包</strong>
+					<strong class="floatLeft">{{parseInt($store.state.language)?'Wallet':'钱包'}}</strong>
 					<p class="floatRight">
 						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat($store.state.balance_talk).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="overflowRemove productPopup_nve">
-					<strong class="floatLeft" v-if="$store.state.language">Exchange</strong>
-					<strong class="floatLeft" v-else>交还</strong>
+					<strong class="floatLeft">{{parseInt($store.state.language)?'Exchange':'交还'}}</strong>
 					<p class="floatRight">
 						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(price).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="overflowRemove">
-					<strong class="floatLeft" v-if="$store.state.language">Wallet Balance</strong>
-					<strong class="floatLeft" v-else>钱包余额</strong>
+					<strong class="floatLeft">{{parseInt($store.state.language)?'Wallet Balance':'钱包余额'}}</strong>
 					<p class="floatRight">
 						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat($store.state.balance_talk-price).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="operation">
-					<p @click="cartSubmit()" class="productBet" v-if="$store.state.language">ACCEPT</p>
-					<p @click="cartSubmit()" class="productBet" v-else>接受</p>
-					<p @click="remove_product_tips()" class="productBet" v-if="$store.state.language">CANCEL</p>
-					<p @click="remove_product_tips()" class="productBet" v-else>取消</p>
+					<p @click="cartSubmit()" class="productBet">{{parseInt($store.state.language)?'ACCEPT':'接受'}}</p>
+					<p @click="remove_product_tips()" class="productBet">{{parseInt($store.state.language)?'CANCEL':'取消'}}</p>
 				</li>
 			</ul>
 		</div>
@@ -135,8 +127,7 @@
 		<div id="boxPopup" v-show="recharge_popup" style="z-index: 11;"></div>
 		<div class="explainPopup productPopup" v-show="recharge_popup">
 		  	<h3 class="tips_title">
-		  		<strong class="color_aimai" v-if="$store.state.language">Prompt</strong>
-		  		<strong class="color_aimai" v-else>提示</strong>
+		  		<strong class="color_aimai">{{parseInt($store.state.language)?'Prompt':'提示'}}</strong>
 		  		<img @click="balance_eve()" class="floatRight" width="21px;" src="../assets/loading/btn_close@2x.png"/>
 		  	</h3>
 		  	<ul class="transaction transaction_box">
@@ -147,8 +138,7 @@
 				</li>
 			</ul>
 			<div class="operation">
-				<p @click="lade()" class="productBet" v-if="$store.state.language">Confirm</p>
-				<p @click="lade()" class="productBet" v-else>确定</p>
+				<p @click="lade()" class="productBet">{{parseInt($store.state.language)?'Confirm':'确定'}}</p>
 			</div>
 		</div>
 
@@ -361,6 +351,8 @@ export default {
 	padding: 0px 15px;
 	font-size: 13px;
 	margin: 15px 0px;
+	max-height: 75px;
+    overflow: auto;
 }
 .product_select li{
 	border-top: 1px solid #000;
@@ -414,6 +406,7 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	width: fit-content;
 }
 .product_bottom span{
 	font-size: 12px;

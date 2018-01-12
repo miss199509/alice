@@ -12,8 +12,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong v-if="$store.state.language" class="color_aimai">Account</strong>
-					<strong v-else class="color_aimai">个人信息</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Account':'个人信息'}}</strong>
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement'}">
@@ -47,16 +46,16 @@
 						<ul>
 							<li @click="lade()">
 								<img width="27px" src="../assets/personal/iconreloadi6.png"/>
-								<strong class="color_aimai" v-if="$store.state.language">RELOAD</strong>
-								<strong class="color_aimai" v-else>充值</strong>
+								<strong class="color_aimai">{{parseInt($store.state.language)?'RELOAD':'充值'}}</strong>
 							</li>
 							<router-link v-for="(val,key) in portrait_nav" :to="{name:val.url,query: {cid:$store.state.cid_talk}}"><!--query: {plan:666}}">{ name: 'history', params: { deviceId: 123, dataId:456 }}-->
 								
 
 								<li>
 									<img width="25px" :src="val.imgae"/>
-									<strong class="color_aimai" v-if="$store.state.language">{{val.navName}}</strong>
-									<strong class="color_aimai" v-else>{{val.navName_new}}</strong>
+									<strong class="color_aimai">
+										{{parseInt($store.state.language)?val.navName:val.navName_new}}
+									</strong>
 								</li>
 							</router-link>
 						</ul>
@@ -67,14 +66,14 @@
 		
 		<div id="boxPopup" v-show="popup" @click="removePopup()"></div>
 		<ul class="head_nav" v-show="popup">
-			<li @click="choice()">
-				上传头像
+			<li @click="choice()">				
+				{{parseInt($store.state.language)?'USE PHOTO FROM CELL PHONE PHOTOS':'上传头像'}}
 			</li>
 			<li>
-				拍照
+				{{parseInt($store.state.language)?'TAKE PICTURE WITH CAMERA':'拍照'}}
 			</li>
 			<li @click="determine()">
-				确定
+				{{parseInt($store.state.language)?'CANCEL':'确定'}}
 			</li>
 		</ul>
 
@@ -272,5 +271,20 @@ export default {
 .ues_price strong{
 	font-size: 22px;
 	color:#999;
+}
+
+
+.head_nav{
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	z-index: 1;
+}
+.head_nav li{
+	text-align: center;
+    background-color: #ccc;
+    padding: 7px 0px;
+    margin: 7px 0px;
+    font-size: 13px;
 }
 </style>

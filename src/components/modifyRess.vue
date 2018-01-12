@@ -14,8 +14,8 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai" v-if="$store.state.language">Modify address</strong>
-					<strong class="color_aimai" v-else>修改地址</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Modify address':'修改地址'}}</strong>
+					<strong class="color_aimai"></strong>
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement'}">
@@ -36,19 +36,13 @@
 		</div>
 		
 		<!-- <router-link :to="{ name: 'Delivery',query: {cid:$store.state.cid_talk}}"> -->
-		<p class="modify_ress" @click="modify_ress()" v-if="$store.state.language">
-			DELETE ADDRESS
-		</p>
-		<p class="modify_ress" @click="modify_ress()" v-else>
-			删除地址
+		<p class="modify_ress" @click="modify_ress()">
+			{{parseInt($store.state.language)?'DELETE ADDRESS':'删除地址'}}
 		</p>
 		<!-- </router-link> -->
 		
-		<p class="submit_delivery" @click="submit_delivery()" v-if="$store.state.language">
-			CONFLRM
-		</p>
-		<p class="submit_delivery" @click="submit_delivery()" v-else>
-			确认
+		<p class="submit_delivery" @click="submit_delivery()">
+			{{parseInt($store.state.language)?'CONFLRM':'确认'}}
 		</p>
 
 		<transition name="fade">
@@ -228,12 +222,10 @@ export default {
 	position: fixed;
 	color: #fff;
 	text-align: center;
-	width: 75%;
 	left: 0;
 	right: 0;
 	bottom: 47px;
 	margin: auto;
-	width: 130px;
 	background:url('../assets/loading/btn_exchange_click@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
@@ -241,6 +233,9 @@ export default {
 	height: 33px;
 	line-height: 33px;
 	font-size: 15px;
+	width: fit-content;
+    padding: 0px 7px;
+    min-width: 130px;
 }
 
 

@@ -12,8 +12,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai" v-if="$store.state.language">Reload</strong>
-					<strong class="color_aimai" v-else>充值</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Reload':'充值'}}</strong>
 				</li>
 				<li class="floatRight">
 				</li>
@@ -30,8 +29,7 @@
 					<strong class="color_aimai">{{$store.state.balance_talk}}</strong>
 				</p>
 				<p>
-					<span v-if="$store.state.language">as of 0 days</span>
-					<span v-else>距上次充值0天</span>
+					<span>{{parseInt($store.state.language)?'as of 0 days':'距上次充值0天'}}</span>
 					&nbsp;
 					<img width="20px;" src="../assets/liveBroadcast/btnreload1i6.png"/>
 				</p>
@@ -47,16 +45,14 @@
 					
 					<li>
 
-						<span class="color_aimai" v-if="$store.state.language">Reload</span>
-						<span class="color_aimai" v-else>充值</span>
+						<span class="color_aimai">{{parseInt($store.state.language)?'Reload':'充值'}}</span>
 						<input class="inputMye" type="text" v-model="num" placeholder="￥10" style="text-align:right" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)"/>
 					
 					</li>
 
 					<router-link :to="{ name: 'Record'}">
 						<li>
-							<span v-if="$store.state.language">Reload History</span>
-							<span v-else>充值记录</span>
+							<span>{{parseInt($store.state.language)?'Reload History':'充值记录'}}</span>
 							<strong>
 								<img width="23px" src="../assets/liveBroadcast/proceed_button.png"/>
 							</strong>
@@ -66,7 +62,7 @@
 			
 				<div class="payment_select">
 					<p>
-						选择支付
+						{{parseInt($store.state.language)?'Select Payment':'选择支付'}}
 					</p>
 					<div>
 						<span>
@@ -81,15 +77,13 @@
 					<div class="">
 						<p class="email">
 							<span>
-								<label v-if="$store.state.language">Email：</label>
-								<label v-else>邮箱：</label>
+								<label>{{parseInt($store.state.language)?'Email：':'邮箱：'}}</label>
 								<input tyle="text" placeholder="Please enter your email address" v-model="email_val" v-if="$store.state.language"/>
 								<input tyle="text" placeholder="请输入邮箱地址" v-model="email_val" v-else/>
 							</span>
 							<img @click="show_emailboll" width="23px;" src="../assets/liveBroadcast/btn_info@2x.png"/>
 						</p>
-						<p class="productBet" @click="payment()" v-if="$store.state.language">Reload</p>
-						<p class="productBet" @click="payment()" v-else>充值</p>
+						<p class="productBet" @click="payment()">{{parseInt($store.state.language)?'Reload':'充值'}}</p>
 					</div>
 				</div>
 			</div>
@@ -100,17 +94,14 @@
 			<div class="explainPopup productPopup" v-show="emailboll">
 			  	<h3 class="tips_title color_aimai">
 			  		<span></span>
-			  		<strong v-if="$store.state.language">Email</strong>
-			  		<strong v-else>邮箱</strong>
+			  		<strong>{{parseInt($store.state.language)?'Email':'邮箱'}}</strong>
 			  		<img @click="hide_emailboll()" width="17px;" src="../assets/liveBroadcast/btn_close.png"/>
 			  	</h3>
 			  	<ul class="transaction">
 					<li>
-						<p class="recharge_tips color_aimai" v-if="$store.state.language">
-							we need your email so we cansend you a confirmation of yourreload
-						</p>
-						<p class="recharge_tips color_aimai" v-else>
-							我们需要您的电子邮件，我们可以向您发送充值信息
+						<p class="recharge_tips color_aimai">
+							
+							{{parseInt($store.state.language)?'we need your email so we cansend you a confirmation of yourreload':'我们需要您的电子邮件，我们可以向您发送充值信息'}}
 						</p>
 					</li>
 				</ul>

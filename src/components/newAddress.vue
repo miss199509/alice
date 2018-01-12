@@ -14,7 +14,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai">Add address</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Add address':'添加新地址'}}</strong>
 				</li>
 				<li class="floatRight">
 				</li>
@@ -61,7 +61,6 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      //adderss_list:[{'text':'','pla':'Full Name','event':''},{'text':'','pla':'streer Address','event':''},{'text':'','pla':'Building/Unit/Apartment(optional)','event':''},{'text':'','pla':'Country','event':''},{'text':'','pla':'City','event':''},{'text':'','pla':'Zipcode','event':''},{'text':'','pla':'Email - To send you updates about your order','event':''},{'text':'','pla':'Phone - To reach you about your order','event':''}],
       adderss_list:[
       	{'text':'','pla':'收货人：','event':''},
       	{'text':'','pla':'街道','event':''},
@@ -74,6 +73,19 @@ export default {
       tips_val:'',
       tipsBoll:false
     }
+  },
+  created(){
+  	if(this.$store.state.language){
+  		this.adderss_list = [
+	      	{'text':'','pla':'Full Name','event':''},
+	      	{'text':'','pla':'Steet Address','event':''},
+	      	{'text':'','pla':'Building/Unit/Apartment(optional)','event':''},
+	      	{'text':'','pla':'City','event':''},
+	      	{'text':'','pla':'Zipcode','event':''},
+	      	{'text':'','pla':'Email - To send you updates about your order','event':''},
+	      	{'text':'','pla':'Phone - To reach you about your order','event':''}
+	    ]
+  	}
   },
   methods: {
   	submit_delivery(){

@@ -56,8 +56,7 @@
 						<p class="floatRight uesNumber">
 						 	<strong>{{val.watching}}</strong>
 						 	<br/>
-							<strong v-if="$store.state.language" style="color:#A2A2A2;">WATCHING</strong>
-							<strong style="color:#A2A2A2;" v-else>观看</strong>
+							<strong style="color:#A2A2A2;">{{parseInt($store.state.language)?'WATCHING':'观看'}}</strong>
 						</p>
 					</div>
 					<p style="position: relative;">
@@ -104,29 +103,25 @@
 						<ul>
 							<router-link :to="{ name: 'Personal'}">
 								<li>
-										<img width="23px;" src="../assets/liveBroadcast/btn_profile@2x.png"/>
-										<span class="color_aimai" v-if="$store.state.language">Profile</span>
-										<span class="color_aimai" v-else>个人信息</span>
+									<img width="23px;" src="../assets/liveBroadcast/btn_profile@2x.png"/>
+									<span class="color_aimai">{{parseInt($store.state.language)?'Profile':'个人信息'}}</span>
 								</li>
 							</router-link>
 							<li @click="popup_box_boll = !popup_box_boll">
 								<img width="23px;" src="../assets/liveBroadcast/btnhomei6.png"/>
-								<span class="color_aimai" v-if="$store.state.language">Home</span>
-								<span class="color_aimai"  v-else>大厅</span>
+								<span class="color_aimai">{{parseInt($store.state.language)?'Home':'大厅'}}</span>
 							</li>
 							
 							<router-link :to="{ name: 'information'}">
 								<li>
 									<img width="23px;" src="../assets/liveBroadcast/btn_event@2x.png"/>
-									<span class="color_aimai" v-if="$store.state.language">News</span>
-									<span class="color_aimai" v-else>新闻</span>
+									<span class="color_aimai">{{parseInt($store.state.language)?'News':'新闻'}}</span>
 								</li>
 							</router-link>
 
 							<li @click="video_eve()">
 								<img width="23px;" src="../assets/liveBroadcast/icon_tutorial@2x.png"/>
-								<span class="color_aimai" v-if="$store.state.language">Tutroial</span>
-								<span class="color_aimai" v-else>新手引导</span>
+								<span class="color_aimai">{{parseInt($store.state.language)?'Tutroial':'新手引导'}}</span>
 							</li>
 							<li @click="popup_tipsPlay = !popup_tipsPlay">
 								<img width="23px;" src="../assets/liveBroadcast/icon_gameplay@2x.png"/>
@@ -144,8 +139,8 @@
 					<div class="sign_out_box">
 						<p class="language_css" @click="language_select()">
 
-							<span :class="{ hove:!language_boll}">EN</span>
-							<span :class="{ hove:language_boll}">CN</span>
+							<span :class="{ hove:language_boll}">EN</span>
+							<span :class="{ hove:!language_boll}">CN</span>
 						</p>
 						<p class="sign_out_click">
 							<img width="23px;" src="../assets/liveBroadcast/icon_logout@2x.png"/>
@@ -310,11 +305,12 @@ export default {
       popup_box_boll:false,
       show: true,
       loginBoll:true,
-      language_boll:true
+      language_boll:0
     }
   },
   mounted(){
-
+  	//中英文状态初始化
+  	this.language_boll = parseInt(localStorage.getItem('language'));
   	//判断当前用户是否是新手
   	this.uesName = localStorage.getItem('nickname')
   	// if(parseInt(localStorage.getItem('tutorials'))){
@@ -391,16 +387,12 @@ export default {
 		window.location.reload();
   	},
   	language_select(){
-  		if(this.language_boll){
-  			console.log('英文');
-  			localStorage.setItem(1,'language');
-
+  		if(parseInt(localStorage.getItem('language'))){
+  			window.localStorage.setItem('language','0')
   		}else{
-  			console.log('中文')
-  			localStorage.setItem(0,'language')
+  			window.localStorage.setItem('language','1')
   		}
   		window.location.reload();
-  		this.language_boll?this.language_boll = false:this.language_boll = true;
   	}
   }
 }

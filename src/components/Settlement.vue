@@ -14,8 +14,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai" v-if="$store.state.language">Checkout</strong>
-					<strong class="color_aimai" v-else>支付</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Checkout':'支付'}}</strong>
 				</li>
 				<li class="floatRight">
 				</li>
@@ -26,7 +25,7 @@
 			<p class="settlement_global">
 				<img v-if="globalImg_tips_boll" @click="global_product()" width="20px;" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
 				<img v-else @click="global_product()" width="20px;" src="../assets/liveBroadcast/btn_choose@2x.png"/>
-				<span>全选</span>
+				<span>{{parseInt($store.state.language)?'Check All':'全选'}}</span>
 			</p>
 			<ul class="product_list" :style="{ height: height + 'px' }">
 				<li class="settlement_nav" v-for="(val,key) in shoppingCart" @click="shoppingCart_eve(key)">
@@ -40,13 +39,11 @@
 						<div class=" introduce_val">
 							<h4>{{val.ch_name}}</h4>
 							<p>
-								<span v-if="$store.state.language">SIZE：</span>
-								<span v-else>大小：</span>
+								<span>{{parseInt($store.state.language)?'SIZE：':'大小：'}}</span>
 								<strong>{{val.product_size}}</strong>
 							</p>
 							<p>
-								<span v-if="$store.state.language">QTY：</span>
-								<span v-else>数量：</span>
+								<span>{{parseInt($store.state.language)?'QTY：':'数量：'}}</span>
 								<strong>{{val.product_amount}}</strong>
 							</p>
 							<h3 class="color_aimai">
@@ -67,12 +64,11 @@
 				<div>
 					<ul>
 						<li>
-							<label>合计:</label>
+							<label>{{parseInt($store.state.language)?'TOTAL':'合计'}}:</label>
 							<strong>￥{{parseFloat(priceVal/100).toFixed(2)}}</strong>
 						</li>
 					</ul>
-					<p class="checkout" @click="register()" v-if="$store.state.language">Checkout</p>
-					<p class="checkout" @click="register()" v-else>支付</p>
+					<p class="checkout" @click="register()">{{parseInt($store.state.language)?'Checkout':'支付'}}</p>
 				</div>
 			</div>
 

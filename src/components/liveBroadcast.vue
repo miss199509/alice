@@ -8,7 +8,7 @@
 		</b>
 
 		<p class="vlewers">
-			<b class="color_aimai">{{audience}}  观看人数</b>
+			<b class="color_aimai">{{audience}} {{parseInt($store.state.language)?'viewers':'观看人数'}}</b>
 			<!-- <span style="display: block;" class="color_aimai" v-if="$store.state.language">VLEWERS</span>
 			<span style="display: block;" class="color_aimai" v-else>观众</span> -->
 		</p>
@@ -61,8 +61,8 @@
 				<li class="timerSetup">
 					<span>{{timer}}</span>
 					<p>
-						<label class="color_aimai">弹幕</label>
-						<br/>
+						<label class="color_aimai" v-if="$store.state.language">Bullet<br/>Screen</label>
+						<label class="color_aimai" v-else>弹幕</label>
 						<img width="33px;" src="../assets/liveBroadcast/btn_Bullet-Screen@2x.png"/>
 					</p>
 				</li>
@@ -102,8 +102,7 @@
 							<p class="product_priceBox">
 								<em>${{parseFloat(price/100).toFixed(2)}}</em>
 								<strong>${{parseFloat(gems/100).toFixed(2)}}</strong>
-								<span v-if="$store.state.language">PRLCE NOW</span>
-								<span v-else>现在价格</span>
+								<span>{{parseInt($store.state.language)?'PRLCE NOW':'现在价格'}}</span>
 							</p>
 						</div>
 					</div>
@@ -123,8 +122,7 @@
 								<h4>
 									<span><img width="13px" src="../assets/liveBroadcast/dc_icons@2x.png"/>{{parseFloat(min_bet/100).toFixed(2)}}</span>
 									<p>
-										<span v-if="$store.state.language">Min</span>
-										<span v-else>最低</span>
+										<span>{{parseInt($store.state.language)?'Min':'最低'}}</span>
 									</p>
 								</h4>
 
@@ -138,7 +136,9 @@
 
 					<div class="income">
 						<p style="margin-bottom: 7px;">
-							<strong class="color_aimai" style="font-size: 12px;">总收入</strong>
+							<strong class="color_aimai" style="font-size: 12px;">
+								{{parseInt($store.state.language)?'income':'总收入'}}
+							</strong>
 						</p>
 						<p class="thisMoney_val" @click="pushMoney()">
 							<img width="13px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
@@ -146,8 +146,7 @@
 						</p>
 						<p class="border"></p>
 						<div class="recharge">
-							<span class="color_aimai" v-if="$store.state.language">WALLET</span>
-							<span class="color_aimai" v-else>钱包</span>
+							<span class="color_aimai">{{parseInt($store.state.language)?'WALLET':'钱包'}}</span>
 							<p class="">
 								<img width="15px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 								<strong>{{balance}}</strong><!-- {{parseFloat(balance/100).toFixed(2)}} -->
@@ -168,7 +167,7 @@
 
 				<div class="contentCenter">
 					<p class="ne_number_lamp">
-						<label>牌:</label>
+						<label>{{parseInt($store.state.language)?'Hand':'牌'}}:</label>
 						<strong>{{dealer_id}}</strong>
 					</p>
 					<span class="floatLeft">
@@ -192,8 +191,7 @@
 			<ul class="this_state">
 				<li class="this_stateA floatLeft" @click="bet_red()" :style="{backgroundImage: 'url(' + bet_red_type + ')'}">
 					<span v-if="bet_red_values">
-						<strong v-if="$store.state.language">RED</strong>
-						<strong v-else>红</strong>
+						<strong>{{parseInt($store.state.language)?'RED':'红'}}</strong>
 					</span>
 					<img v-else width="30px;" src="../assets/liveBroadcast/icon_confirmedcheckmark.png"/>
 				</li>
@@ -207,8 +205,7 @@
 				</li>
 				<li class="this_stateB floatLeft" @click="bet_black()" :style="{backgroundImage: 'url(' + bet_black_type + ')'}">
 					<span v-if="bet_black_values">
-						<strong v-if="$store.state.language">BLACK</strong>
-						<strong v-else>黑</strong>
+						<strong>{{parseInt($store.state.language)?'BLACK':'黑'}}</strong>
 					</span>
 					<img v-else width="30px;" src="../assets/liveBroadcast/icon_confirmedcheckmark.png"/>
 				</li>
@@ -289,8 +286,7 @@
 			</div>
 		</div>
 		<p style="border-top: 1px solid #fff;">
-			<strong class="floatRight color_aimai" @click="give_eve()" v-if="$store.state.language">SEND</strong>
-			<strong class="floatRight color_aimai" @click="give_eve()" v-else>发送</strong>
+			<strong class="floatRight color_aimai" @click="give_eve()">{{parseInt($store.state.language)?'SEND':'发送'}}</strong>
 		</p>
 	</div>
 
@@ -306,8 +302,7 @@
 	<div id="boxPopup" v-show="gift_presentation"></div>
 	<div class="explainPopup gift_presentation" v-show="gift_presentation">
 		<h3>
-			<strong class="color_aimai" v-if="$store.state.language">PRODUCT</strong>
-			<strong class="color_aimai" v-else>商品</strong>
+			<strong class="color_aimai">{{parseInt($store.state.language)?'PRODUCT':'商品'}}</strong>
 			<img width="20px" class="floatRight" @click="choice_class()" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
 		</h3>
 		<ul>
@@ -330,15 +325,13 @@
 					<p class="piaochecked on_check" :class="{new_on_check:val.boll}">
 						<input name="need_inv" type="checkbox" style="height:20px;width:20px;" class="radioclass input" value="1"/>
 					</p>
-					<label class="color_aimai" v-if="$store.state.language">{{val.text_}}</label>
-					<label class="color_aimai" v-else>{{val.text}}</label>
+					<label class="color_aimai">{{parseInt($store.state.language)?val.text_:val.text}}</label>
 				</div>
 			</li>
 			<li>
 			</li>
 			<li class="product_purchase_button">
-				<span class="productBet" @click="productBet_eve()" v-if="$store.state.language">BUY</span>
-				<span class="productBet" @click="productBet_eve()" v-else>购买</span>
+				<span class="productBet" @click="productBet_eve()">{{parseInt($store.state.language)?'BUY':'购买'}}</span>
 			</li>
 		</ul>
 	</div>
@@ -346,8 +339,7 @@
 	<div id="boxPopup" v-show="productPopup"></div>
 	<div class="explainPopup productPopup" v-show="productPopup">
 	  	<h3 class="tips_title">
-	  		<span class="color_aimai" v-if="$store.state.language">Warning</span>
-	  		<span class="color_aimai" v-else>警告</span>
+	  		<span class="color_aimai">{{parseInt($store.state.language)?'Warning':'警告'}}</span>
 	  	</h3>
 	  	<div class="transaction_tips">
 		  	<ul class="transaction">
@@ -355,41 +347,40 @@
 					<p class="productPopup_tips">
 						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<strong class="color_aimai">{{parseFloat(give.price/100).toFixed(2)}}</strong>
-						<span class="color_aimai" v-if="$store.state.language">
-							will be deducted from your wallet right away. Please complete the process in the cart.
+						<span class="color_aimai">
+							{{parseInt($store.state.language)?'will be deducted from your wallet right away. Please complete the process in the cart.':'将会在你的钱包中扣除。请完成购物车中的过程'}}
 						</span>
-						<span class="color_aimai" v-else>将会在你的钱包中扣除。请完成购物车中的过程</span>
 					</p>
 				</li>
 				<li class="productPopup_list">
-					<strong v-if="$store.state.language">Wallet</strong>
-					<strong v-else>钱包</strong>
+					<strong>{{parseInt($store.state.language)?'Wallet':'钱包'}}</strong>
 					<p>
 						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(gift_presentationJson.balance/100).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="productPopup_list">
-					<strong v-if="$store.state.language">Exchange</strong>
-					<strong v-else>交还</strong>
+					<strong>{{parseInt($store.state.language)?'Exchange':'交还'}}</strong>
 					<p>
 						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(gift_presentationJson.commodity_price/100).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="productPopup_list">
-					<strong v-if="$store.state.language">Wallet Balance</strong>
-					<strong v-else>钱包余额</strong>
+					<strong>{{parseInt($store.state.language)?'Wallet Balance':'钱包余额'}}</strong>
 					<p>
 						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(gift_presentationJson.surplus_price/100).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="operation">
-					<p @click="cartSubmit()" class="productBet" v-if="$store.state.language">ACCEPT</p>
-					<p @click="cartSubmit()" class="productBet" v-else>接受</p>
-					<p @click="remove_product_tips()" class="productBet" v-if="$store.state.language">CANCEL</p>
-					<p @click="remove_product_tips()" class="productBet" v-else>取消</p>
+					<p @click="cartSubmit()" class="productBet">
+						{{parseInt($store.state.language)?'ACCEPT':'接受'}}
+					</p>
+					<p @click="cartSubmit()" class="productBet"></p>
+					<p @click="remove_product_tips()" class="productBet">
+						{{parseInt($store.state.language)?'CANCEL':'取消'}}
+					</p>
 				</li>
 			</ul>
 		</div>
@@ -398,24 +389,20 @@
 	<div id="boxPopup" v-show="recharge_boll" style="z-index: 11"></div>
 	<div class="explainPopup productPopup" v-show="recharge_boll">
 	  	<h3 class="tips_title">
-	  		<span v-if="$store.state.language">Prompt</span>
-	  		<span v-else>提示</span>
+	  		<span>{{parseInt($store.state.language)?'Prompt':'提示'}}</span>
 	  		<img width="20px" @click="recharge_eve()" class="floatRight" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
 	  	</h3>
 	  	<ul class="transaction">
 			<li>
-				<p class="text_align" style="margin: 33px 0px;" v-if="$store.state.language">
-					Your wallet's balance is not enough!
-				</p>
-				<p class="text_align" style="margin: 33px 0px;" v-else>
-					您的余额不足！
+				<p class="text_align" style="margin: 33px 0px;">
+					
+					{{parseInt($store.state.language)?'Your wallet "s balance is not enough!':'您的余额不足！'}}
 				</p>
 			</li>
 			<li class="operation">
 				<router-link :to="{ name: 'Recharge'}">
 					<p @click="cartSubmit()" class="productBet">
-						<span v-if="$store.state.language">Confirm</span>
-						<span v-else>充值</span>
+						<span>{{parseInt($store.state.language)?'Confirm':'充值'}}</span>
 					</p>
 
 				</router-link>
@@ -463,7 +450,7 @@
 	<div id="boxPopup" v-show="commodity_data_img.commodity_bull"></div>
 	<div class="explainPopup product_back" v-show="commodity_data_img.commodity_bull">
 		<h3 class="color_aimai">
-			商品信息
+			{{parseInt($store.state.language)?'PRODUCT INFO':'商品信息'}}
 			<img width="20px" class="floatRight" @click="removePopup()" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
 		</h3>
 		<ul>
@@ -490,22 +477,19 @@
 	<!-- 收集下注的钱 -->
 	<div class="explainPopup collect" v-show="commodity_data_img.collect_splist">
 		<h3>
-			<strong class="color_aimai" v-if="$store.state.language">COLLECT</strong>
-			<strong class="color_aimai" v-else>收集</strong>
+			<strong class="color_aimai">{{parseInt($store.state.language)?'COLLECT':'收集'}}</strong>
 			<img width="20px" class="floatRight" @click="collect_splist_eve()" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
 		</h3>
 		
 		<div class="">
-			<p class="color_aimai" v-if="$store.state.language">Collect Winnings？</p>
-			<p class="color_aimai" v-else>收取赢得的钱？</p>
+			<p class="color_aimai">{{parseInt($store.state.language)?'Collect Winnings？':'收取赢得的钱？'}}</p>
 			<p>
 				<strong class="color_aimai">{{parseFloat(bet/100).toFixed(2)}}</strong>
 			</p>
 		</div>
 
 		<p class="productBet collect_splist" @click="eve_splist()"><!--collect_splist-->
-			<span v-if="$store.state.language">CONFIGM</span>
-			<span v-else>确定</span>
+			<span>{{parseInt($store.state.language)?'CONFIGM':'确定'}}</span>
 		</p>
 
 	</div>
@@ -679,7 +663,7 @@ export default {
   	
 
   	//弹幕
-  	this.height_img = document.documentElement.clientHeight-390;
+  	this.height_img = document.documentElement.clientHeight-393;
   	this.product_text_height = document.documentElement.clientHeight-406
 
   	// if(1){
@@ -880,7 +864,7 @@ export default {
 
 	          		//获取牌局
 	          		if(received_msg.cmds[key].id==221){
-	          			//console.log(JSON.stringify(received_msg.cmds[key].content.cards))
+	          			console.log(JSON.stringify(received_msg.cmds[key].content.cards))
 	          			//声明一个数组
 						_this.brandAttr = []
 						_this.brandData = []
@@ -922,7 +906,10 @@ export default {
 								type = 5;
 							}
 
-							_this.brandAttr.push({'brandId':require('../assets/cards/cardfont_'+value+'_'+cardColor+'.png'),'imgae':require('../assets/cards/cardground_'+type+'.png'),'boll':mask})
+							_this.brandAttr.push({
+								'brandId':require('../assets/cards/cardfont_'+value+'_'+cardColor+'.png'),
+								'imgae':require('../assets/cards/cardground_'+type+'.png'),'boll':mask
+							})
 	          			}
 
 						//console.log(JSON.stringify(_this.brandData))
@@ -1936,7 +1923,7 @@ export default {
  }
  .income p{
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
  }
  .thisMoney_val{
 	background-image: url('../assets/loading/btn_GetCod@2x.png');
@@ -2664,6 +2651,7 @@ export default {
 }
 .timerSetup label{
 	font-size: 12px;
+	display: block;
 }
 .ues_portrait{
 	display: flex;

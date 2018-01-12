@@ -14,8 +14,7 @@
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai" v-if="$store.state.language">Ship to</strong>
-					<strong class="color_aimai" v-else>收货人</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Ship to':'收货人'}}</strong>
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement'}">
@@ -71,11 +70,8 @@
 
 
 		<router-link :to="{ name: 'newAddress'}">
-			<p class="submit_delivery" v-if="$store.state.language">
-				ADD A NEW ADDRESS
-			</p>
-			<p class="submit_delivery" v-else>
-				添加新地址
+			<p class="submit_delivery">
+				{{parseInt($store.state.language)?'ADD A NEW ADDRESS':'添加新地址'}}
 			</p>
 		</router-link>
 
@@ -196,6 +192,7 @@ export default {
 	text-align: center;
 	margin: 17px auto 0px auto;
 	font-size: 13px;
+	padding: 0px 7px;
 }
 
 
