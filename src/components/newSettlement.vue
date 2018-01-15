@@ -212,6 +212,7 @@ export default {
 
 			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.shoppingCart[id].product_id}))
 			.then(function(dataJson){
+				console.log(JSON.stringify(dataJson.data))
 				//console.log(JSON.stringify(_this.shoppingCart[id]))
 				_this.$set(_this.shoppingCart[id],'ch_name',dataJson.data.ch_name)
 				_this.$set(_this.shoppingCart[id],'images',dataJson.data.images[0])
@@ -235,7 +236,19 @@ export default {
   		if(_this.shoppingCart<0){
   			return false;
   		};
-  		console.log('支付')
+  		
+
+  		axios.post(_this.$store.state.url_talk+'/order/register-wechat',qs.stringify({
+	 		cid:_this.$store.state.cid_talk,
+			order_id:''
+	 	}))
+		.then(function(dataJson){
+			console.log(JSON.stringify(dataJson.data))
+		})
+		.catch(function(err){
+			alert(err);
+		});
+
   		//支付
   		return false;
 	 	axios.post(_this.$store.state.url_talk+'/order/register-cloud-moolah',qs.stringify({

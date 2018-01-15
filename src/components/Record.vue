@@ -6,14 +6,12 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					
-					<img @click="lade()" width="12px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
-					<router-link :to="{ name: 'liveList'}">
-						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/btnhomei6.png"/>
+					<router-link :to="{ name: 'Recharge'}">
+						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
-					<strong class="color_aimai">充值记录</strong>
+					<strong class="color_aimai">{{parseInt($store.state.language)?'Peload History':'充值记录'}}</strong>
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement'}">
@@ -27,25 +25,36 @@
 		
 		<div class="shoppingl_global">
 			<ul>
-				<li class="overflowRemove record" v-for="(val,key) in recordList">
-					<p class="floatLeft">
-						<img width="45px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+				<li class="record" v-for="(val,key) in recordList">
+					<p class="record_title">
+						<img width="70px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<strong>+￥{{val.post_balance}}</strong>
 					</p>
-					<div class="floatLeft recordText">
+					<div class="record_list">
 						
-						<p class="color_aimai">
+						<!-- <p class="color_aimai">
 							+
 							<img width="13px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 							{{val.deposit_amount}}
+						</p> -->
+
+						<p>
+							<span class="floatLeft">Paypal</span>
+							<span class="floatRight">{{val.payment_type}}</span>
 						</p>
 
-						<p>{{val.payment_type}}</p>
-						<p>Order# {{val.id}}</p>
-						<p>Date Purchased：{{val.create_time}}</p>
 						<p>
-							Status：
-							<span v-if="val.status" style="color: #1AF829">成功</span>
-							<span v-else>失败</span>
+							<span class="floatLeft">Order：</span>
+							<span class="floatRight">{{val.id}}</span>
+						</p>
+						<p>
+							<span class="floatLeft">Date：</span>
+							<span class="floatRight">{{val.create_time}}</span>
+						</p>
+						<p>
+							<span class="floatLeft">Status：</span>
+							<span class="floatRight" v-if="val.status" style="color: #1AF829">成功</span>
+							<span class="floatRight" v-else>失败</span>
 						</p>
 					</div>
 				</li>
@@ -84,10 +93,6 @@ export default {
 
   },
   methods: {
-  	lade(){
-  		this.$router.push({ name: 'Recharge'})
-  		window.location.reload();
-  	},
   }
 }
 </script>
@@ -99,23 +104,38 @@ export default {
 }
 
 .record{
-	display: flex;
+	/*display: flex;
 	justify-content: flex-start;
     align-items: center;
     background-color: #fff;
     border-radius: 7px;
-    padding: 9px;
+    padding: 7px;*/
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 7px 0px;
+    padding: 7px 11px;
+}
+.record_title{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+    margin: 13px 0px;
+}
+.record_title strong{
+	font-size: 21px;
+    padding: 8px 27px;
+	background-image: url('../assets/loading/bg_reloadPrice@2x.png');
+	background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    font-weight: 100;
+    margin: 0px 24px;
+    color: #555;
 }
 
-.record div{
-	margin-left: 23px;
-}
-
-.recordText p{
-	font-size: 12px;
-	margin-top: 5px;
-}
-.recordText .color_aimai{
-	font-size: 14px;
+.record_list p{
+	overflow: hidden;
+	margin-bottom: 7px;
+	color: #7f7f7f;
 }
 </style>

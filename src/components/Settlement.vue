@@ -132,6 +132,9 @@ export default {
   },
   methods: {
   	register(){
+  		if(this.priceVal<=0){
+  			return false;
+  		};
   		let attr = []
   		if(this.shoppingCart.length>0){
 	  		for(let i in this.shoppingCart){

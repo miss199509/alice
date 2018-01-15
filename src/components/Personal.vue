@@ -101,11 +101,9 @@ export default {
   },
   mounted(){
   	let _this = this
-  	_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg'
-  	console.log(0)
+  	_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg';
   	axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
 	.then(function(dataJson){
-		//console.log(JSON.stringify(dataJson.data.balance))
 		let balance = dataJson.data.balance/100
 		_this.$store.state.balance_talk = balance.toFixed(2);
 
