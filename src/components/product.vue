@@ -58,9 +58,9 @@
 							<span>{{parseInt($store.state.language)?'Choose Qty':'选择数量'}}</span>
 							
 							<p class="addPrice">
-								<img @click="removeNumber()" width="22px" src="../assets/liveBroadcast/icon_minusbet.png"/>
+								<img @click="removeNumber()" width="22px" src="../assets/liveBroadcast/btn_-qty@2x.png"/>
 								<strong class="color_aimai">{{number_int}}</strong>
-								<img @click="addNumber()" width="22px" src="../assets/liveBroadcast/icon_addbet.png"/>
+								<img @click="addNumber()" width="22px" src="../assets/liveBroadcast/btn_+qty@2x.png"/>
 							</p>
 
 						</li>

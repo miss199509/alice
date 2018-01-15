@@ -413,12 +413,16 @@
 	<div id="boxPopup" v-show="straight_commodity_boll" style="z-index: 11"></div>
 	<div class="explainPopup productPopup" v-show="straight_commodity_boll">
 		<h3>
-			连胜3局！
+			<strong class="color_aimai">连胜3局！</strong>
 			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="../assets/liveBroadcast/btn_close.png"/>
+			<p class="time_tips_img">
+				<img width="20px;" src="../assets/liveBroadcast/icon_time@2x.png"/>
+				<span>{{timer}}</span>
+			</p>
 		</h3>
 		<div class="straight_commodity">
 			<p>
-				<img :src='default_goods' width="70px" height="45px"/>
+				<img :src='default_goods' width="90px"/>
 			</p>
 			<div>
 				<span>
@@ -432,10 +436,6 @@
 			</div>
 		</div>
 		<div class="straight_class">
-			<p>倒计时</p>
-			<strong>
-				{{timer}}
-			</strong>
 			<h5 class="productBet" @click="straight_commodity_eve()">
 				支付
 			</h5>
@@ -864,20 +864,21 @@ export default {
 
 	          		//获取牌局
 	          		if(received_msg.cmds[key].id==221){
-	          			console.log(JSON.stringify(received_msg.cmds[key].content.cards))
+	          			//console.log(JSON.stringify(received_msg.cmds[key].content.cards))
 	          			//声明一个数组
 						_this.brandAttr = []
 						_this.brandData = []
 	          			for(var valIndex in received_msg.cmds[key].content.cards){
 							//声明当前牌的数据
 							let card = received_msg.cmds[key].content.cards[valIndex]
+							//牌的颜色
 							let cardColor = 1
 							//无效牌
 							let mask = 0;
 							//背景类型
-							let type = 1;
+							let type = 0;
 							//什么牌
-							let value = 1;
+							let value = 0;
 							if(card>1000){
 								//无效牌
 								card = card-1000;
@@ -885,28 +886,28 @@ export default {
 								mask = 1;
 							}
 							if(card>400) {
-								type = 4;  //红心
+								type = 2;  //红心
 								value = card%400;
 							}
 							else if(card>300) {
-								type = 3;  //黑桃
+								type = 1;  //黑桃
 								value = card%300;
 								cardColor = 2;
 							}
 							else if(card>200) {
-								type = 2;  //方块
+								type = 4;  //方块
 								value = card%200;
 							}
 							else if(card>100) {
-								type = 1;  //草花
+								type = 3;  //草花
 								value = card%100;
 								cardColor = 2;
 							}
 							if(value==1){
 								type = 5;
 							}
-
-							_this.brandAttr.push({
+							//console.log(value)
+							_this.brandAttr.unshift({
 								'brandId':require('../assets/cards/cardfont_'+value+'_'+cardColor+'.png'),
 								'imgae':require('../assets/cards/cardground_'+type+'.png'),'boll':mask
 							})
@@ -916,6 +917,9 @@ export default {
 						//alert(JSON.stringify(_this.brandAttr[0]))
 						_this.brandData_img = _this.brandAttr[0]
 						for(let i = 0;i<_this.brandAttr.length && i<12;i++){
+							if(i==0){
+								continue;
+							}
 							_this.brandData.push(_this.brandAttr[i])
 						}
 	          		}
@@ -2371,7 +2375,10 @@ export default {
 /*购买付钱*/
 .productPopup{
 	height: auto;
-	background-color: #eee;
+	background-image: url('../assets/loading/bg_Lpopup@2x.png');
+	background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 .productPopup h3{
 	text-align: center;
@@ -2379,6 +2386,7 @@ export default {
 	border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     position: relative;
+    background-color: #eee;
 }
 .productPopup_tips{
 	font-size: 15px;
@@ -2459,19 +2467,25 @@ export default {
     align-items: center;
     padding: 23px 0px;
     background-color: #F2F3EE;
+	border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 .straight_commodity span{
-	font-size: 12px;
+	font-size: 20px;
 }
 .straight_commodity p{
 	margin:13px 0px;
+	overflow: visible;
 }
 .straight_commodity div{
 	margin-left: 7px;
 }
 .straight_commodity strong{
-	font-size: 17px;
-	color: #3AB3FB;
+    font-size: 17px;
+    color: #fff;
+    background: #E0B553;
+    padding: 1px 11px;
+    border-radius: 20px;
 }
 .straight_class{
 	text-align: center;
@@ -2665,5 +2679,18 @@ export default {
 .ues_portrait label{
 	font-size: 14px;
 	color: #E0B553;
+}
+
+
+/*三胜礼物*/
+.time_tips_img{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.time_tips_img span{
+	color:#DC414C;
+	font-size: 21px;
+	margin: 0px 5px;
 }
 </style>

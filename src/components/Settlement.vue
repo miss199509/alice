@@ -141,11 +141,6 @@ export default {
 	  		}
   			this.$router.push({ name: 'newSettlement',query:{product_id:attr}})
 	  	}
-
-  		// return false
-  		// if(this.shoppingCart.length>0){
-  		// 	this.$router.push({ name: 'newSettlement'})
-  		// }
   	},
   	shoppingCart_eve(key){
   		 //console.log(key)

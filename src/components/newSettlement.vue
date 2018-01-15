@@ -198,14 +198,19 @@ export default {
 	//购买的商品信息
  	axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$store.state.cid_talk}))
 	.then(function(dataJson){
-		_this.shoppingCart = dataJson.data;
-		for(let id in dataJson.data){
-			//console.log(JSON.stringify(dataJson.data))
-			_this.product_price_val+=dataJson.data[id].product_amount*dataJson.data[id].origin_price;
-			
+		for(let i in dataJson.data){
+			for(let j in href_dataAttr){
+				if(href_dataAttr[j]==dataJson.data[i].id){
+					let val = dataJson.data.splice(i,1);
+					_this.shoppingCart.push(val[0])
+				}
+			}
+		}
+		//console.log(JSON.stringify(_this.shoppingCart))
+		for(let id in _this.shoppingCart){
+			_this.product_price_val+=_this.shoppingCart[id].product_amount*_this.shoppingCart[id].origin_price;
 
-
-			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:dataJson.data[id].product_id}))
+			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.shoppingCart[id].product_id}))
 			.then(function(dataJson){
 				//console.log(JSON.stringify(_this.shoppingCart[id]))
 				_this.$set(_this.shoppingCart[id],'ch_name',dataJson.data.ch_name)
@@ -230,7 +235,9 @@ export default {
   		if(_this.shoppingCart<0){
   			return false;
   		};
-  		
+  		console.log('支付')
+  		//支付
+  		return false;
 	 	axios.post(_this.$store.state.url_talk+'/order/register-cloud-moolah',qs.stringify({
 	 		cid:_this.$store.state.cid_talk,
 	 		cart_id:_this.cart_list.join(','),
