@@ -71,17 +71,20 @@
 
 	    <div class="boxPopup" style="z-index: 11" v-show="tutorials_boll"></div>
 		<div class="explainPopup productPopup" v-show="tutorials_boll">
-		  	<h3 class="tips_title">
-		  		Welcome to Aimai Live!
+		  	<h3 class="tips_title color_aimai">
+		  		{{parseInt($store.state.language)?'Welcome to Aimai Live!':'欢迎来到Alice直播'}}
 		  	</h3>
 		  	<ul class="transaction">
 				<li>
-					<p class="recharge_tips">
+					<p class="recharge_tips color_aimai" v-if="$store.state.language">
 						Learn how to play and shop and get $5.00 worth of Discount Coupon! You can also watch a tutorial video by tapping on the''How to Shop'' banner the top.
+					</p>
+					<p class="recharge_tips color_aimai" v-else>
+						Alice ICO,Hi亲爱的。终于等到你来了。这里有你喜欢的主播，喜欢的商品，快来玩吧。和我们一起享受直播娱乐的快感。。。
 					</p>
 				</li>
 				<li class="operation">
-					<p class="productBet" @click="operation_href()">GO</p>
+					<p class="productBet" @click="operation_href()">{{parseInt($store.state.language)?'GO':'观看'}}</p>
 				</li>
 			</ul>
 		</div>
@@ -313,9 +316,9 @@ export default {
   	this.language_boll = parseInt(localStorage.getItem('language'));
   	//判断当前用户是否是新手
   	this.uesName = localStorage.getItem('nickname')
-  	// if(parseInt(localStorage.getItem('tutorials'))){
-  	// 	this.tutorials_boll = true;
-  	// }
+  	if(parseInt(this.$route.query.tutorials)){
+  		this.tutorials_boll = true;
+  	}
   	
   	var _this = this;
   	_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg';
@@ -476,28 +479,35 @@ export default {
 
 
 .tips_title{
-	background-color: #3AE4FB;
-	color: #fff;
 	font-size: 23px;
-	height: 40px;
-	line-height: 40px;
+	height: 55px;
+	line-height: 55px;
 }
 .transaction{
-	padding: 7px 17px;
+	padding: 0px 17px;
 }
 .operation p{
 	width: 88%;
 	margin: 13px auto;
+	background:url('../assets/loading/btn_GetCod@2x.png');
+	background-position: center center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	width: 130px;
+	color: #000;
 }
 
 .recharge_tips{
-	text-align: center;
-	font-size: 15px;
-	margin: 45px 0px;
+    text-align: center;
+    font-size: 15px;
+    padding: 45px 9px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
 }
 .productPopup h3{
 	text-align: center;
-	font-size: 17px;
+	font-size: 20px;
 	border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -506,12 +516,15 @@ export default {
 }
 .productPopup li{
 	font-size: 14px;
-	margin: 13px 0px;
 }
 .productPopup{
 	width: 95%;
     height: auto;
     border-radius: 5px;
+    background:url('../assets/loading/bg_Lpopup@2x.png');
+	background-position: center center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
 }
 .productBet{
 	text-align: center;
@@ -525,7 +538,6 @@ export default {
 	display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 5px 3px #0270C7;
 }
 .productBet img{
 	margin: 0px 7px;
