@@ -316,7 +316,7 @@ export default {
   	this.language_boll = parseInt(localStorage.getItem('language'));
   	//判断当前用户是否是新手
   	this.uesName = localStorage.getItem('nickname')
-  	if(parseInt(this.$route.query.tutorials)){
+  	if(parseInt(localStorage.getItem('tutorials'))){
   		this.tutorials_boll = true;
   	}
   	
@@ -373,7 +373,7 @@ export default {
   	operation_href(){
   		localStorage.setItem('is_follow',this.broadcastList[0].is_follow)
   		console.log(this.broadcastList[0].is_follow)
-  		localStorage.setItem('tutorials',0)
+  		//localStorage.setItem('tutorials',0)
   		this.$router.push({ name: 'liveBroadcast',query: {cid:this.$store.state.cid_talk,dealerid:this.broadcastList[0].dealer_id,roomid:this.broadcastList[0].room_id}})
   	},
   	video_eve(){
@@ -385,7 +385,7 @@ export default {
   	},
   	sign_out(){
   		//退出删除所以存储数据
-  		//localStorage.clear();
+  		localStorage.clear();
 		this.$router.push({ name: 'Hello'});
 		window.location.reload();
   	},

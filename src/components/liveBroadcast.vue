@@ -113,7 +113,7 @@
 					<div class="plus_money">
 						
 						<div class="addMoney">
-							<div :class="{ tutorial_2:  training_list.tutorial_2}">
+							<div>
 								<p>
 									<img @click="plus_money()" width="60px" src="../assets/liveBroadcast/icon_addbet.png" />
 								</p>
@@ -410,7 +410,7 @@
 		</ul>
 	</div>
 	
-	<div id="boxPopup" v-show="straight_commodity_boll" style="z-index: 11"></div>
+	<div id="boxPopup" v-show="straight_commodity_boll" style="z-index: 11"></div><!-- straight_commodity_boll -->
 	<div class="explainPopup productPopup" v-show="straight_commodity_boll">
 		<h3>
 			<strong class="color_aimai">连胜3局！</strong>
@@ -496,7 +496,7 @@
 
 
 	<!-- 提示部分 -->
-	<div class="training_room" v-show="training_room">
+	<div class="training_room" v-show="training_boll">
 		<img @click="tutorial_1()" v-show="training_list.tutorial_1" width="100%" src="../assets/liveBroadcast/tutorial_1.png"/>
 		<img @click="tutorial_2()" v-show="training_list.tutorial_2" width="100%" src="../assets/liveBroadcast/tutorial_2.png"/>
 		<img @click="tutorial_3()" v-show="training_list.tutorial_3" width="100%" src="../assets/liveBroadcast/tutorial_3.png"/>
@@ -617,7 +617,7 @@ export default {
       //商品图片信息
       listImg:[],
       //新手引导
-      training_room:false,
+      training_boll:false,
       training_list:{
       	tutorial_1:false,
       	tutorial_2:false,
@@ -665,11 +665,12 @@ export default {
   	//弹幕
   	this.height_img = document.documentElement.clientHeight-393;
   	this.product_text_height = document.documentElement.clientHeight-406
-
-  	// if(1){
-  	// 	this.training_room = true;
-  	// };
-  	// 
+  	console.log(parseInt(localStorage.getItem('tutorials')))
+  	if(parseInt(localStorage.getItem('tutorials'))){
+  		this.training_list.tutorial_1 = true;
+  		this.training_boll = true;
+  	};
+  	
   	let _this = this
   	document.onkeydown=function(event){
 		var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -1298,6 +1299,7 @@ export default {
   	prohibit_eve(){
 
   	},
+  	//三连胜调用加入购物车接口
   	straight_commodity_eve(){
   		let _this = this;
   		axios.post(_this.$store.state.url_talk+'/pokerrb/add-to-cart',qs.stringify({
@@ -1622,7 +1624,20 @@ export default {
   	},
   	tutorial_3(){
   		this.training_list.tutorial_3 = false;
-  		this.training_room = false;
+  		this.training_boll = false;
+  		let _this = this;
+		axios.post(_this.$store.state.url_talk+'/customer/finish-novice-guide',qs.stringify({
+	  		cid:_this.$route.query.cid,
+	  	}))
+		.then(function(dataJson){
+			if(dataJson.data.result){
+  				localStorage.setItem('tutorials',0);
+			}
+		})
+		.catch(function(err){
+			alert(err);
+		});
+
   	}
   }
 }
@@ -1634,7 +1649,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+/*新手房间*/
+.training_room{
+	position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 111;
+    overflow: hidden;
+}
 
 
 .liveBroadcast{
@@ -2232,15 +2256,6 @@ export default {
 }
 
 /*房间*/
-.training_room{
-	position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 111;
-    overflow: hidden;
-}
 #tutorial_1{
 	height: 55px;
     width: 55px;
@@ -2251,11 +2266,7 @@ export default {
     border-radius: 3px;
     z-index: 1111;
 }
-.tutorial_2{
-	border: 5px solid #FF7737;
-	z-index: 1111;
-	position: relative;
-}
+
 /*送礼*/
 .gifts_box{
 	

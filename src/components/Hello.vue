@@ -174,19 +174,8 @@ export default {
 				localStorage.setItem('nickname',dataJson.data.nickname)
 				localStorage.setItem('tutorials',dataJson.data.tutorials)
 				localStorage.setItem('training_room',dataJson.data.training_room)
-				//
-
-				let c_id = dataJson.data.id;
-				let tutorials = dataJson.data.tutorials;
-				axios.post(_this.$store.state.url_talk+'/customer/finish-novice-guide',qs.stringify({
-			  		cid:c_id,
-			  	}))
-				.then(function(dataJson){
-					if(dataJson.data.result){
-						_this.$router.push({ name: 'liveList',query:{tutorials:tutorials}})
-						window.location.reload();
-					}
-				})
+				_this.$router.push({ name: 'liveList'})
+				window.location.reload();
 			})
 			.catch(function(err){
 				alert(err);
@@ -203,7 +192,7 @@ export default {
 				// localStorage.setItem('cid',dataJson.data.id)
 				// localStorage.setItem('portrait',dataJson.data.portrait)
 				// localStorage.setItem('nickname',dataJson.data.nickname)
-				_this.$router.push({ name: 'liveList',query:{tutorials:dataJson.data.tutorials}})
+				_this.$router.push({ name: 'liveList'})
 				window.location.reload();
 			})
 			.catch(function(err){
