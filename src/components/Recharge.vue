@@ -26,7 +26,7 @@
 			<div class="rechargeText">
 				<p>
 					<img width="20px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>&nbsp;
-					<strong class="color_aimai">{{$store.state.balance_talk}}</strong>
+					<strong class="color_aimai">{{balance}}.00</strong>
 				</p>
 				<p>
 					<span>{{parseInt($store.state.language)?'as of 0 days':'距上次充值0天'}}</span>
@@ -71,6 +71,9 @@
 						</span>
 						<img width="23px" src="../assets/liveBroadcast/icon_arrow1.png"/>
 					</div>
+
+					<p id="paypal-button-container"></p>
+
 				</div>
 				
 				<div id="reload">
@@ -138,18 +141,62 @@ export default {
       num:10,
       idOrder:0,
       email_val:'',
-      emailboll:false
+      emailboll:false,
+      balance:0
     }
   },
   created(){
 
-    var _this = this
-    //充值记录
+
+    var _this = this;
+
+  	paypal.Button.render({
+
+		env: 'production', // sandbox | production
+
+		// PayPal Client IDs - replace with your own
+		// Create a PayPal app: https://developer.paypal.com/developer/applications/create
+		client: {
+			sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+            production: 'AUOchrKasN7XRn6Ik72IuhhjMQDI7swS_QsAMrLpuAkcqJ1T2vzw7piSOHWgn4WBR2s4vddu8ElXE2KK'
+		},
+
+		// Show the buyer a 'Pay Now' button in the checkout flow
+		commit: true,
+
+		// payment() is called when the button is clicked
+		payment: function(data, actions) {
+
+			// Make a call to the REST api to create the payment
+			return actions.payment.create({
+				payment: {
+					transactions: [
+						{
+							amount: { total: _this.num, currency: 'USD' }
+						}
+					]
+				}
+			});
+		},
+
+		// onAuthorize() is called when the buyer approves the payment
+		onAuthorize: function(data, actions) {
+
+			// Make a call to the REST api to execute the payment
+			return actions.payment.execute().then(function() {
+				window.alert('Payment Complete!');
+			});
+		}
+
+	}, '#paypal-button-container');
+
+
+    //钱
     axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
 	.then(function(dataJson){
-		//console.log(JSON.stringify(dataJson.data.balance))
-		let balance = dataJson.data.balance/100
-		_this.$store.state.balance_talk = balance.toFixed(2);
+		console.log(JSON.stringify(dataJson.data))
+		_this.balance = dataJson.data.balance/100
+		_this.$store.state.balance_talk = _this.balance.toFixed(2);
 
 	})
 	.catch(function(err){
