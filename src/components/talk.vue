@@ -1,92 +1,159 @@
 <template>
-  <div id="app">
-	{{ $store.state.count }}
-  {{$store.state.val}}
-    <button @click="increment">+5</button>
-    <button @click="decrement">-3</button>
-
-    
-    <div clas="" style="height:300px;">
-      <div class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(val,key) in portrait_nav">{{val}}</div>
-        </div>
-        <!-- Add Pagination -->
-        <div class="swiper-pagination"></div>
-      </div>
-    </div>
-
-
-    <div class="">
-      <video width="100%" id="example_video_1" poster="http://vjs.zencdn.net/v/oceans.png" controls="controls" autoplay="autoplay" webkit-playsinline="true" preload="auto" x-webkit-airplay="true" playsinline>
-        <source src="http://push.alice.live/app/alice.m3u8" type="application/vnd.apple.mpegurl"/>
-        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that 
-          <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-        </p>
-      </video>
-    </div>
-
-
-
-
-
-  </div>
+<div :id="id" class="paypal-button"></div>
 </template>
 
 <script>
-  import { mapGetters,mapActions } from 'vuex'
+import shortid from 'shortid';
+import paypal from 'paypal-checkout';
 
-  import Swiper from 'swiper';
-  import 'swiper/dist/css/swiper.min.css';
-
-
-  export default {
-    computed: mapGetters([]),
-    methods: mapActions([
-      'increment',
-      'decrement'
-      ]),
-    data () {
-      return {
-        msg: 'Welcome to Your Vue.js App',
-        portrait_nav:['text']
-      }
+export default {
+  props: {
+    id: {
+      type: String,
+      required: false,
+      default() {
+        return shortid.generate();
+      },
     },
-  	mounted(){
+    amount: {
+      type: String,
+      required: true,
+    },
+    client: {
+      type: Object,
+      required: true,
+    },
+    commit: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    currency: {
+      type: String,
+      required: false,
+      default: 'USD',
+    },
+    dev: {
+      type: Boolean,
+      required: false,
+    },
+    invoiceNumber: {
+      type: String,
+      required: false,
+    },
+    items: {
+      type: Array,
+      required: false,
+    },
+    buttonStyle: {
+      type: Object,
+      required: false,
+      validator: (value) => {
+        const isValid = (item, options) => (options.some(v => (v === item)));
+        const copy = Object.assign({}, value);
+        const options = {
+          size: ['tiny', 'small', 'medium', 'responsive'],
+          color: ['gold', 'blue', 'silver'],
+          shape: ['pill', 'rect'],
+        };
 
-      console.log(this.$store.state.count = 20)
-      new Swiper('.swiper-container', {
-          pagination: '.swiper-pagination',
-          paginationClickable: true
+        Object.keys(options).forEach((key) => {
+          const item = copy[key];
+          const valid = isValid(item, options[key]);
+
+          if (!valid) {
+            // eslint-disable-next-line
+            console.warn(`style.${key} = '${item}' isn't a valid option`, options[key]);
+            return false;
+          }
+
+          return true;
+        });
+
+        return true;
+      },
+    },
+  },
+  computed: {
+    env() {
+      return (this.dev) ? 'sandbox' : 'production';
+    },
+  },
+  methods: {
+    item_list() {
+      const itemList = {
+        items: [],
+      };
+
+      this.items.forEach((item) => {
+        itemList.items.push(item);
       });
 
+      return itemList;
+    },
+    PayPalPayment() {
+      const transaction = {
+        amount: {
+          total: this.amount,
+          currency: this.currency,
+        },
+      };
 
-  	}
-  }
+      if (this.invoiceNumber !== undefined) {
+        transaction.invoice_number = this.invoiceNumber;
+      }
+
+      if (this.items !== undefined) {
+        transaction.item_list = this.item_list();
+      }
+
+      return paypal.rest.payment.create(this.env, this.client, {
+        transactions: [transaction],
+      });
+    },
+    onAuthorize(data, actions) {
+      const vue = this;
+      vue.$emit('paypal-paymentAuthorized', data);
+      return actions.payment.execute().then((response) => {
+        vue.$emit('paypal-paymentCompleted', response);
+      });
+    },
+    onCancel(data) {
+      const vue = this;
+      vue.$emit('paypal-paymentCancelled', data);
+    },
+  },
+  mounted() {
+    const vue = this;
+
+    const buttonObject = {
+      // Pass in env
+      env: vue.env,
+
+      // Pass in the client ids to use to create your transaction
+      // on sandbox and production environments
+      client: vue.client,
+
+      // Pass the payment details for your transaction
+      // See https://developer.paypal.com/docs/api/payments/#payment_create for the expected json parameters
+      payment: vue.PayPalPayment,
+
+      // Display a "Pay Now" button rather than a "Continue" button
+      commit: vue.commit,
+
+      // Pass a function to be called when the customer completes the payment
+      onAuthorize: vue.onAuthorize,
+
+      // Pass a function to be called when the customer cancels the payment
+      onCancel: vue.onCancel,
+    };
+
+    // validate style prop
+    if (vue.buttonStyle !== undefined) {
+      buttonObject.style = vue.buttonStyle;
+    }
+
+    paypal.Button.render(buttonObject, vue.id);
+  },
+};
 </script>
-
-<style type="text/css">
-.swiper-container {
-        width: 100%;
-        height: 100%;
-    }
-    .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
-
-        /* Center slide text vertically */
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-    }
-</style>

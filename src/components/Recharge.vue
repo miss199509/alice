@@ -86,7 +86,7 @@
 							</span>
 							<img @click="show_emailboll" width="23px;" src="../assets/liveBroadcast/btn_info@2x.png"/>
 						</p>
-						<p class="productBet" @click="payment()">{{parseInt($store.state.language)?'Reload':'充值'}}</p>
+						<p class="productBet" @click="payment_wx()">{{parseInt($store.state.language)?'Reload':'充值'}}</p>
 					</div>
 				</div>
 			</div>
@@ -125,6 +125,9 @@
 <script>
 import axios from 'axios'
 import qs from 'qs'
+
+
+import paypal from 'paypal-checkout';
 //1购买2充值
 /*
 String url = ConfigModel.getInstance().current.mAppPrefix +"/order/register-paypal?cid=" + CustomerModel.getInstance().getOwner().mId + "&shippingaddressid="+addressId+"&cart_id=" +cartId+"&paymentform="+paymentform+"&sessionid="+CustomerModel.getInstance().getOwner().mSessionId;
@@ -142,7 +145,10 @@ export default {
       idOrder:0,
       email_val:'',
       emailboll:false,
-      balance:0
+      balance:0,
+      //支付传递参数
+      customer_id:'',
+      order_sn:''
     }
   },
   created(){
@@ -150,9 +156,32 @@ export default {
 
     var _this = this;
 
+	axios.post(_this.$store.state.url_talk+'/wallet/prepay-paypal',qs.stringify({
+  		cid:localStorage.getItem('cid'),
+  		item:1,
+  		num:_this.num*100,
+  		sessionid:localStorage.getItem('session_id')
+  	}))
+	.then(function(dataJson){
+		_this.customer_id = dataJson.data.customer_id;
+		_this.order_sn = dataJson.data.order_sn
+	})
+	.catch(function(err){
+		alert(err);
+	});
+
+
+
   	paypal.Button.render({
 
-		env: 'production', // sandbox | production
+		env: 'sandbox', // sandbox | production
+		style: {
+            label: 'paypal',
+            size:  'medium',    // small | medium | large | responsive
+            shape: 'rect',     // pill | rect
+            color: 'blue',     // gold | blue | silver | black
+            tagline: false    
+        },
 
 		// PayPal Client IDs - replace with your own
 		// Create a PayPal app: https://developer.paypal.com/developer/applications/create
@@ -163,7 +192,21 @@ export default {
 
 		// Show the buyer a 'Pay Now' button in the checkout flow
 		commit: true,
+		onClick:function(){
 
+			axios.post(_this.$store.state.url_talk+'/customer/set-email',qs.stringify({
+		  		cid:localStorage.getItem('cid'),
+		  		email:_this.email_val,
+		  		sessionid:localStorage.getItem('session_id')
+		  	}))
+			.then(function(dataJson){
+				console.log(JSON.stringify(dataJson.data))
+			})
+			.catch(function(err){
+				alert(err);
+			});
+
+		},
 		// payment() is called when the button is clicked
 		payment: function(data, actions) {
 
@@ -172,10 +215,19 @@ export default {
 				payment: {
 					transactions: [
 						{
-							amount: { total: _this.num, currency: 'USD' }
+							amount: { 
+								total: _this.num,
+								currency: 'USD'
+							},
+							custom:_this.customer_id,
 						}
-					]
-				}
+					],
+					id:"AUbmcXx-777BECh6Oss6CE1AitUrFpgU8N7qyGA2H47NB4ERVVoOYTcRNhcYO8i9m10haqxQiiPdZ_QV",
+	    			state:"created",
+				},
+				// invoiceNumber:_this.order_sn,
+				// notify_url:'http://red.alice.live/wallet/finish-paypal',
+
 			});
 		},
 
@@ -206,7 +258,9 @@ export default {
 
   },
   methods: {
-  	payment(){
+  	payment_wx(){
+  		document.getElementById("paypal-button-container").click();
+  		console.log(0)
 
   		let _this = this;
   		if(_this.email_val==''){
@@ -219,7 +273,7 @@ export default {
 	  		sessionid:localStorage.getItem('session_id')
 	  	}))
 		.then(function(dataJson){
-			console.log(JSON.stringify(dataJson.data.data))
+			//console.log(JSON.stringify(dataJson.data.data))
 
 			function onBridgeReady(){
 			   WeixinJSBridge.invoke(
@@ -257,8 +311,9 @@ export default {
 			alert(err);
 		});
 
-  		return false;
+  		//return false;
   		//发送邮件
+  		/*
   		axios.post(_this.$store.state.url_talk+'/wallet/prepay-cloud-moolah',qs.stringify({
 	  		cid:localStorage.getItem('cid'),
 	  		email:_this.email_val,
@@ -270,16 +325,16 @@ export default {
 		.catch(function(err){
 			alert(err);
 		});
+		*/
 		//充值
-  		axios.post(_this.$store.state.url_talk+'/wallet/prepay-cloud-moolah',qs.stringify({
+		axios.post(_this.$store.state.url_talk+'/wallet/prepay-paypal',qs.stringify({
 	  		cid:localStorage.getItem('cid'),
 	  		item:1,
 	  		num:_this.num*100,
 	  		sessionid:localStorage.getItem('session_id')
 	  	}))
 		.then(function(dataJson){
-			console.log(JSON.stringify(dataJson.data.data.Payment_URL))
-			window.location.href = dataJson.data.data.Payment_URL; 
+			console.log(JSON.stringify(dataJson.data))
 
 		})
 		.catch(function(err){
@@ -292,6 +347,9 @@ export default {
   	},
   	hide_emailboll(){
   		this.emailboll = false;
+  	},
+  	payment(data, actions){
+
   	}
   }
 }

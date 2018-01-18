@@ -118,28 +118,44 @@ export default {
   },
   mounted(){
   	let _this = this;
-    //初始化facebook
+
+
 	window.fbAsyncInit = function() {
-		let _this = this;
-		FB.init({
-			appId      : '1475634259145456',
-			cookie     : true,  // enable cookies to allow the server to access 
-							// the session
-			xfbml      : true,  // parse social plugins on this page
-			version    : 'v2.8' // use graph api version 2.8
-		});
-		// FB.getLoginStatus(function(response) {
-		// 	_this.statusChangeCallback(response);
-		// });
+	    FB.init({
+	      appId      : '1475634259145456',
+	      cookie     : true,  // enable cookies to allow the server to access 
+	                          // the session
+	      xfbml      : true,  // parse social plugins on this page
+	      version    : 'v2.8' // use graph api version 2.8
+	    });
+
+	    // Now that we've initialized the JavaScript SDK, we call 
+	    // FB.getLoginStatus().  This function gets the state of the
+	    // person visiting this page and can return one of three states to
+	    // the callback you provide.  They can be:
+	    //
+	    // 1. Logged into your app ('connected')
+	    // 2. Logged into Facebook, but not your app ('not_authorized')
+	    // 3. Not logged into Facebook and can't tell if they are logged into
+	    //    your app or not.
+	    //
+	    // These three cases are handled in the callback function.
+	    //默认调用取消
+	    // FB.getLoginStatus(function(response) {
+	    //   _this.statusChangeCallback(response);
+	    // });
 	};
 
-	(function(d, s, id){
-	 var js, fjs = d.getElementsByTagName(s)[0];
-	 if (d.getElementById(id)) {return;}
-	 js = d.createElement(s); js.id = id;
-	 js.src = "https://connect.facebook.net/en_US/sdk.js";
-	 fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+
 
 
   },
@@ -232,70 +248,83 @@ export default {
 			alert(err);
 		});
     },
+
+
     //facebook登陆
-    loginFacebook(){
-    	let _this = this;
-		//登陆回调
-		function checkLoginState() {
-			FB.getLoginStatus(function(response) {
-				_this.statusChangeCallback(response);
-			});
-		}
-    	//点击登陆
-    	FB.login(function(response) {
-			checkLoginState()
-		}, {scope: 'public_profile,email'});
-
-		//判断是否登陆成功或是失败
-    },
     statusChangeCallback(response){
-    	var _this = this;
-    	if (response.status === 'connected') {
-			// Logged into your app and Facebook.
-			localStorage.clear();
-			console.log(JSON.stringify(response))
+    	let _this = this;
+    	//console.log('statusChangeCallback');
+    	console.log(0)
+	    console.log(JSON.stringify(response));
+	    if (typeof(response)=='string') {
+		    _this.loginFacebook_eve(response);
+        }
 
-	        let access_token = localStorage.getItem('access_token');
-	        let session_id = localStorage.getItem('session_id');
-	        let id = localStorage.getItem('cid');
-	        let portrait = localStorage.getItem('portrait');
-	        let nickname = localStorage.getItem('nickname');
-	        let platform_id = localStorage.getItem('platform_id');
-	        
-	        console.log(response.authResponse.accessToken)
 
-	        axios.post(_this.$store.state.url_talk+'/customer/login-facebook',qs.stringify({accesstoken:response.authResponse.accessToken}))
-	        .then(function(dataJson){
-	        	alert(0)
-	          //钱
-	          //_this.$store.state.balance_talk = dataJson.data.gems;
-	          //名称
-	          console.log(JSON.stringify(dataJson.data.tutorials))
-	          //头像
-	          //console.log(JSON.stringify(dataJson.data.portrait))
-	          
-	          // //如果没有本地存储的值，就写本地存储
-	          // fasebook用open
-	          localStorage.setItem('access_token',dataJson.data.open_access_token)
-	          localStorage.setItem('session_id',dataJson.data.session_id)
-	          localStorage.setItem('cid',dataJson.data.cid)
-	          //用户头像
-	          localStorage.setItem('portrait',dataJson.data.portrait)
-	          //用户名称
-	          localStorage.setItem('nickname',dataJson.data.nickname)
-	          localStorage.setItem('platform_id',2)
-	          
-	          //跳转
-	          _this.$router.push({ name: 'liveList',query:{tutorials:dataJson.data.tutorials}})
-	          window.location.reload();
-	        })
-	        .catch(function(err){
-	          alert(err);
-	        });
-		} else {
 
-		}
-    }
+	    // The response object is returned with a status field that lets the
+	    // app know the current login status of the person.
+	    // Full docs on the response object can be found in the documentation
+	    // for FB.getLoginStatus().
+	    if (response.status === 'connected') {
+	      // Logged into your app and Facebook.
+	      _this.testAPI(response.authResponse.accessToken);
+	    } else {
+	      // The person is not logged into your app or we are unable to tell.
+	      //document.getElementById('status').innerHTML = 'Please log ' +
+	        //'into this app.';
+	    }
+    },
+    checkLoginState() {
+    	let _this = this;
+	    FB.getLoginStatus(function(response) {
+	      _this.statusChangeCallback(response.authResponse.accessToken);
+	    });
+	},
+	testAPI(accessToken) {
+		let _this = this;
+	    //console.log('Welcome!  Fetching your information.... ');
+	    FB.api('/me', function(response) {
+	      //console.log('Successful login for: ' + response);
+	      console.log(1)
+	      console.log(accessToken)
+	      console.log(JSON.stringify(response))
+	      _this.loginFacebook_eve(accessToken);
+
+	      //document.getElementById('status').innerHTML =
+	        //'Thanks for logging in, ' + response.name + '!';
+	    });
+	},
+	loginFacebook(){
+		let _this = this;
+		FB.login(function(response) {
+			_this.checkLoginState()
+		}, {scope: 'public_profile,email'});
+	},
+	loginFacebook_eve(accesstoken){
+		let _this = this;
+		axios.post(_this.$store.state.url_talk+'/customer/login-facebook',qs.stringify({accesstoken:accesstoken}))
+        .then(function(dataJson){
+          console.log(JSON.stringify(dataJson.data))
+
+          localStorage.setItem('access_token',dataJson.data.open_access_token)
+          localStorage.setItem('session_id',dataJson.data.session_id)
+          localStorage.setItem('cid',dataJson.data.cid)
+          //用户头像
+          localStorage.setItem('portrait',dataJson.data.portrait)
+          //用户名称
+          localStorage.setItem('nickname',dataJson.data.nickname)
+          localStorage.setItem('platform_id',2)
+          localStorage.setItem('tutorials',dataJson.data.tutorials)
+          //跳转
+          _this.$router.push({ name: 'liveList'})
+          window.location.reload();
+        })
+        .catch(function(err){
+          alert(err);
+        });
+
+	}
     
   }
 }

@@ -72,7 +72,7 @@
 	    <div class="boxPopup" style="z-index: 11" v-show="tutorials_boll"></div>
 		<div class="explainPopup productPopup" v-show="tutorials_boll">
 		  	<h3 class="tips_title color_aimai">
-		  		{{parseInt($store.state.language)?'Welcome to Aimai Live!':'欢迎来到Alice直播'}}
+		  		{{parseInt($store.state.language)?'Welcome to Alice Live!':'欢迎来到Alice直播'}}
 		  	</h3>
 		  	<ul class="transaction">
 				<li>
