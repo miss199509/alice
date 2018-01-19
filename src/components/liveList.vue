@@ -124,7 +124,7 @@
 
 							<li @click="video_eve()">
 								<img width="23px;" src="../assets/liveBroadcast/icon_tutorial@2x.png"/>
-								<span class="color_aimai">{{parseInt($store.state.language)?'Tutroial':'新手引导'}}</span>
+								<span class="color_aimai">{{parseInt($store.state.language)?'Tutorial':'新手引导'}}</span>
 							</li>
 							<li @click="popup_tipsPlay = !popup_tipsPlay">
 								<img width="23px;" src="../assets/liveBroadcast/icon_gameplay@2x.png"/>
@@ -321,7 +321,8 @@ export default {
   	}
   	
   	var _this = this;
-  	_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg';
+  	//_this.$store.state.portrait = 'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/12552952_1531894053774497_102523970575294215_n.jpg?oh=5c8cbd96fef4e8c75cb10bd51cdf874c&oe=5ADCA0F4';
+  	//_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg';
   	//http://red.aimai.live/lobby/get-room-list?room_type=2
   	axios.post(_this.$store.state.url_talk+'/lobby/get-room-list',qs.stringify({
   		room_type:2,
@@ -557,8 +558,10 @@ export default {
 .popup_back{
 	background-position: center center;
 	background-repeat: no-repeat;
-	height: 230px;
+	height: 190px;
 	box-shadow: 0px 8px 17px #514343;
+	background-size: 100% 100%;
+	background-position: 100% 100%;
 }
 
 .portrait_img{

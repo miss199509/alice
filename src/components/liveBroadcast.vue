@@ -45,7 +45,7 @@
 	</div>
 	
 	<!-- 交流区 -->
-	<div class="" style="padding: 0px 3px;">
+	<div class="">
 	    <div class="">
 			
 			<ul id="follow">
@@ -71,7 +71,7 @@
 
 
 
-			<div class="publish overflowRemove">
+			<div class="publish overflowRemove" style="padding:0px 7px;">
 				<p class="">
 					<img @click="giftPopup()" src="../assets/liveBroadcast/icon_gift@2x.png" width="33px" />
 					<img @click="chatPopup()" src="../assets/liveBroadcast/icon_chat@2x.png" width="33px" />
@@ -82,7 +82,7 @@
 			</div>
 
 
-
+			<div class="" style="padding:0px 7px;">
 			<ul class="commodityGive new_commodityGive">
 
 				<li class="product_information">
@@ -100,9 +100,9 @@
 							</p>
 
 							<p class="product_priceBox">
-								<em>${{parseFloat(price/100).toFixed(2)}}</em>
-								<strong>${{parseFloat(gems/100).toFixed(2)}}</strong>
-								<span>{{parseInt($store.state.language)?'PRLCE NOW':'现在价格'}}</span>
+								<em>￥{{parseFloat(price/100).toFixed(2)}}</em>
+								<strong>￥{{parseFloat(gems/100).toFixed(2)}}</strong>
+								<span>{{parseInt($store.state.language)?'PRICE NOW':'现在价格'}}</span>
 							</p>
 						</div>
 					</div>
@@ -157,6 +157,7 @@
 					
 				</li>
 			</ul>
+			</div>
 
 
 
@@ -377,7 +378,6 @@
 					<p @click="cartSubmit()" class="productBet">
 						{{parseInt($store.state.language)?'ACCEPT':'接受'}}
 					</p>
-					<p @click="cartSubmit()" class="productBet"></p>
 					<p @click="remove_product_tips()" class="productBet">
 						{{parseInt($store.state.language)?'CANCEL':'取消'}}
 					</p>
@@ -413,7 +413,9 @@
 	<div id="boxPopup" v-show="straight_commodity_boll" style="z-index: 11"></div><!-- straight_commodity_boll -->
 	<div class="explainPopup productPopup" v-show="straight_commodity_boll">
 		<h3>
-			<strong class="color_aimai">连胜3局！</strong>
+			<strong class="color_aimai">
+				{{parseInt($store.state.language)?'Streak winning 3 innings':'连胜3局'}}！
+			</strong>
 			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="../assets/liveBroadcast/btn_close.png"/>
 			<p class="time_tips_img">
 				<img width="20px;" src="../assets/liveBroadcast/icon_time@2x.png"/>
@@ -489,7 +491,7 @@
 		</div>
 
 		<p class="productBet collect_splist" @click="eve_splist()"><!--collect_splist-->
-			<span>{{parseInt($store.state.language)?'CONFIGM':'确定'}}</span>
+			<span>{{parseInt($store.state.language)?'CONFIRM':'确定'}}</span>
 		</p>
 
 	</div>
@@ -709,7 +711,7 @@ export default {
 
 	           ws.onclose = function(){ 
 	              // 关闭 websocket
-	              alert("连接已关闭..."); 
+	              console.log("连接已关闭..."); 
 	           };
 	           _this.popupJson.chatPopup = false;
 	        }else{
@@ -968,7 +970,7 @@ export default {
 									console.log(received_msg.cmds[key].content.win)
 									_this.straight_commodity_boll = true;
 									_this.gameStraight_img = require('../assets/liveBroadcast/bg_3win@2x.png')
-									alert('三胜了')
+									//alert('三胜了')
 								  break;
 	      					}
       					}else{
@@ -1340,7 +1342,7 @@ export default {
            var ws = new WebSocket(_this.WS_SERVER);
            ws.onopen = function(){
               //Web Socket 已连接上，使用 send() 方法发送数据
-              var json = {"cmd":6,"roomid":_this.giftsData.roomId,"cid":_this.giftsData.fid,"color":1,"bet":Math.ceil(_this.betVal*100)}
+              var json = {"cmd":6,"roomid":_this.giftsData.roomId,"cid":_this.giftsData.fid,"color":0,"bet":Math.ceil(_this.betVal*100)}
               //console.log(JSON.stringify(json))
               ws.send(JSON.stringify(json));
               console.log("数据发送中...");
@@ -1354,7 +1356,7 @@ export default {
 
            ws.onclose = function(){ 
               // 关闭 websocket
-              alert("连接已关闭..."); 
+              console.log("连接已关闭..."); 
            };
         }else{
            // 浏览器不支持 WebSocket
@@ -1379,7 +1381,7 @@ export default {
            var ws = new WebSocket(_this.WS_SERVER);
            ws.onopen = function(){
               //Web Socket 已连接上，使用 send() 方法发送数据
-              var json = {"cmd":6,"roomid":_this.giftsData.roomId,"cid":_this.giftsData.fid,"color":0,"bet":_this.betVal*100}
+              var json = {"cmd":6,"roomid":_this.giftsData.roomId,"cid":_this.giftsData.fid,"color":1,"bet":_this.betVal*100}
               console.log(JSON.stringify(json))
               ws.send(JSON.stringify(json));
               console.log("数据发送中...");
@@ -1394,7 +1396,7 @@ export default {
 
            ws.onclose = function(){ 
               // 关闭 websocket
-              alert("连接已关闭..."); 
+              console.log("连接已关闭..."); 
            };
         }else{
            // 浏览器不支持 WebSocket
@@ -1502,7 +1504,7 @@ export default {
 
            ws.onclose = function(){ 
               // 关闭 websocket
-              alert("连接已关闭..."); 
+              console.log("连接已关闭..."); 
            };
         }else{
            // 浏览器不支持 WebSocket

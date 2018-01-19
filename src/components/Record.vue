@@ -5,7 +5,7 @@
 
 	    <header>
 		    <ul class="headerNav">
-				<li class="floatLeft">
+				<li class="floatLeft" @click="recharge()">
 					<router-link :to="{ name: 'Recharge'}">
 						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
@@ -24,11 +24,11 @@
 
 		
 		<div class="shoppingl_global">
-			<ul>
+			<ul :style="{ height: height_img + 'px' }">
 				<li class="record" v-for="(val,key) in recordList">
 					<p class="record_title">
 						<img width="70px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
-						<strong>+￥{{val.post_balance}}</strong>
+						<strong>+￥{{val.deposit_amount/100}}.00</strong>
 					</p>
 					<div class="record_list">
 						
@@ -77,11 +77,15 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      recordList:[]
+      recordList:[],
+      height_img:''
     }
   },
   mounted(){
-  	var _this = this
+  	
+  	this.height_img = document.documentElement.clientHeight-45;
+
+  	var _this = this;
   	axios.post(_this.$store.state.url_talk+'/customer/deposit-history',qs.stringify({cid:_this.$store.state.cid_talk}))
 	.then(function(dataJson){
 		console.log(JSON.stringify(dataJson.data.info))
@@ -93,6 +97,10 @@ export default {
 
   },
   methods: {
+  	recharge(){
+  		this.$router.push({ name: 'Recharge'})
+  		window.location.reload();
+  	}
   }
 }
 </script>
@@ -101,6 +109,10 @@ export default {
 <style scoped>
 .shoppingl_global{
 	padding: 0px 7px;
+}
+
+.shoppingl_global ul{
+	overflow: auto;
 }
 
 .record{

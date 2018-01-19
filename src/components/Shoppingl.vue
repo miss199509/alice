@@ -95,10 +95,12 @@ export default {
 .listGoods_img img{
 	border-radius: 13px;
 	max-width: 247px;
+	max-height: 247px;
 }
 .listGoods_img{
 	text-align: center;
 	position: relative;
+	max-height: 250px;
 }
 
 

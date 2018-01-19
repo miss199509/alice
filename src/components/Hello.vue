@@ -4,7 +4,7 @@
     <p class="loading_log">
       <img src="../assets/loading/logo_luckyLive@2x.png" width="175px;"/>
     </P>
-	<ul class="land_input">
+	<ul class="land_input" style="display: none;">
 		<li>
 			<input type="text" placeholder="请输入邮件"/>
 		</li>
@@ -19,7 +19,7 @@
 		</li>
 	
 	</ul>
-	<ul class="land_bott">
+	<ul class="land_bott" style="display: none;">
 		<li>
 			<a href="javascript:;">登陆</a>
 		</li>
@@ -32,7 +32,7 @@
 		<div class="">
 			<p class="playing">Start playing with</p>
 			<img @click="loginFacebook()" width="27px;" src="../assets/loading/btn_Lfacebook@2x.png"/>
-			<img @click="wechat()" width="27px;" src="../assets/loading/btn_weixin1@2x.png"/>
+			<img @click="wechat()" width="27px;" src="../assets/loading/btn_weixin1@2x.png" style="display: none;"/>
 			<img @click="land()" width="27px;" src="../assets/loading/btn_phone.png"/>
 		</div>
 		<div class="loading_tips">
