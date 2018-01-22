@@ -100,8 +100,8 @@
 							</p>
 
 							<p class="product_priceBox">
-								<em>￥{{parseFloat(price/100).toFixed(2)}}</em>
-								<strong>￥{{parseFloat(gems/100).toFixed(2)}}</strong>
+								<em>￥{{parseFloat(gems/100).toFixed(2)}}</em>
+								<strong>￥{{parseFloat(price/100).toFixed(2)}}</strong>
 								<span>{{parseInt($store.state.language)?'PRICE NOW':'现在价格'}}</span>
 							</p>
 						</div>
@@ -137,7 +137,7 @@
 					<div class="income">
 						<p style="margin-bottom: 7px;">
 							<strong class="color_aimai" style="font-size: 12px;">
-								{{parseInt($store.state.language)?'income':'总收入'}}
+								{{parseInt($store.state.language)?'INCOME':'总收入'}}
 							</strong>
 						</p>
 						<p class="thisMoney_val" @click="pushMoney()">
@@ -416,7 +416,7 @@
 			<strong class="color_aimai">
 				{{parseInt($store.state.language)?'Streak winning 3 innings':'连胜3局'}}！
 			</strong>
-			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="../assets/liveBroadcast/btn_close.png"/>
+			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="../assets/liveBroadcast/btn_close.png" @click="straight_commodity_boll = !straight_commodity_boll"/>
 			<p class="time_tips_img">
 				<img width="20px;" src="../assets/liveBroadcast/icon_time@2x.png"/>
 				<span>{{timer}}</span>
@@ -537,7 +537,7 @@ export default {
       //主播名称
       dealer_name:'',
       //主播头像
-      dealer_portrait:'',
+      dealer_portrait:require('../assets/liveBroadcast/avatar@2x.png'),
 	  CMD_POKER_RB:22,//Poker Red & Black
 	  CMD_POKER_RB_CARD:221,//Poker Red & Black CARDS
 	  CMD_POKER_RB_PRODUCT:222,//Poker Red & Black PRODUCT
@@ -859,9 +859,12 @@ export default {
 							alert(err);
 						})
 	          			//当前金额商品金额
+	          			
+	          			console.log(JSON.stringify(received_msg.cmds[key].content.current))
+
 	          			for(let i in received_msg.cmds[key].content.current){
 	          				_this.price = received_msg.cmds[key].content.current[i].price
-	          				_this.gems = received_msg.cmds[key].content.current[i].gems
+	          				_this.gems = received_msg.cmds[key].content.current[i].original_price
 	          			}
 	          		}
 
@@ -1311,8 +1314,12 @@ export default {
   			sessionid:localStorage.getItem('session_id')
   		}))
 		.then(function(dataJson){
-			console.log(JSON.stringify(dataJson.data))
-			alert(JSON.stringify(dataJson.data))
+			if(dataJson.data.result){
+				_this.$router.push({ name: 'Settlement'})
+				_this.straight_commodity_boll = false;
+			}else{
+				alert(JSON.stringify(dataJson.data.message))
+			}
 		})
 		.catch(function(err){
 			alert(err);

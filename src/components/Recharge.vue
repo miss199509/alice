@@ -67,7 +67,7 @@
 					<div>
 						<span>
 							<img width="20px" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
-							<img style="margin-left: 17px" width="35px" src="../assets/liveBroadcast/logo_wechat@2x_5.png"/>
+							<img style="margin-left: 17px" width="45px" src="../assets/liveBroadcast/logo_paypal@2x.png"/>
 						</span>
 						<img width="23px" src="../assets/liveBroadcast/icon_arrow1.png"/>
 					</div>

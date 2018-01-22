@@ -73,7 +73,7 @@
 	    </div>
 
 	    <p class="product_bottom" @click="productBet()">
-			<span>{{parseInt($store.state.language)?'EXCHAMGE FOR':'购买'}}</span>
+			<span>{{parseInt($store.state.language)?'EXCHANGE FOR':'购买'}}</span>
 			<img width="22px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 			<strong>{{parseFloat(price).toFixed(2)}}</strong>
 	    </p>
@@ -188,7 +188,10 @@ export default {
 		pagination: '.swiper-pagination',
 		paginationClickable: true,
 		observer:true,//修改swiper自己或子元素时，自动初始化swiper
-		observeParents:true//修改swiper的父元素时，自动初始化swiper
+		observeParents:true,//修改swiper的父元素时，自动初始化swiper
+		autoplayStopOnLast:true,
+		pagination: '.swiper-pagination',
+		loop: true,
 	});
 
 
@@ -268,7 +271,7 @@ export default {
   		let sizeVal
   		if(parseFloat(this.$store.state.balance_talk-this.price).toFixed(2)<0){
   			this.recharge_popup = true;
-  			this.tips_text = '充钱去'
+  			this.tips_text = '充钱去';
   			return false
   		}
 	  	for(let id in this.listSize){

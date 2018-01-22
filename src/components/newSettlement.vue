@@ -22,7 +22,7 @@
 			<div class="shoppingl_global  overflowRemove">
 				<div class="is_default settlement_nav">
 					<h4 class="floatLeft">
-						<strong>{{parseInt($store.state.language)?'hip to':'寄到'}}</strong>
+						<strong>{{parseInt($store.state.language)?'ship to':'寄到'}}</strong>
 					</h4>
 					<div class="is_default_val">
 						<div class="floatLeft">
@@ -51,7 +51,7 @@
 				</p>
 				<p class="payment_tips">
 					<img width="20px;" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
-					<img width="40px;" src="../assets/liveBroadcast/logo_wechat@2x_5.png"/>
+					<img style="margin-left: 17px;" width="45px;" src="../assets/liveBroadcast/logo_paypal@2x.png"/>
 				</p>
 			</div>
 

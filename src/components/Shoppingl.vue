@@ -100,7 +100,7 @@ export default {
 .listGoods_img{
 	text-align: center;
 	position: relative;
-	max-height: 250px;
+	height: 250px;
 }
 
 

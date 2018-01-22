@@ -59,9 +59,8 @@
 							<img @click="modify_ress(val)" width="20px;" src="../assets/liveBroadcast/btn_delete@2x.png"/>
 
 						</p>
-
-						<img class="tipsImg" v-if="val.is_default" width="30px;" src="../assets/liveBroadcast/icon_checked@2x.png"/>
-						<img class="tipsImg" v-else width="30px;" src="../assets/liveBroadcast/icon_unchecked@2x.png"/>
+						
+						<img class="tipsImg" width="30px;" :src="val.imgae"/>
 					</li>
 				</ul>
 			</div>
@@ -103,7 +102,9 @@ export default {
 
 		for(let key in dataJson.data.info){
 			if(dataJson.data.info[key].is_default==1){
-				console.log()
+				dataJson.data.info[key]['imgae'] = require('../assets/liveBroadcast/icon_checked@2x.png')
+			}else{
+				dataJson.data.info[key]['imgae'] = require('../assets/liveBroadcast/icon_unchecked@2x.png')
 			}
 		}
 		_this.delivery_nav = dataJson.data.info;
@@ -119,10 +120,9 @@ export default {
   	choice(key){
   		let _this = this;
   		for(let index in this.delivery_nav){
-  			this.delivery_nav[index].imgae = require('../assets/liveBroadcast/uncheckedi6.png')
+  			this.delivery_nav[index].imgae = require('../assets/liveBroadcast/icon_unchecked@2x.png')
   		}
-  		this.delivery_nav[key].imgae = require('../assets/liveBroadcast/checkedi6.png')
-  		console.log(JSON.stringify(this.delivery_nav[key]))
+  		this.delivery_nav[key].imgae = require('../assets/liveBroadcast/icon_checked@2x.png')
   		
   		axios.post(_this.$store.state.url_talk+'/customer/edit-shipping-address',qs.stringify({
   			cid:_this.$store.state.cid_talk,

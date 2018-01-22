@@ -33,7 +33,7 @@
 
 		<!-- <router-link :to="{ name: 'Delivery',query: {cid:$store.state.cid_talk}}"> -->
 			<p class="submit_delivery" @click="submit_delivery()">
-				CONFLRM
+				CONFIRM
 			</p>
 		<!-- </router-link> -->
 
