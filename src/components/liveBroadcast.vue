@@ -458,13 +458,14 @@
 		<ul>
 			<li class="commodityCarousel">
 				
-				<div class="swiper-container" style="height: 200px">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide" v-for="(val,key) in listImg"><img width="120px;" :src="val"/></div>
-					</div>
-					<!-- Add Pagination -->
-					<div class="swiper-pagination"></div>
-				</div>
+				
+
+				<swiper :options="swiperOption" style="height: 200px;">
+				    <swiper-slide v-for="(val,key) in listImg">
+						<img width="120px;" :src="val"/>
+				    </swiper-slide>
+				    <div class="swiper-pagination" slot="pagination"></div>
+				</swiper>
 
 
 			</li>
@@ -525,15 +526,23 @@ import qs from 'qs'
 import $ from 'jquery';
 
 import Swiper from 'swiper';
-import 'swiper/dist/css/swiper.min.css';
-import Vue from 'vue'
-
-
+import 'swiper/dist/css/swiper.css'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
 export default {
+  components: {
+    swiper,
+    swiperSlide
+  },
   name: 'liveBroadcast',
   data () {
     return {
+      //轮播，
+      swiperOption: {
+	      pagination: {
+	        el: '.swiper-pagination'
+	      }
+	  },
       //主播名称
       dealer_name:'',
       //主播头像

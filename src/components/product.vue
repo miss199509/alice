@@ -24,13 +24,15 @@
 		<div class="shoppingl_list product shoppingl_global">
 			<div class="product_center">
 
-				<div class="swiper-container" style="height: 200px">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide" v-for="(val,key) in listImg"><img width="120px;" :src="val"/></div>
-					</div>
-					<!-- Add Pagination -->
-					<div class="swiper-pagination"></div>
-				</div>
+
+				<swiper :options="swiperOption" style="height: 200px;">
+				    <swiper-slide v-for="(val,key) in listImg">
+						<img width="120px;" :src="val"/>
+				    </swiper-slide>
+				    <div class="swiper-pagination" slot="pagination"></div>
+				</swiper>
+
+
 
 
 			    <div class="">
@@ -161,10 +163,15 @@ import axios from 'axios'
 import qs from 'qs'
 
 import Swiper from 'swiper';
-import 'swiper/dist/css/swiper.min.css';
+import 'swiper/dist/css/swiper.css'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
 export default {
   name: 'liveList',
+  components: {
+    swiper,
+    swiperSlide
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -177,22 +184,17 @@ export default {
       price:'',
       recharge_popup:false,
       loading:true,
-      tips_text:''
+      tips_text:'',
+      //轮播，
+      swiperOption: {
+	      pagination: {
+	        el: '.swiper-pagination'
+	      }
+	  }
 
     }
   },
   mounted(){
-  	console.log(this.$store.state.cid_talk)
-  	//https://red.aimai.live/products/mall-product
-	new Swiper('.swiper-container', {
-		pagination: '.swiper-pagination',
-		paginationClickable: true,
-		observer:true,//修改swiper自己或子元素时，自动初始化swiper
-		observeParents:true,//修改swiper的父元素时，自动初始化swiper
-		autoplayStopOnLast:true,
-		pagination: '.swiper-pagination',
-		loop: true,
-	});
 
 
   	var _this = this
