@@ -54,7 +54,8 @@
 					<p>
 						<label>{{dealer_name}}</label>
 						<br/>
-						<span @click="ues_portrait()">{{portrait}}</span>
+						<span @click="ues_portrait()" v-if="$store.state.language">{{new_portrait}}</span>
+						<span @click="ues_portrait()" v-else>{{portrait}}</span>
 					</p>
 				</li>
 				
@@ -416,7 +417,7 @@
 			<strong class="color_aimai">
 				{{parseInt($store.state.language)?'Streak winning 3 innings':'连胜3局'}}！
 			</strong>
-			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="../assets/liveBroadcast/btn_close.png" @click="straight_commodity_boll = !straight_commodity_boll"/>
+			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="../assets/liveBroadcast/btn_close.png" @click="remove_commodity_boll()"/>
 			<p class="time_tips_img">
 				<img width="20px;" src="../assets/liveBroadcast/icon_time@2x.png"/>
 				<span>{{timer}}</span>
@@ -625,6 +626,7 @@ export default {
       bet:0,
       //关注
       portrait:'关注',
+      new_portrait:'Follow',
       //商品图片信息
       listImg:[],
       //新手引导
@@ -790,6 +792,7 @@ export default {
 	});
 	//关注
 	localStorage.getItem('is_follow')==0?this.portrait = '关注':this.portrait = '取消关注';
+	localStorage.getItem('is_follow')==0?this.new_portrait = 'Follow':this.new_portrait = 'unfollow';
 	//进入房间
 	// axios.post(_this.$store.state.url_talk+'/pokerrb/enter-room',qs.stringify({
 	// 	cid:_this.$route.query.cid,
@@ -944,11 +947,13 @@ export default {
       				if(received_msg.cmds[key].id==1){
       					for(let content_id in received_msg.cmds[key].content){
       						if(received_msg.cmds[key].content[content_id].id==11){
-      							_this.result = '赢了'+parseFloat(received_msg.cmds[key].content[content_id].income/100).toFixed(2);//parseFloat(this.min_bet/100).toFixed(2);
+      							let tipsText = _this.$store.state.language?'Win':'赢了';
+      							_this.result = tipsText+parseFloat(received_msg.cmds[key].content[content_id].income/100).toFixed(2);//parseFloat(this.min_bet/100).toFixed(2);
 
       						}
       						if(received_msg.cmds[key].content[content_id].id==12){
-      							_this.result = '输了'+parseFloat(received_msg.cmds[key].content[content_id].lose/100).toFixed(2);
+      							let tipsText = _this.$store.state.language?'Lost':'输了';
+      							_this.result = tipsText+parseFloat(received_msg.cmds[key].content[content_id].lose/100).toFixed(2);
       							//如果牌局输了就恢复选项
       							_this.bet_red_type = require('../assets/liveBroadcast/btn_red@2x.png');
       							_this.bet_red_values = true;
@@ -1313,6 +1318,13 @@ export default {
   	prohibit_eve(){
 
   	},
+  	remove_commodity_boll(){
+  		this.straight_commodity_boll = false;
+  		this.gameStraight_img = require('../assets/liveBroadcast/bg_win@2x.png');
+  		this.bet_red_values = true;
+  		this.bet_black_values = true;
+  		this.result = '';
+  	},
   	//三连胜调用加入购物车接口
   	straight_commodity_eve(){
   		let _this = this;
@@ -1342,7 +1354,8 @@ export default {
   			this.result = '您的金额不足请去充值'
   			return false;
   		};
-  		this.result = '您已选择红';
+  		this.$store.state.language?this.result = this.result ="You've Guessed on Red":this.result = "您已选择红";
+
   		this.bet_red_values = false;
   		this.bet_black_values = true;
   		//选择牌局 红
@@ -1388,7 +1401,8 @@ export default {
   			this.result = '您的金额不足请去充值'
   			return false;
   		};
-  		this.result = '您已选择黑'
+  		this.$store.state.language?this.result = this.result ="You've Guessed on Black":this.result = "您已选择黑";
+
   		this.bet_black_values = false;
   		this.bet_red_values = true;
 
@@ -1440,11 +1454,12 @@ export default {
 	  	}))
 		.then(function(dataJson){
 			console.log(JSON.stringify(dataJson.data))
-			_this.result = ''
 			if(dataJson.data.result){
-				alert(0)
+				_this.result = ''
+				_this.commodity_data_img.collect_splist = false;
+				_this.bet_red_values = true;
+  				_this.bet_black_values = true;
 			}
-			_this.commodity_data_img.collect_splist = false;
 
 		})
 		.catch(function(err){
@@ -1545,10 +1560,11 @@ export default {
   	ues_portrait(){
 
   		let _this = this
-  		if(_this.portrait == '关注'){
+  		if(_this.portrait == '关注' || _this.new_portrait=='Follow'){
   			axios.post(_this.$store.state.url_talk+'/customer/follow-dealer',qs.stringify({cid:_this.$route.query.cid,dealerid:_this.$route.query.dealerid}))
 			.then(function(dataJson){
 				_this.portrait = '取消关注'
+				_this.new_portrait = 'unfollow';
 				localStorage.setItem('is_follow',1)
 			})
 			.catch(function(err){
@@ -1558,6 +1574,7 @@ export default {
   			axios.post(_this.$store.state.url_talk+'/customer/cancel-follow-dealer',qs.stringify({cid:_this.$route.query.cid,dealerid:_this.$route.query.dealerid}))
 			.then(function(dataJson){
 				_this.portrait = '关注'
+				_this.new_portrait = 'Follow'
 				localStorage.setItem('is_follow',0)
 			})
 			.catch(function(err){

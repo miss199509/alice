@@ -45,9 +45,11 @@
 				<div class="payment_tips">
 					<p>{{parseInt($store.state.language)?'Select Payment':'支付方式'}}</p>
 				</div>
-				<p class="payment_select">
+				<p class="payment_select" @click="payment_select_eve()">
 					{{parseInt($store.state.language)?'Use balance payment':'使用余额支付'}}:
 					<span>{{parseFloat($store.state.balance_talk/100).toFixed(2)}}</span>
+					<img v-if="payment_boll" width="23px;" src="../assets/liveBroadcast/icon_checked@2x.png"/>
+					<img v-else width="23px;" src="../assets/liveBroadcast/icon_unchecked@2x.png"/>
 				</p>
 				<p class="payment_tips">
 					<img width="20px;" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
@@ -161,7 +163,8 @@ export default {
       cartData:'',
       shipping_id:'',
       customer_id:'',
-      id:''
+      id:'',
+      payment_boll:false
     }
   },
   mounted(){//mounted
@@ -182,7 +185,7 @@ export default {
 	.then(function(dataJson){
 		//console.log(JSON.stringify(dataJson.data))
 		if(dataJson.data.info.length<=0){
-			_this.$router.push({ name: 'newAddress'})
+			_this.$router.push({ name: 'newAddress',query:{id:'1'}})
 		};
 		for(let key in dataJson.data.info){
 			if(dataJson.data.info[key].is_default==1){
@@ -340,8 +343,6 @@ export default {
   			return false;
   		};
 
-  		
-  		
   		//支付
   		/*
   		return false;
@@ -364,6 +365,14 @@ export default {
   	},
   	commodity_eve(){
   		this.commodity_boll?this.commodity_boll = false:this.commodity_boll = true;
+  	},
+  	payment_select_eve(){
+  		// if(boll){
+  		// 	this.img_unchecked = require('../assets/liveBroadcast/icon_unchecked@2x.png')
+  		// }else{
+  		// 	this.img_unchecked = require('../assets/liveBroadcast/icon_checked@2x.png')
+  		// }
+  		this.payment_boll?this.payment_boll = false:this.payment_boll = true
   	}
   }
 }
@@ -529,9 +538,16 @@ export default {
     padding: 9px 0px;
     font-size: 14px;
     text-indent: 23px;
+    position: relative;
 }
 .payment_select span{
 	color: #888;
+}
+.payment_select img{
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 }
 .payment_tips{
 	padding: 5px 11px;

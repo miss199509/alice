@@ -75,6 +75,7 @@ export default {
     }
   },
   created(){
+  	//console.log(this.$route.query.id)
   	if(this.$store.state.language){
   		this.adderss_list = [
 	      	{'text':'','pla':'Full Name','event':''},
@@ -119,7 +120,12 @@ export default {
 		.then(function(dataJson){
 			//console.log(dataJson.data)
 			if(dataJson.data.result){
-				_this.$router.push({ name: 'Delivery',query: {cid:_this.$store.state.cid_talk}})
+				//console.log(_this.$router.query.id)
+				if(parseInt(_this.$route.query.id)){
+					window.history.go(-1);
+				}else{
+					_this.$router.push({ name: 'Delivery',query: {cid:_this.$store.state.cid_talk}})
+				}
 			}
 		})
 		.catch(function(err){
