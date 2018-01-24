@@ -1,61 +1,66 @@
 <template>
 	<div class="liveList">
 		<div class="header_title">
-			<strong>订单确认</strong>
+			<strong class="color_aimai">{{parseInt($store.state.language)?'Order Confirmation':'订单确认'}}</strong>
 		</div>
 		<nav class="order_box">
 			<div class="order_content">
-				<h3 class="order_content_title">
-					<img width="23px;" src="../assets/liveBroadcast/icon_confirmedcheckmark.png"/>
-					订单成功
-				</h3>
-				<ul class="commodity" v-for="(val,key) in shoppingCart">
-					<li>
-						<img width="55px" :src="val.images"/>
-					</li>
-					<li class="commodity_text">
-						<h4>{{val.ch_name}}</h4>
+
+				<div class="order_content_box">
+					<h3 class="order_content_title">
+						<img width="130px;" src="../assets/liveBroadcast/icon_succeed@2x.png"/>
+						<span class="color_aimai">{{parseInt($store.state.language)?'ORDERSUCCESS':'订单成功'}}</span>
+					</h3>
+
+					<div class="address">
 						<p>
-							<span>数量：{{val.product_amount}}</span>
+							<strong>{{parseInt($store.state.language)?'Ship to':'寄到'}}</strong>
+							<span>{{delivery_nav.cnee}}</span>
 						</p>
-						<p>
-							<strong>${{parseFloat(val.product_price/100).toFixed(2)}}</strong>
-						</p>
-					</li>
-				</ul>
-				<div class="address">
-					<p>
-						<strong>寄到</strong>
-					</p>
-					<div>
-						<p>{{delivery_nav.cnee}}</p>
-						<p>{{delivery_nav.street}}</p>
-						<p>{{delivery_nav.state}}{{delivery_nav.postcode}}</p>
+						<div>
+							<p>{{delivery_nav.street}},{{delivery_nav.full_address}}</p>
+							<p>{{delivery_nav.state}}{{delivery_nav.postcode}}</p>
+						</div>
 					</div>
 				</div>
+
+				<ul class="commodity" :style="{height:backgHeight+'px'}">
+					<li v-for="(val,key) in shoppingCart">
+						<img width="65px" :src="val.images"/>
+						<div class="commodity_text">
+							<h4>{{val.ch_name}}</h4>
+							<p>
+								<span>{{parseInt($store.state.language)?'QTY':'数量'}}：{{val.product_amount}}</span>
+							</p>
+							<p>
+								<strong>${{val.product_price}}.00</strong>
+							</p>
+						</div>
+					</li>
+				</ul>
 				<ul class="global_bill">
 					<li class="overflowRemove">
-						<span class="floatLeft">小计</span>
-						<span class="floatRight">$0.00</span>
+						<span class="floatLeft">{{parseInt($store.state.language)?'Subtotal':'小计'}}</span>
+						<span class="floatRight">${{total}}.00</span>
 					</li>
 					<li class="overflowRemove">
-						<span class="floatLeft">税</span>
+						<span class="floatLeft">{{parseInt($store.state.language)?'Tax':'税'}}</span>
 						<span class="floatRight">0</span>
 					</li>
 					<li class="overflowRemove">
-						<span class="floatLeft">运费</span>
+						<span class="floatLeft">{{parseInt($store.state.language)?'Shipping':'运费'}}</span>
 						<span class="floatRight">0</span>
 					</li>
-					<li class="overflowRemove">
+					<li class="overflowRemove" style="border-top: 1px solid #fff;padding-top: 7px;">
 						<h3>
-							<span class="floatLeft">合计</span>
-							<span class="floatRight">$0.00</span>
+							<span class="floatLeft" style="font-size: 17px;color: #333">{{parseInt($store.state.language)?'TOTAL':'合计'}}</span>
+							<span class="floatRight" style="font-size: 17px;color: #333">${{total}}.00</span>
 						</h3>
 					</li>
 				</ul>
 			</div>
 		</nav>
-		<p class="checkout" @click="register()">回到游戏</p>
+		<p class="checkout" @click="register()">{{parseInt($store.state.language)?'BACK TO GAME':'回到游戏'}}</p>
 	</div>
 
 </template>
@@ -71,11 +76,15 @@ export default {
     return {
 		shoppingCart:[],
 		delivery_nav:{},
-		cart_list:[]
+		cart_list:[],
+		backgHeight:0,
+		total:0
 
     }
   },
   mounted(){//mounted
+  	this.backgHeight = document.documentElement.clientHeight-393;
+
   	var _this = this;
   	//收货地址
   	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$store.state.cid_talk}))
@@ -84,6 +93,7 @@ export default {
 		for(let key in dataJson.data.info){
 			if(dataJson.data.info[key].is_default==1){
 				_this.delivery_nav = dataJson.data.info[key];
+				console.log(JSON.stringify(_this.delivery_nav))
 			}
 		}
 		//console.log(JSON.stringify(_this.delivery_nav))
@@ -93,6 +103,9 @@ export default {
 	});
 	//购买的商品信息
 	this.shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'));
+	for(let i in this.shoppingCart){
+		this.total+=this.shoppingCart[i].product_price;
+	}
   },
   methods: {
   	register(){
@@ -111,102 +124,100 @@ export default {
 	height: 40px;
 	line-height: 40px;
 	font-size: 17px;
-	background-color: #FFFFFF;
-	color: #44A7D6;
 }
 .order_box{
-	padding: 0px 7px;
-	margin-top: 7px;
+	padding:0px 7px;
 }
 .order_content{
-	background-color: #fff;
-	border-radius: 5px;
 }
+
 .order_content_title{
-	text-align: center;
-	background-color: #A9E0FF;
-	color: #fff;
-	height: 40px;
-	line-height: 40px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 17px 0px;
+}
+.order_content_title span{
 	font-size: 17px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
 }
 
-
-
-
-
-
-
-
-
-.global_bill{
-	padding: 5px 23px;
-	margin-top: 13px;
-	font-size: 14px;
-}
-
-.global_bill li{
-	margin-bottom: 7px;
-}
-.global_bill li h3{
-	border-top: 1px solid #eee;
-	padding-top: 7px;
-	font-size: 15px;
-}
-
-.commodity{
-	display: flex;
-    justify-content: left;
-    align-items: center;
-    padding: 9px 0px;
-    background: #EFEFEF;
-}
-.commodity_text h4{
-	font-size: 14px;
-}
-.commodity_text{
-	margin-left: 13px;
-}
-.commodity_text span{
-	color: #ccc;
-	font-size: 12px;
-
-}
-.commodity_text strong{
-	font-size: 14px;
-}
 .address{
-	display: flex;
-    justify-content: left;
-    align-items: center;
-    margin: 2px 23px;
-    padding: 7px 0px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+	background-color: #fff;
+	padding: 5px 17px;
 }
 .address strong{
 	font-size: 13px;
+	color: #333;
 }
-.address div{
-	margin-left: 13px;
-	font-size: 13px;
+.address span{
+	font-size: 14px;
+	color: #999;
+}
+.address p{
+	color: #999;
+	font-size: 14px;
+}
+.address div p{
+	text-indent: 30px;
+}
+
+
+.checkout{
+	background:url('../assets/loading/btn_GetCod@2x.png');
+	background-position: center center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	width: 140px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	margin: 0px auto;
+	margin-top: 23px;
+}
+.commodity{
+	padding: 0px 7px;
+	margin: 7px 0px;
+	background-color: #E6E6E6;
+	overflow: auto;
+}
+.commodity li{
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	padding: 13px 9px;
+}
+.commodity_text{
+	margin-left: 9px;
+	width: 100%;
+}
+.commodity_text p{
+	margin: 5px 0px;
+}
+.commodity_text span{
 	color: #ccc;
 }
-.checkout{
-	background-color: #39E5FB;
-	height: 35px;
-	line-height: 35px;
-	border-radius: 3px;
-	text-align: center;
-	color: #fff;
+.commodity_text h4{
 	font-size: 15px;
-    box-shadow: 0px 5px 3px #0270C7;
-    width: 60%;
-    position: fixed;
-    bottom: 13px;
-   	-webkit-transform: translateX(-50%) translateY(0%);
-   	left: 50%;
+}
+.commodity_text strong{
+	float: right;
+	background-color: #E0B553;
+	border-radius: 13px;
+	padding: 2px 13px;
+	color: #fff;
+}
+
+.order_content_box{
+	background-color: #E6E6E6;
+	border-radius: 3px;
+	padding-bottom: 2px;
+}
+.global_bill span{
+	font-size: 14px;
+	color: #7F7F7F;
+}
+.global_bill li{
+	padding:0px 13px;
+	margin: 5px 0px;
 }
 </style>

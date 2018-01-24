@@ -129,8 +129,39 @@
 						<strong>￥{{parseFloat(product_price_val/100).toFixed(2)}}</strong>
 					</li>
 				</ul>
-				<p style="display: none;" @click="register()">{{parseInt($store.state.language)?'PAY':'支付'}}</p>
-				<div id="paypal-button-container"></div>
+				<p @click="register()">{{parseInt($store.state.language)?'PAY':'支付'}}</p>
+
+				<!-- paypal沙盒支付测试地址 -->
+				<form id="pay_form" name="pay_form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+					<!-- 支付金额-->
+					<input type="hidden" name="amount" id="amount" :value="product_price_val/100">
+					<!-- 自己的参数 商品条目-->
+					<input type="hidden" name="item_number" id="item_number" value="xiu90 coins:50">
+					<!-- 表示立即支付-->
+					<input type="hidden" name="cmd" id="cmd" value="_xclick">
+					<!-- 商品名称-->
+					<input type="hidden" name="item_name" id="item_name" value="buy xiu90 coins">
+					<!-- 商户订单唯一id 不可重复 -->
+					
+					<input type="hidden" name="custom" id="custom" :value="customer_id">
+					<input type="hidden" name="invoice" id="invoice" :value="id">
+					 
+					 <!--支付成功后台通知地址-->
+					<input type="hidden" name="notify_url" id="notify_url" value="http://red.alice.live/wallet/finish-paypal">
+					<!--支付成功返回地址-->
+					<input type="hidden" name="return" id="return" value="http://10.1.106.23:8087/#/newSettlement?product_id=46445&product_id=46446">
+					<input type="hidden" name="lc" id="lc" value="China">
+					<!--支付取消返回地址-->
+					<input type="hidden" name="cancel_return" id="cancel_return" value="http://10.1.106.23:8087/#/newSettlement?product_id=46445&product_id=46446">
+					<input type="hidden" name="currency_code" id="currency_code" value="USD">
+					<!--商户邮件-->
+					<input type="hidden" name="business" id="business" value="payment@alice.live">
+				</form>
+
+
+
+
+				<!-- <div id="paypal-button-container"></div> -->
 			</div>
 
 		</div>
@@ -246,23 +277,11 @@ export default {
 
 
 
-	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
- 		cid:_this.$store.state.cid_talk,
-		cart_id:_this.cartData,
-		shippingaddressid:_this.shipping_id
- 	}))
-	.then(function(dataJson){
-		_this.customer_id = dataJson.data.customer_id;
-		_this.id = dataJson.data.id;
-	})
-	.catch(function(err){
-		alert(err);
-	});
+	
 
 
 
-
-
+	/*
 	paypal.Button.render({
 
 		env: 'sandbox', // sandbox | production
@@ -328,8 +347,7 @@ export default {
         }
 
 	}, '#paypal-button-container');
-
-
+	*/
 
 
 
@@ -338,10 +356,42 @@ export default {
   methods: {
   	register(){
   		var _this = this;
-  		localStorage.setItem('shoppingCart',JSON.stringify(_this.shoppingCart))
-  		if(_this.shoppingCart<0){
-  			return false;
-  		};
+  		localStorage.setItem('shoppingCart',JSON.stringify(_this.shoppingCart));
+
+  		if(this.payment_boll){
+  			
+  			axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
+		 		cid:_this.$store.state.cid_talk,
+				cart_id:_this.cartData,
+				shippingaddressid:_this.shipping_id,
+				'disccount':'all'
+		 	}))
+			.then(function(dataJson){
+				console.log(dataJson)
+				if(dataJson.data.status==2){
+					_this.$router.push({ name: 'order'})
+				}
+			})
+			.catch(function(err){
+				alert(err);
+			});
+
+  		}else{
+
+  			axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
+		 		cid:_this.$store.state.cid_talk,
+				cart_id:_this.cartData,
+				shippingaddressid:_this.shipping_id,
+		 	}))
+			.then(function(dataJson){
+				_this.customer_id = dataJson.data.customer_id;
+				_this.id = dataJson.data.id;
+  				document.pay_form.submit();	
+			})
+			.catch(function(err){
+				alert(err);
+			});
+  		}
 
   		//支付
   		/*
@@ -565,8 +615,8 @@ export default {
 	display: block;
 }
 
-#paypal-button-container{
+/*#paypal-button-container{
     text-align: center;
     margin-top: 13px;
-}
+}*/
 </style>
