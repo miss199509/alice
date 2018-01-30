@@ -33,7 +33,7 @@
 								<span>{{parseInt($store.state.language)?'QTY':'数量'}}：{{val.product_amount}}</span>
 							</p>
 							<p>
-								<strong>${{val.product_price}}.00</strong>
+								<strong>${{val.product_price/100}}.00</strong>
 							</p>
 						</div>
 					</li>
@@ -41,7 +41,7 @@
 				<ul class="global_bill">
 					<li class="overflowRemove">
 						<span class="floatLeft">{{parseInt($store.state.language)?'Subtotal':'小计'}}</span>
-						<span class="floatRight">${{total}}.00</span>
+						<span class="floatRight">${{total/100}}.00</span>
 					</li>
 					<li class="overflowRemove">
 						<span class="floatLeft">{{parseInt($store.state.language)?'Tax':'税'}}</span>
@@ -54,13 +54,17 @@
 					<li class="overflowRemove" style="border-top: 1px solid #fff;padding-top: 7px;">
 						<h3>
 							<span class="floatLeft" style="font-size: 17px;color: #333">{{parseInt($store.state.language)?'TOTAL':'合计'}}</span>
-							<span class="floatRight" style="font-size: 17px;color: #333">${{total}}.00</span>
+							<span class="floatRight" style="font-size: 17px;color: #333">${{total/100}}.00</span>
 						</h3>
 					</li>
 				</ul>
 			</div>
 		</nav>
 		<p class="checkout" @click="register()">{{parseInt($store.state.language)?'BACK TO GAME':'回到游戏'}}</p>
+		<div class="boxPopup" style="z-index: 1111" v-show="recharge_login_boll">
+			<img class="img_login" width="70px" src="../assets/liveBroadcast/loading.png"/>
+		</div>
+
 	</div>
 
 </template>
@@ -78,7 +82,8 @@ export default {
 		delivery_nav:{},
 		cart_list:[],
 		backgHeight:0,
-		total:0
+		total:0,
+		recharge_login_boll:true
 
     }
   },
@@ -105,7 +110,24 @@ export default {
 	this.shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'));
 	for(let i in this.shoppingCart){
 		this.total+=this.shoppingCart[i].product_price;
-	}
+	};
+	var j = setInterval(function(){
+		axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$store.state.cid_talk}))
+		.then(function(dataJson){
+			console.log(JSON.stringify(dataJson.data))
+			if(dataJson.data.length<=0){
+				console.log(JSON.stringify(dataJson.data))
+				_this.recharge_login_boll = false;
+				clearInterval(j);
+				return false;
+			}
+		})
+		.catch(function(err){
+			alert(err);
+		});
+	},5000)
+
+
   },
   methods: {
   	register(){
@@ -219,5 +241,11 @@ export default {
 .global_bill li{
 	padding:0px 13px;
 	margin: 5px 0px;
+}
+.img_login{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform : translate(-50%,-50%);
 }
 </style>

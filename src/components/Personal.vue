@@ -44,13 +44,8 @@
 					</p>
 					<nav class="portrait_nav">
 						<ul>
-							<li @click="lade()">
-								<img width="27px" src="../assets/personal/iconreloadi6.png"/>
-								<strong class="color_aimai">{{parseInt($store.state.language)?'RELOAD':'充值'}}</strong>
-							</li>
-							<router-link v-for="(val,key) in portrait_nav" :to="{name:val.url,query: {cid:$store.state.cid_talk}}"><!--query: {plan:666}}">{ name: 'history', params: { deviceId: 123, dataId:456 }}-->
-								
-
+							<router-link v-for="(val,key) in portrait_nav" :to="{name:val.url,query: {cid:$store.state.cid_talk}}">
+							<!--query: {plan:666}}">{ name: 'history', params: { deviceId: 123, dataId:456 }}-->
 								<li>
 									<img width="25px" :src="val.imgae"/>
 									<strong class="color_aimai">
@@ -91,6 +86,7 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       portrait_nav:[
+      	{'navName':'RELOAD','navName_new':'充值','imgae':require('../assets/personal/iconreloadi6.png'),'url':'Recharge'},
       	{'navName':'FOLLOWLNG','navName_new':'关注','imgae':require('../assets/personal/iconfollowingi6.png'),'url':'follow'},
       	{'navName':'ADDRESS BOOK','navName_new':'地址簿','imgae':require('../assets/personal/iconaddressbooki6.png'),'url':'Delivery'},
       	{'navName':'HLSTORY','navName_new':'购买记录','imgae':require('../assets/personal/iconhistoryi6.png'),'url':'History'},
@@ -125,10 +121,6 @@ export default {
 
   },
   methods: {
-  	lade(){
-  		this.$router.push({ name: 'Recharge'})
-  		window.location.reload();
-  	},
   	change_avatar(){
   		this.popup = true;
   	},

@@ -28,6 +28,10 @@ import Help from '@/components/Help'
 
 import talk from '@/components/talk'
 import video from '@/components/video'
+//抓娃娃房间
+import liveRoom from '@/components/liveRoom'
+
+
 
 
 
@@ -140,10 +144,16 @@ export default new Router({
       path: '/talk',
       name: 'talk',
       component: talk
-    },{
-	  path: '/video',
+    },
+    {
+	    path: '/video',
       name: 'video',
       component: video
-	}
+	  },
+    {
+      path: '/liveRoom',
+      name: 'liveRoom',
+      component: liveRoom
+    }
   ]
 })//Record

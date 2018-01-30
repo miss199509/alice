@@ -47,7 +47,7 @@
 								<strong>{{val.product_amount}}</strong>
 							</p>
 							<h3 class="color_aimai">
-								￥{{parseFloat(val.product_price).toFixed(2)}}
+								￥{{parseFloat(val.product_price/100).toFixed(2)}}
 							</h3>
 						</div>
 

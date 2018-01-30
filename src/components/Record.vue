@@ -5,7 +5,7 @@
 
 	    <header>
 		    <ul class="headerNav">
-				<li class="floatLeft" @click="recharge()">
+				<li class="floatLeft">
 					<router-link :to="{ name: 'Recharge'}">
 						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
@@ -97,10 +97,6 @@ export default {
 
   },
   methods: {
-  	recharge(){
-  		this.$router.push({ name: 'Recharge'})
-  		window.location.reload();
-  	}
   }
 }
 </script>

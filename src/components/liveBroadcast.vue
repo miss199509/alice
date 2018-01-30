@@ -697,6 +697,7 @@ export default {
 	              //Web Socket 已连接上，使用 send() 方法发送数据
 	              if(_this.chatVal!==''){
 		              var json = {"cmd":4,"cid":_this.giftsData.fid,"roomid":_this.giftsData.roomId,"type":1,"content":_this.chatVal}
+		              console.log(JSON.stringify(json))
 		              ws.send(JSON.stringify(json));
 		              //弹幕发言调用函数
 		              _this.barrage(_this.chatVal,false);
@@ -833,6 +834,7 @@ export default {
 	       ws.onopen = function(){
 	          // Web Socket 已连接上，使用 send() 方法发送数据
 	          var json = {"cmd":2,"cid":_this.$route.query.cid,"roomId":_this.$route.query.roomid,"roomType":2,"lastTick":1501501004.2753,'sessionId':localStorage.getItem('session_id')};
+	          console.log(JSON.stringify(json))
 	          //console.log(JSON.stringify(json))
               ws.send(JSON.stringify(json));
 

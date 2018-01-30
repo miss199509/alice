@@ -45,7 +45,7 @@
 
 	    </div>
 	    
-	    <div class="broadcastBox">
+	    <div class="broadcastBox" :style="{height:height_room+'px'}">
 			<ul class="overflowRemove">
 				<li class="broadcastList" v-for="(val,key) in broadcastList" @click="broadcastList_eve(key)">
 					<div class="overflowRemove">
@@ -308,10 +308,12 @@ export default {
       popup_box_boll:false,
       show: true,
       loginBoll:true,
-      language_boll:0
+      language_boll:0,
+      height_room:0
     }
   },
   mounted(){
+  	this.height_room = document.documentElement.clientHeight-170;
   	//中英文状态初始化
   	this.language_boll = parseInt(localStorage.getItem('language'));
   	//判断当前用户是否是新手
@@ -367,9 +369,14 @@ export default {
   },
   methods: {
   	broadcastList_eve(key){
+  		//红黑
+  		/*
   		localStorage.setItem('is_follow',this.broadcastList[key].is_follow)
   		console.log(this.broadcastList[key].is_follow)
   		this.$router.push({ name: 'liveBroadcast',query: {cid:this.$store.state.cid_talk,dealerid:this.broadcastList[key].dealer_id,roomid:this.broadcastList[key].room_id}})
+  		*/
+  		//抓娃娃
+  		this.$router.push({ name: 'liveRoom',query: {cid:this.$store.state.cid_talk,dealerid:this.broadcastList[key].dealer_id,roomid:this.broadcastList[key].room_id}})
   	},
   	operation_href(){
   		localStorage.setItem('is_follow',this.broadcastList[0].is_follow)
@@ -409,6 +416,7 @@ export default {
 
 .broadcastBox{
 	padding: 0px 3px;
+	overflow: auto;
 }
 .broadcastList{
 	background-color: #fff;

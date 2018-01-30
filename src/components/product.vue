@@ -284,11 +284,13 @@ export default {
 
   		let _this = this;
   		//console.log(_this.$store.state.cid_talk,_this.$route.query.id,_this.number_int,parseFloat(_this.product.price).toFixed(2),sizeVal)
+  		//console.log(_this.product.price*100)
+  		//return false
   		axios.post(_this.$store.state.url_talk+'/cart/add-shop-cart',qs.stringify({
   			cid:_this.$store.state.cid_talk,
   			product_id:_this.$route.query.id,
   			amount:_this.number_int,
-  			price:parseFloat(_this.product.price).toFixed(2),
+  			price:_this.product.price*100,
   			size:sizeVal,
   			sessionid:localStorage.getItem('session_id')
   		}))

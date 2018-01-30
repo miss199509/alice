@@ -97,7 +97,7 @@
 									<span>{{parseInt($store.state.language)?'Size':'数量'}}：{{val.product_amount}}</span>
 								</p>
 								<p>
-									<strong class="floatRight">￥{{parseFloat(val.product_price).toFixed(2)}}</strong>
+									<strong class="floatRight">￥{{parseFloat(val.product_price/100).toFixed(2)}}</strong>
 								</p>
 							</li>
 						</ul>
@@ -135,33 +135,25 @@
 				<form id="pay_form" name="pay_form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 					<!-- 支付金额-->
 					<input type="hidden" name="amount" id="amount" :value="product_price_val/100">
-					<!-- 自己的参数 商品条目-->
-					<input type="hidden" name="item_number" id="item_number" value="xiu90 coins:50">
 					<!-- 表示立即支付-->
 					<input type="hidden" name="cmd" id="cmd" value="_xclick">
-					<!-- 商品名称-->
-					<input type="hidden" name="item_name" id="item_name" value="buy xiu90 coins">
-					<!-- 商户订单唯一id 不可重复 -->
-					
+					<!-- 自定义id -->
 					<input type="hidden" name="custom" id="custom" :value="customer_id">
+					<!-- 商户订单唯一id 不可重复 -->
 					<input type="hidden" name="invoice" id="invoice" :value="id">
-					 
 					 <!--支付成功后台通知地址-->
 					<input type="hidden" name="notify_url" id="notify_url" value="http://red.alice.live/wallet/finish-paypal">
 					<!--支付成功返回地址-->
-					<input type="hidden" name="return" id="return" value="http://10.1.106.23:8087/#/newSettlement?product_id=46445&product_id=46446">
+					<input type="hidden" name="return" id="return" value="http://10.1.106.21:8087/#/order">
 					<input type="hidden" name="lc" id="lc" value="China">
 					<!--支付取消返回地址-->
-					<input type="hidden" name="cancel_return" id="cancel_return" value="http://10.1.106.23:8087/#/newSettlement?product_id=46445&product_id=46446">
+					<input type="hidden" name="cancel_return" id="cancel_return" :value="cancel_return">
 					<input type="hidden" name="currency_code" id="currency_code" value="USD">
 					<!--商户邮件-->
-					<input type="hidden" name="business" id="business" value="payment@alice.live">
+					<input type="hidden" name="business" id="business" value="payment-facilitator@alice.live"><!-- payment@alice.live -->
 				</form>
 
 
-
-
-				<!-- <div id="paypal-button-container"></div> -->
 			</div>
 
 		</div>
@@ -195,22 +187,43 @@ export default {
       shipping_id:'',
       customer_id:'',
       id:'',
-      payment_boll:false
+      payment_boll:false,
+      cancel_return:''
     }
   },
   mounted(){//mounted
+  	let _this = this;
+
+
+
   	this.height = document.documentElement.clientHeight-416;
   	//console.log(location.href)
   	//获链接传过来用户筛选商品选择的商品id
   	let href_data = location.href.substr(location.href.indexOf('?')+1,location.href.length);
+  	
+  	this.cancel_return = location.href;
+
   	let href_dataVal = href_data.replace(/&product_id/g,',').replace(/=/g,'').replace(/product_id/g,'');
   	this.cartData = href_dataVal;
   	let href_dataAttr = href_dataVal.split(",");
 
+  	//购买参数写入
+  	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
+ 		cid:_this.$store.state.cid_talk,
+		cart_id:_this.cartData,
+		shippingaddressid:_this.shipping_id,
+ 	}))
+	.then(function(dataJson){
+		_this.customer_id = dataJson.data.customer_id;
+		//orderid
+		_this.id = dataJson.data.id;
+		console.log(_this.customer_id,_this.id,_this.product_price_val)
+	})
+	.catch(function(err){
+		alert(err);
+	});
 
 
-
-  	var _this = this;
   	//收货地址
   	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$store.state.cid_talk}))
 	.then(function(dataJson){
@@ -279,78 +292,6 @@ export default {
 
 	
 
-
-
-	/*
-	paypal.Button.render({
-
-		env: 'sandbox', // sandbox | production
-		style: {
-            label: 'paypal',
-            size:  'medium',    // small | medium | large | responsive
-            shape: 'rect',     // pill | rect
-            color: 'blue',     // gold | blue | silver | black
-            tagline: false    
-        },
-
-		// PayPal Client IDs - replace with your own
-		// Create a PayPal app: https://developer.paypal.com/developer/applications/create
-		client: {
-			sandbox:    'AdrTCZbf12mjOu_nUljDSXoBaFTZupJkc7VAz58QBqaXjkQzOxl_QXaZ6l2SciaHdpdX6AznzBg4n6Jz',
-			//sandbox:    'Ac-V4QzhQnmwH8H2H3F3NzwNR6nMWjQOUak7ZfUv_orOlGLp4dHZ_a8GR3EFm1JKuYc0n7RvJcSImGVl',
-            production: 'AWXiNHu4_dzD9up4N6FtWSlEOkt_lnO_NFJRLAcIVmSc5J-o0geGj9hpfYHixx2ZET4tx-h1fCYvxA4B'
-		},
-
-		// Show the buyer a 'Pay Now' button in the checkout flow
-		commit: true,
-		validate:function(actions){
-			//actions.disable();
-		},
-		onClick:function(actions){
-
-
-		},
-		// payment() is called when the button is clicked
-		payment: function(data, actions) {
-			// Make a call to the REST api to create the payment
-			return actions.payment.create({
-				payment: {
-					transactions: [
-						{
-							amount: { 
-								total: _this.product_price_val/100,
-								currency: 'USD',
-							},
-							custom:_this.customer_id,
-							invoice_number:_this.id
-						}
-					]
-				}
-			});
-		},
-
-		// onAuthorize() is called when the buyer approves the payment
-		onAuthorize: function(data, actions) {
-
-			// Make a call to the REST api to execute the payment
-			//console.log(JSON.stringify(data))
-			return actions.payment.execute().then(function() {
-				window.alert('Payment Complete!');
-				
-
-				//window.location.reload();
-			});
-		},
-		onCancel: function(data) {
-			console.log(data)
-            window.alert('The payment was cancelled!');
-        }
-
-	}, '#paypal-button-container');
-	*/
-
-
-
 		
   },
   methods: {
@@ -377,20 +318,7 @@ export default {
 			});
 
   		}else{
-
-  			axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
-		 		cid:_this.$store.state.cid_talk,
-				cart_id:_this.cartData,
-				shippingaddressid:_this.shipping_id,
-		 	}))
-			.then(function(dataJson){
-				_this.customer_id = dataJson.data.customer_id;
-				_this.id = dataJson.data.id;
-  				document.pay_form.submit();	
-			})
-			.catch(function(err){
-				alert(err);
-			});
+			document.pay_form.submit();
   		}
 
   		//支付
@@ -615,8 +543,4 @@ export default {
 	display: block;
 }
 
-/*#paypal-button-container{
-    text-align: center;
-    margin-top: 13px;
-}*/
 </style>

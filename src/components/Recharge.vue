@@ -86,8 +86,29 @@
 								</span>
 								<img @click="show_emailboll" width="23px;" src="../assets/liveBroadcast/btn_info@2x.png"/>
 							</p>
-							<p style="display: none;" class="productBet" @click="payment_wx()">{{parseInt($store.state.language)?'Reload':'充值'}}</p>
-							<p id="paypal-button-container"></p>
+							<!-- paypal沙盒支付测试地址 -->
+							<form id="pay_form" name="pay_form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+								<!-- 支付金额-->
+								<input type="hidden" name="amount" id="amount" :value="num">
+								<!-- 表示立即支付-->
+								<input type="hidden" name="cmd" id="cmd" value="_xclick">
+								<!-- 自定义id -->
+								<input type="hidden" name="custom" id="custom" :value="customer_id">
+								<!-- 商户订单唯一id 不可重复 -->
+								<input type="hidden" name="invoice" id="invoice" :value="id">
+								 <!--支付成功后台通知地址-->
+								<input type="hidden" name="notify_url" id="notify_url" value="http://red.alice.live/wallet/finish-paypal">
+								<!--支付成功返回地址-->
+								<input type="hidden" name="return" id="return" :value="return_url">
+								<input type="hidden" name="lc" id="lc" value="China">
+								<!--支付取消返回地址-->
+								<input type="hidden" name="cancel_return" id="cancel_return" :value="cancel_return">
+								<input type="hidden" name="currency_code" id="currency_code" value="USD">
+								<!--商户邮件-->
+								<input type="hidden" name="business" id="business" value="payment-facilitator@alice.live"><!-- payment@alice.live -->
+							</form>
+							<p class="productBet" @click="payment_wx()">{{parseInt($store.state.language)?'Reload':'充值'}}</p>
+							<p style="display: none;" id="paypal-button-container"></p>
 						</div>
 					</div>
 				</div>
@@ -156,114 +177,17 @@ export default {
       //支付传递参数
       customer_id:'',
       id:'',
+      //
+      cancel_return:'',
+      return_url:'',
       recharge_login_boll:false
     }
   },
   created(){
-
-
     var _this = this;
+  	
 	//获取订单
 	this.inputFunc()
-
-
-
-  	paypal.Button.render({
-
-		env: 'sandbox', // sandbox | production
-		style: {
-            label: 'paypal',
-            size:  'medium',    // small | medium | large | responsive
-            shape: 'rect',     // pill | rect
-            color: 'blue',     // gold | blue | silver | black
-            tagline: false    
-        },
-
-		// PayPal Client IDs - replace with your own
-		// Create a PayPal app: https://developer.paypal.com/developer/applications/create
-		client: {
-			sandbox:    'AdrTCZbf12mjOu_nUljDSXoBaFTZupJkc7VAz58QBqaXjkQzOxl_QXaZ6l2SciaHdpdX6AznzBg4n6Jz',
-			//sandbox:    'Ac-V4QzhQnmwH8H2H3F3NzwNR6nMWjQOUak7ZfUv_orOlGLp4dHZ_a8GR3EFm1JKuYc0n7RvJcSImGVl',
-            production: 'AWXiNHu4_dzD9up4N6FtWSlEOkt_lnO_NFJRLAcIVmSc5J-o0geGj9hpfYHixx2ZET4tx-h1fCYvxA4B'
-		},
-
-		// Show the buyer a 'Pay Now' button in the checkout flow
-		commit: true,
-		validate:function(actions){
-			//actions.disable();
-		},
-		onClick:function(actions){
-			//邮箱
-			axios.post(_this.$store.state.url_talk+'/customer/set-email',qs.stringify({
-		  		cid:localStorage.getItem('cid'),
-		  		email:_this.email_val,
-		  		sessionid:localStorage.getItem('session_id')
-		  	}))
-			.then(function(dataJson){
-				console.log(JSON.stringify(dataJson.data))
-			})
-			.catch(function(err){
-				alert(err);
-			});
-
-
-		},
-		// payment() is called when the button is clicked
-		payment: function(data, actions) {
-			// Make a call to the REST api to create the payment
-			return actions.payment.create({
-				payment: {
-					transactions: [
-						{
-							amount: { 
-								total: _this.num,
-								currency: 'USD',
-							},
-							custom:_this.customer_id,
-							invoice_number:_this.id
-						}
-					]
-				}
-			});
-		},
-
-		// onAuthorize() is called when the buyer approves the payment
-		onAuthorize: function(data, actions) {
-
-			// Make a call to the REST api to execute the payment
-			//console.log(JSON.stringify(data))
-			return actions.payment.execute().then(function() {
-				//window.alert('Payment Complete!');
-				_this.recharge_login_boll = true;
-				var j = setInterval(function(){  
-			        axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
-					.then(function(dataJson){
-						console.log(JSON.stringify(dataJson.data))
-						if(dataJson.data.balance/100>_this.balance){
-							_this.balance = dataJson.data.balance/100
-							_this.$store.state.balance_talk = _this.balance.toFixed(2);
-							_this.recharge_login_boll = false;
-							clearInterval(j);
-							return false;
-						}
-
-					})
-					.catch(function(err){
-						alert(err);
-					});
-
-			    },10000);
-				//_this.balance
-
-				//window.location.reload();
-			});
-		},
-		onCancel: function(data) {
-			console.log(data)
-            window.alert('The payment was cancelled!');
-        }
-
-	}, '#paypal-button-container');
 
 
     //钱
@@ -272,6 +196,36 @@ export default {
 		console.log(JSON.stringify(dataJson.data))
 		_this.balance = dataJson.data.balance/100
 		_this.$store.state.balance_talk = _this.balance.toFixed(2);
+
+		var url = location.href;
+		var arr = url.split('?');
+		var ar = arr[0];
+	  	_this.cancel_return = ar+'?num=0';
+	  	_this.return_url = ar+'?num='+_this.balance;
+	  	console.log(_this.return_url)
+	  	
+	  	if(_this.GetRequest().num==_this.balance){
+	  		_this.recharge_login_boll = true;
+			var j = setInterval(function(){  
+		        axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
+				.then(function(dataJson){
+					console.log(JSON.stringify(dataJson.data))
+					console.log(_this.balance)
+					if(dataJson.data.balance/100>_this.balance){
+						_this.balance = dataJson.data.balance/100
+						_this.$store.state.balance_talk = _this.balance.toFixed(2);
+						_this.recharge_login_boll = false;
+						clearInterval(j);
+						return false;
+					}
+				})
+				.catch(function(err){
+					alert(err);
+				});
+
+		    },5000);
+	  	}
+
 
 	})
 	.catch(function(err){
@@ -282,9 +236,7 @@ export default {
   },
   methods: {
   	payment_wx(){
-  		document.getElementById("paypal-button-container").click();
-  		console.log(0)
-
+  		/*
   		let _this = this;
   		if(_this.email_val==''){
   			return false
@@ -333,10 +285,14 @@ export default {
 		.catch(function(err){
 			alert(err);
 		});
-
+		*/
   		//return false;
   		//发送邮件
-  		/*
+  		
+  		let _this = this;
+  		if(_this.email_val==''){
+  			return false
+  		};
   		axios.post(_this.$store.state.url_talk+'/wallet/prepay-cloud-moolah',qs.stringify({
 	  		cid:localStorage.getItem('cid'),
 	  		email:_this.email_val,
@@ -348,21 +304,9 @@ export default {
 		.catch(function(err){
 			alert(err);
 		});
-		*/
-		//充值
-		axios.post(_this.$store.state.url_talk+'/wallet/prepay-paypal',qs.stringify({
-	  		cid:localStorage.getItem('cid'),
-	  		item:1,
-	  		num:_this.num*100,
-	  		sessionid:localStorage.getItem('session_id')
-	  	}))
-		.then(function(dataJson){
-			console.log(JSON.stringify(dataJson.data))
 
-		})
-		.catch(function(err){
-			alert(err);
-		});
+		document.pay_form.submit();
+
 
   	},
   	show_emailboll(){
@@ -405,7 +349,19 @@ export default {
 		.catch(function(err){
 			alert(err);
 		});
-  	}
+  	},
+  	GetRequest() {
+	   var url = location.href; //获取url中"?"符后的字串
+	   var theRequest = new Object();
+	   if (url.indexOf("?") != -1) {
+	      var str = url.substr(1);
+	      var strs = str.split("&");
+	      for(var i = 0; i < strs.length; i ++) {
+	         theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
+	      }
+	   }
+	   return theRequest;
+	}
   }
 }
 </script>
