@@ -68,10 +68,8 @@
 </template>
 
 <script>
-
 import axios from 'axios'
 import qs from 'qs'
-
 export default {
   name: 'liveList',
   data () {
@@ -84,7 +82,6 @@ export default {
   mounted(){
   	
   	this.height_img = document.documentElement.clientHeight-45;
-
   	var _this = this;
   	axios.post(_this.$store.state.url_talk+'/customer/deposit-history',qs.stringify({cid:_this.$store.state.cid_talk}))
 	.then(function(dataJson){
@@ -94,7 +91,6 @@ export default {
 	.catch(function(err){
 		alert(err);
 	});
-
   },
   methods: {
   }
@@ -106,11 +102,9 @@ export default {
 .shoppingl_global{
 	padding: 0px 7px;
 }
-
 .shoppingl_global ul{
 	overflow: auto;
 }
-
 .record{
 	/*display: flex;
 	justify-content: flex-start;
@@ -140,7 +134,6 @@ export default {
     margin: 0px 24px;
     color: #555;
 }
-
 .record_list p{
 	overflow: hidden;
 	margin-bottom: 7px;

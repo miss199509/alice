@@ -30,6 +30,8 @@ import talk from '@/components/talk'
 import video from '@/components/video'
 //抓娃娃房间
 import liveRoom from '@/components/liveRoom'
+import wwjRecord from '@/components/wwjRecord'
+
 
 
 
@@ -154,6 +156,11 @@ export default new Router({
       path: '/liveRoom',
       name: 'liveRoom',
       component: liveRoom
+    },
+    {
+      path: '/wwjRecord',
+      name: 'wwjRecord',
+      component: wwjRecord
     }
   ]
 })//Record

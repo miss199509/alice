@@ -2,11 +2,11 @@
   <div class="liveRoom">
     <header class="liveHeader">
       <router-link :to="{ name: 'liveList'}">
-        <img width="27px;" src="../assets/icon_back@2x.png"/>
+        <img width="27px;" @click="signOut()" src="../assets/icon_back@2x.png"/>
       </router-link>
       <div class="liveHeader_qty">
         <label>
-         {{received_msg.length}}人
+         {{received_msg_box.online}}人
          <br/>在线
         </label>
         <p>
@@ -53,7 +53,7 @@
           <li>
             <label>余额:</label>
             <img width="23px;" src="../assets/icon_dc@2x.png"/>
-            <label>100.00</label>
+            <label>{{received_msg_box.balance/100}}.00</label>
           </li>
         </ul>
         
@@ -93,8 +93,25 @@
     </div>
 
     <div class="continueBox" v-show="continueBoll">
-      <a href="javascript:;" @click="continueEve()">接着玩</a>
-      <span>{{received_msg_box.enjoy_time2}}</span>
+      <div class="">
+        <ul>
+          <li>
+            <p class="continueBox_title">
+              差一点点就抓到了！
+            </p>
+          </li>
+          <li>
+            <img width="230px;" src="../assets/icon@2x.png"/>
+          </li>
+          <li class="continueBox_tips">
+            <p>本局你还有<img width="23px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>58个币</p>是否再来一局？
+          </li>
+          <li>
+            <p class="continueBox_btn_click continueBox_btn" @click="continueEnd()">稍后在试</p>
+            <p class="continueBox_btn_normal continueBox_btn" @click="continueEve()">再来一局({{received_msg_box.enjoy_time2}})</p>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
@@ -127,7 +144,9 @@ export default {
       //最外层
       received_msg_box:0,
       bollStart:true,
-      continueBoll:false
+      continueBoll:false,
+      ws:'',
+      uesBoll:false
     }
   },
   mounted(){
@@ -170,6 +189,7 @@ export default {
        
        // 打开一个 web socket
        var ws = new WebSocket("ws://dev.alice.live:9001");
+       _this.ws = ws;
       
        ws.onopen = function(){
         // Web Socket 已连接上，使用 send() 方法发送数据
@@ -191,23 +211,39 @@ export default {
         let received_msg = JSON.parse(evt.data);
         if(received_msg.cmd==3){
           for(let i in received_msg.cmds){
+            console.log(received_msg.cmds[i].id+'****')
             if(received_msg.cmds[i].id==66){
-              //console.log(received_msg.cmds[i].play_pool)
               _this.received_msg_box = received_msg.cmds[i];
+              //console.log(JSON.stringify(received_msg.cmds[i].content))
+              console.log(received_msg.cmds[i].online+'----')
+
+              if(received_msg.cmds[i].content.length==0 || _this.gamePlayer.id!=_this.$route.query.cid){
+                console.log('出去')
+                _this.continueBoll = false;
+                _this.operation = false;
+                _this.wait = true;
+                if(_this.uesBoll){
+                  _this.lineUpBoll = true;
+                }else{
+                  _this.lineUpBoll = false;
+                }
+              }
+
+
               if(received_msg.cmds[i].content.length>0){
                 _this.gamePlayer = received_msg.cmds[i].content[0];
                 
                 console.log(JSON.stringify(_this.gamePlayer.id))
                 console.log(_this.$route.query.cid)
                 console.log(received_msg.cmds[i].enjoy_time2)
+
                 //判断玩家抓取成功
                 if(received_msg.cmds[i].enjoy_time2==0 && _this.gamePlayer.id==_this.$route.query.cid && !_this.bollStart){
                   _this.bollStart = true;
-                  //_this.operation = false;
-                  //_this.wait = true;
-                  //_this.lineUpBoll = false;
                   _this.continueBoll = true;
-                  console.log(0)
+                  _this.uesBoll = false;
+                }else{
+                  //_this.continueBoll = false;
                 }
                 //判断是否到当前玩家抓取的时间
                 if(_this.gamePlayer.id==_this.$route.query.cid && _this.bollStart && received_msg.cmds[i].enjoy_time2>0){
@@ -262,6 +298,7 @@ export default {
         return false
       }
       let _this = this
+      _this.uesBoll = true;
       //WebSocket推流操作
       if ("WebSocket" in window){
          //console.log("您的浏览器支持 WebSocket!");
@@ -437,6 +474,16 @@ export default {
       }
 
 
+    },
+    //结束游戏
+    continueEnd(){
+      this.continueBoll = false;
+      this.operation = false;
+      this.wait = true;
+      this.lineUpBoll = false;
+    },
+    signOut(){
+      this.ws.close();
     }
   }
 }
@@ -544,8 +591,9 @@ a {
   line-height: 43px;
 }
 .countdown span{
-  color: #fff;
-  font-size: 23px;
+  color: #2EE63A;
+  font-size: 21px;
+  font-weight: bold;
 }
 
 .livePrice li{
@@ -656,12 +704,61 @@ a {
 
 /*提示是否继续*/
 .continueBox{
-  background-color: #666;
+  background-image: url('../assets/bg_popup@2x.png');
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+}
+.continueBox div{
   position: absolute;
   top: 50%;
   left: 50%;
   transform : translate(-50%,-50%);
-  height: 130px;
-  width: 300px;
+}
+
+.continueBox li{
+  margin-bottom: 23px;
+  text-align: center;
+}
+.continueBox_title{
+  font-size: 21px;
+  color: #aeaeae;
+}
+.continueBox_tips{
+  font-size: 21px;
+  color: #aeaeae;
+}
+.continueBox_tips p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.continueBox_tips img{
+  margin: 0px 11px;
+}
+
+
+.continueBox_btn{
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 230px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #454545;
+  font-size: 19px;
+  margin: 9px 0px;
+}
+.continueBox_btn_click{
+  background-image: url('../assets/btn_click@2x.png');
+}
+.continueBox_btn_normal{
+  background-image: url('../assets/btn_normal@2x.png');
 }
 </style>

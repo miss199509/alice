@@ -669,7 +669,8 @@ export default {
       	{text:520,boll:false},
       	{text:999,boll:false},
       	{text:1314,boll:false}
-      ]
+      ],
+      ws:''
     }
   },
   mounted(){
@@ -831,6 +832,7 @@ export default {
 	    if ("WebSocket" in window){
 	       // 打开一个 web socket
 	       var ws = new WebSocket(_this.WS_SERVER);
+	       _this.ws = ws;
 	       ws.onopen = function(){
 	          // Web Socket 已连接上，使用 send() 方法发送数据
 	          var json = {"cmd":2,"cid":_this.$route.query.cid,"roomId":_this.$route.query.roomid,"roomType":2,"lastTick":1501501004.2753,'sessionId':localStorage.getItem('session_id')};
@@ -1553,10 +1555,7 @@ export default {
   	},
   	//退出关闭
   	liveListReturn(){
-		ws.onclose = function(){ 
-			// 关闭 websocket
-			console.log("连接已关闭...");
-		};
+		this.ws.close();
   	},
   	//关注
   	ues_portrait(){
