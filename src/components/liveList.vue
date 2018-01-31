@@ -376,7 +376,12 @@ export default {
   		this.$router.push({ name: 'liveBroadcast',query: {cid:this.$store.state.cid_talk,dealerid:this.broadcastList[key].dealer_id,roomid:this.broadcastList[key].room_id}})
   		*/
   		//抓娃娃
-  		this.$router.push({ name: 'liveRoom',query: {cid:this.$store.state.cid_talk,dealerid:this.broadcastList[key].dealer_id,roomid:this.broadcastList[key].room_id}})
+  		this.$router.push({ name: 'liveRoom',query: {
+  				cid:this.$store.state.cid_talk,
+  				dealerid:this.broadcastList[key].dealer_id,
+  				roomid:this.broadcastList[key].room_id,
+  				roomType:this.broadcastList[key].room_type
+  			}})
   	},
   	operation_href(){
   		localStorage.setItem('is_follow',this.broadcastList[0].is_follow)

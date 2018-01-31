@@ -1,13 +1,16 @@
 <template>
   <div class="liveRoom">
     <header class="liveHeader">
-      <img width="27px;" src="../assets/icon_back@2x.png"/>
+      <router-link :to="{ name: 'liveList'}">
+        <img width="27px;" src="../assets/icon_back@2x.png"/>
+      </router-link>
       <div class="liveHeader_qty">
         <label>
          {{received_msg.length}}人
          <br/>在线
         </label>
         <p>
+          <!-- <span v-for="(val,key) in received_msg" >{{val}}</span> -->
           <img v-for="(val,key) in received_msg" width="33px;" :src="val.portrait"/>
         </p>
       </div>
@@ -16,6 +19,12 @@
     <div class="video_box">
       <canvas id="jsmpeg-player"></canvas>
       <canvas id="jsmpeg-player2"></canvas>
+      
+      <p class="canvasVideo" :style="{height:height_video+'px'}">
+        <span class="borderLeft"></span>
+        <span class="borderRight"></span>
+      </p>
+
       <div class="videoSet_up">
         <div class="">
           <img width="33px;" :src="gamePlayer.portrait"/>
@@ -24,7 +33,12 @@
             <strong>游戏中</strong>
           </p>
         </div>
-        <img @click="start()" class="switch" width="47px;" src="../assets/btn_switch@2x.png"/>
+        <!-- 切换视频 -->
+        <!-- <img @click="switchCamera()" class="switch" width="47px;" src="../assets/btn_switch@2x.png"/> -->
+        <!-- <img src="../assets/liveBroadcast/icon_countdown@2x.png"/> -->
+        <p class="countdown">
+          <span>{{received_msg_box.enjoy_time2}}</span>
+        </p>
       </div>
     </div>
   
@@ -34,7 +48,7 @@
           <li>
             <label>本次:</label>
             <img width="23px;" src="../assets/icon_dc@2x.png"/>
-            <label>100.00/次</label>
+            <label>{{received_msg_box.play_pool/100}}.00/次</label>
           </li>
           <li>
             <label>余额:</label>
@@ -52,7 +66,7 @@
                 预约排队
               </strong>
               <span>
-                前面2人
+                前面{{received_msg.length}}人
               </span>
             </p>
           </div>
@@ -78,6 +92,11 @@
     
     </div>
 
+    <div class="continueBox" v-show="continueBoll">
+      <a href="javascript:;" @click="continueEve()">接着玩</a>
+      <span>{{received_msg_box.enjoy_time2}}</span>
+    </div>
+
 
   </div>
 </template>
@@ -101,17 +120,26 @@ export default {
       //当前玩家
       gamePlayer:{'nickname':'二狗子','portrait':require('../assets/avatar@2x.png')},
       //计时
-      time_config:{}
+      time_config:{},
+      //层
+      height_video:0,
+      client:'',
+      //最外层
+      received_msg_box:0,
+      bollStart:true,
+      continueBoll:false
     }
   },
   mounted(){
-
+    console.log(this.$route.query.cid)
     // document.getElementById('jsmpeg-player').style.width = "100%";
     let height_ = document.documentElement.clientHeight-207;
+    this.height_video = height_
     //console.log(height_)
     document.getElementById('jsmpeg-player').style.height = height_+"px";
 
     var client = AgoraCMH5SDK.createClient();
+    this.client = client;
     client.init('fa715ad316694ac8a88cbb05a878fb15', 'alice', {
       //对应的动态key，如果没有请不需要传null，直接不带这个参数即可，可选 alicerm1 AliceRm1
       //key: key,
@@ -145,16 +173,57 @@ export default {
       
        ws.onopen = function(){
         // Web Socket 已连接上，使用 send() 方法发送数据
-        var json = {"cmd":66,"cid":1168,"roomid":47,"join":0,'flag':0};
+        var json = {
+          "cmd":2,
+          "cid":_this.$route.query.cid,
+          "roomId":_this.$route.query.roomid,
+          "roomType":_this.$route.query.roomType,
+          "lastTick":1501501004.2753,
+          'sessionId':localStorage.getItem('session_id')
+        };
 
         ws.send(JSON.stringify(json));
         //console.log("数据发送中...");
        };
       
        ws.onmessage = function (evt) {
-        console.log(evt.data)
+        //console.log(evt.data)
         let received_msg = JSON.parse(evt.data);
-        if(received_msg.cmd==66){
+        if(received_msg.cmd==3){
+          for(let i in received_msg.cmds){
+            if(received_msg.cmds[i].id==66){
+              //console.log(received_msg.cmds[i].play_pool)
+              _this.received_msg_box = received_msg.cmds[i];
+              if(received_msg.cmds[i].content.length>0){
+                _this.gamePlayer = received_msg.cmds[i].content[0];
+                
+                console.log(JSON.stringify(_this.gamePlayer.id))
+                console.log(_this.$route.query.cid)
+                console.log(received_msg.cmds[i].enjoy_time2)
+                //判断玩家抓取成功
+                if(received_msg.cmds[i].enjoy_time2==0 && _this.gamePlayer.id==_this.$route.query.cid && !_this.bollStart){
+                  _this.bollStart = true;
+                  //_this.operation = false;
+                  //_this.wait = true;
+                  //_this.lineUpBoll = false;
+                  _this.continueBoll = true;
+                  console.log(0)
+                }
+                //判断是否到当前玩家抓取的时间
+                if(_this.gamePlayer.id==_this.$route.query.cid && _this.bollStart && received_msg.cmds[i].enjoy_time2>0){
+                  _this.start()
+                }
+
+                _this.received_msg = received_msg.cmds[i].content;
+              }else{
+                _this.gamePlayer = {'nickname':'二狗子','portrait':require('../assets/avatar@2x.png')};
+              }
+              //console.log(JSON.stringify(_this.gamePlayer))
+            }
+          }
+          //_this.gamePlayer = received_msg.cmds[0].content[0];
+          //console.log(JSON.stringify(_this.gamePlayer))
+          /*
           //当前玩家
           if(received_msg.current_user.nickname!=undefined){
             _this.gamePlayer = received_msg.current_user;
@@ -166,13 +235,14 @@ export default {
             //console.log(JSON.stringify(received_msg.cmds[inde].content))
             _this.received_msg = received_msg.cmds[inde].content
           }
+          */
         }
         console.log("数据已接收...");
        };
       
        ws.onclose = function(){ 
         // 关闭 websocket
-        alert("连接已关闭..."); 
+        console.log("连接已关闭..."); 
        };
     }else{
        // 浏览器不支持 WebSocket
@@ -187,6 +257,7 @@ export default {
   methods:{
     // 排队
     lineUp(){
+      console.log('---------------------------------------------------')
       if(this.lineUpBoll){
         return false
       }
@@ -196,11 +267,11 @@ export default {
          //console.log("您的浏览器支持 WebSocket!");
          
          // 打开一个 web socket
-         var ws = new WebSocket("ws://red.alice.live:9001");
+         var ws = new WebSocket("ws://dev.alice.live:9001");
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
-          var json = {"cmd":66,"cid":1168,"roomid":47,"join":1,'flag':1};
+          var json = {"cmd":66,"cid":_this.$route.query.cid,"roomid":_this.$route.query.roomid,"join":1,'flag':0};
 
           ws.send(JSON.stringify(json));
           //console.log("数据发送中...");
@@ -220,7 +291,9 @@ export default {
             //console.log(JSON.stringify(received_msg.cmds))
             for(let inde in received_msg.cmds){
               //console.log(JSON.stringify(received_msg.cmds[inde].content))
-              _this.received_msg = received_msg.cmds[inde].content
+              if(received_msg.cmds[inde].content.length>0){
+                _this.received_msg = received_msg.cmds[inde].content
+              }
             }
           }
           //console.log("数据已接收...");
@@ -228,7 +301,7 @@ export default {
         
          ws.onclose = function(){ 
           // 关闭 websocket
-          alert("连接已关闭..."); 
+          console.log("连接已关闭..."); 
          };
       }else{
          // 浏览器不支持 WebSocket
@@ -241,23 +314,28 @@ export default {
     //获取code
     start(){
       this.operation = true;
-      this.wait = false
+      this.wait = false;
       let _this = this;
-      axios.post('https://red.alice.live/wawa/catch-start',qs.stringify({cid:'1168',room_id:'47'}))
+      axios.post(_this.$store.state.url_talk+'/wawa/catch-start',qs.stringify({cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
       .then(function(dataJson){
         console.log(JSON.stringify(dataJson.data))
         _this.wawaCode = dataJson.data.data;
+        _this.bollStart = false;
+        _this.continueBoll = false;
       })
       .catch(function(err){
         alert(err);
       });
-
+    },
+    //切换视频
+    switchCamera(){
+      this.client.switchCamera();
     },
     //按钮上
     btn_upEve(){
       let _this = this
       if(_this.wawaCode){
-        axios.post('https://red.alice.live/wawa/catch-forward',qs.stringify({verify_code:_this.wawaCode,cid:'1168',room_id:'47'}))
+        axios.post(_this.$store.state.url_talk+'/wawa/catch-forward',qs.stringify({verify_code:_this.wawaCode,cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
         .then(function(dataJson){
           console.log(dataJson.data)
         })
@@ -271,7 +349,7 @@ export default {
     btn_leftEve(){
       let _this = this
       if(_this.wawaCode){
-        axios.post('https://red.alice.live/wawa/catch-left',qs.stringify({verify_code:_this.wawaCode,cid:'1168',room_id:'47'}))
+        axios.post(_this.$store.state.url_talk+'/wawa/catch-left',qs.stringify({verify_code:_this.wawaCode,cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
         .then(function(dataJson){
           console.log(dataJson.data)
         })
@@ -285,7 +363,7 @@ export default {
     btn_rightEve(){
       let _this = this
       if(_this.wawaCode){
-        axios.post('https://red.alice.live/wawa/catch-right',qs.stringify({verify_code:_this.wawaCode,cid:'1168',room_id:'47'}))
+        axios.post(_this.$store.state.url_talk+'/wawa/catch-right',qs.stringify({verify_code:_this.wawaCode,cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
         .then(function(dataJson){
           console.log(dataJson.data)
         })
@@ -299,7 +377,7 @@ export default {
     btn_downEve(){
       let _this = this
       if(_this.wawaCode){
-        axios.post('https://red.alice.live/wawa/catch-back',qs.stringify({verify_code:_this.wawaCode,cid:'1168',room_id:'47'}))
+        axios.post(_this.$store.state.url_talk+'/wawa/catch-back',qs.stringify({verify_code:_this.wawaCode,cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
         .then(function(dataJson){
           console.log(dataJson.data)
         })
@@ -313,7 +391,7 @@ export default {
     doEve(){
       let _this = this
       if(_this.wawaCode){
-        axios.post('https://red.alice.live/wawa/catch-do',qs.stringify({verify_code:_this.wawaCode,cid:'1168',room_id:'47'}))
+        axios.post(_this.$store.state.url_talk+'/wawa/catch-do',qs.stringify({verify_code:_this.wawaCode,cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
         .then(function(dataJson){
           console.log(dataJson.data)
         })
@@ -325,6 +403,40 @@ export default {
     },
     eve(){
       // alert(0)
+    },
+    //继续玩
+    continueEve(){
+      let _this = this
+      //WebSocket推流操作
+      if ("WebSocket" in window){
+         //console.log("您的浏览器支持 WebSocket!");
+         
+         // 打开一个 web socket
+         var ws = new WebSocket("ws://dev.alice.live:9001");
+        
+         ws.onopen = function(){
+          // Web Socket 已连接上，使用 send() 方法发送数据
+          var json = {"cmd":66,"cid":_this.$route.query.cid,"roomid":_this.$route.query.roomid,"join":1,'flag':1};
+
+          ws.send(JSON.stringify(json));
+          //console.log("数据发送中...");
+         };
+        
+         ws.onmessage = function (evt) {
+          console.log(evt.data)
+          //console.log("数据已接收...");
+         };
+        
+         ws.onclose = function(){ 
+          // 关闭 websocket
+          console.log("连接已关闭..."); 
+         };
+      }else{
+         // 浏览器不支持 WebSocket
+         alert("您的浏览器不支持 WebSocket!");
+      }
+
+
     }
   }
 }
@@ -421,6 +533,21 @@ a {
 
 
 
+
+.countdown{
+  background-image: url('../assets/liveBroadcast/icon_countdown@2x.png');
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 43px;
+  height: 43px;
+  line-height: 43px;
+}
+.countdown span{
+  color: #fff;
+  font-size: 23px;
+}
+
 .livePrice li{
   display: flex;
   justify-content: space-between;
@@ -508,5 +635,33 @@ a {
 }
 .operation .btn_down{
   margin-top: -33px;
+}
+.canvasVideo{
+  position: relative;
+  width: 100%;
+}
+.canvasVideo span{
+  position: absolute;
+  height: 100%;
+  width: 11px;
+  background-color: #DDB869;
+}
+.canvasVideo .borderLeft{
+  left: -11px;
+}
+.canvasVideo .borderRight{
+  right: -11px;
+}
+
+
+/*提示是否继续*/
+.continueBox{
+  background-color: #666;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform : translate(-50%,-50%);
+  height: 130px;
+  width: 300px;
 }
 </style>
