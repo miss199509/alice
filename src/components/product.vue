@@ -25,7 +25,7 @@
 			<div class="product_center">
 
 
-				<swiper :options="swiperOption" style="height: 200px;">
+				<swiper :options="swiperOption" style="height: 180px;">
 				    <swiper-slide v-for="(val,key) in listImg">
 						<img width="120px;" :src="val"/>
 				    </swiper-slide>
@@ -274,6 +274,7 @@ export default {
   		if(parseFloat(this.$store.state.balance_talk-this.price).toFixed(2)<0){
   			this.recharge_popup = true;
   			this.tips_text = '充钱去';
+  			this.$router.push({ name: 'Recharge'})
   			return false
   		}
 	  	for(let id in this.listSize){
@@ -296,9 +297,11 @@ export default {
   		}))
 		.then(function(dataJson){
 			_this.tips_text = dataJson.data.message;
-			_this.recharge_popup = true;
+			
 			if(dataJson.data.result==1){
 				_this.$router.push({ name: 'Settlement'})
+			}else{
+				_this.recharge_popup = true;
 			}
 		})
 		.catch(function(err){
@@ -307,8 +310,9 @@ export default {
   	},
   	lade(){
   		if(this.recharge_popup){
-	  		this.$router.push({ name: 'Recharge'})
-	  		//window.location.reload();
+  			this.recharge_popup = false;
+  			this.product_tips = false;
+	  		//this.$router.push({ name: 'Recharge'})
   		}
   	},
   	balance_eve(){

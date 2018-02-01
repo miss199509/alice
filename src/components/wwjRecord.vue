@@ -7,7 +7,11 @@
       </strong>
     </header>
 
-
+    <div class="" v-show="record_navList[0].boll">
+      <div class="products">
+        <img width="100%" :src="productsImg"/>
+      </div>
+    </div>
 
     <div class="record_ranking" v-show="record_navList[1].boll">
       <ul class="recordList recordListRecord" :style="{height:height_box+'px'}">
@@ -28,26 +32,26 @@
       <div class="record_ranking">
         <p class="record_ranking_title">
           <span class="icon_two">
-            <img :src="rankingBack[1].picture"/>
+            <img :src="rankingBack_two.picture"/>
           </span>
           <span class="icon_one">
-            <img :src="rankingBack[0].picture"/>
+            <img :src="rankingBack_one.picture"/>
           </span>
           <span class="icon_three">
-            <img :src="rankingBack[2].picture"/>
+            <img :src="rankingBack_three.picture"/>
           </span>
         </p>
         
         <div class="rankingBack">
           <p class="name">
-            <span>{{rankingBack[1].nickname}}</span>
-            <span class="one">{{rankingBack[0].nickname}}</span>
-            <span class="three">{{rankingBack[2].nickname}}</span>
+            <span>{{rankingBack_two.nickname}}</span>
+            <span class="one">{{rankingBack_one.nickname}}</span>
+            <span class="three">{{rankingBack_three.nickname}}</span>
           </p>
           <p class="num">
-            <span>抓取<i>{{rankingBack[1].number}}</i>次</span>
-            <span>抓取<i>{{rankingBack[0].number}}</i>次</span>
-            <span>抓取<i>{{rankingBack[2].number}}</i>次</span>
+            <span>抓取<i>{{rankingBack_two.number}}</i>次</span>
+            <span>抓取<i>{{rankingBack_one.number}}</i>次</span>
+            <span>抓取<i>{{rankingBack_three.number}}</i>次</span>
           </p>
         </div>
 
@@ -90,13 +94,17 @@ export default {
       recordListRecord:[],
       height_box:0,
       rankingBack:[],
-      recordList:0
+      rankingBack_one:{},
+      rankingBack_two:{},
+      rankingBack_three:{},
+      recordList:0,
+      productsImg:''
     }
   },
   mounted(){
     let _this = this;
     _this.height_box = document.documentElement.clientHeight-150;
-    _this.recordList = document.documentElement.clientHeight-377;
+    _this.recordList = document.documentElement.clientHeight-345;
     
     axios.post(_this.$store.state.url_talk+'/wawa/record',qs.stringify({
       room_id:59,
@@ -110,13 +118,26 @@ export default {
       //alert(err);
     });
     //抓取达人
-    
     axios.post(_this.$store.state.url_talk+'/wawa/win',qs.stringify({
       room_id:59,
     }))
     .then(function(dataJson){
-      console.log(JSON.stringify(dataJson.data))
-      _this.rankingBack = dataJson.data
+      _this.rankingBack_one = dataJson.data[0];
+      _this.rankingBack_two = dataJson.data[1];
+      _this.rankingBack_three = dataJson.data[2];
+      dataJson.data.splice(0,3)
+      _this.rankingBack = dataJson.data;
+
+    })
+    .catch(function(err){
+      //alert(err);
+    });
+    //娃娃详情
+    axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({
+      id:390,
+    }))
+    .then(function(dataJson){
+      _this.productsImg = dataJson.data.images[0]
 
     })
     .catch(function(err){
@@ -157,6 +178,7 @@ a {
   background-repeat: no-repeat;
   height: 100%;
   padding: 0px 11px;
+  position: relative;
 }
 
 
@@ -184,7 +206,7 @@ a {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   width: 100%;
-  height: 130px;
+  height: 100px;
   position: relative;
 }
 .rankingBack p{
@@ -220,7 +242,7 @@ a {
   margin-top: -55px;
 }
 .rankingBack .three{
-  margin-top: 25px;
+  margin-top: 11px;
 }
 
 .record_ranking{
@@ -306,5 +328,13 @@ a {
 }
 .recordListRecord li{
   margin: 13px 0px;
+}
+
+.products{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 80%;
 }
 </style>

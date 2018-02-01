@@ -207,21 +207,6 @@ export default {
   	this.cartData = href_dataVal;
   	let href_dataAttr = href_dataVal.split(",");
 
-  	//购买参数写入
-  	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
- 		cid:_this.$store.state.cid_talk,
-		cart_id:_this.cartData,
-		shippingaddressid:_this.shipping_id,
- 	}))
-	.then(function(dataJson){
-		_this.customer_id = dataJson.data.customer_id;
-		//orderid
-		_this.id = dataJson.data.id;
-		console.log(_this.customer_id,_this.id,_this.product_price_val)
-	})
-	.catch(function(err){
-		alert(err);
-	});
 
 
   	//收货地址
@@ -236,6 +221,27 @@ export default {
 				//发货地址id
 				_this.shipping_id = dataJson.data.info[key].id;
 				_this.delivery_nav = dataJson.data.info[key];
+
+				//购买参数写入
+			  	console.log(_this.$store.state.cid_talk,_this.cartData,_this.shipping_id)
+			  	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
+			 		cid:_this.$store.state.cid_talk,
+					cart_id:_this.cartData,
+					shippingaddressid:_this.shipping_id,
+			 	}))
+				.then(function(dataJson){
+					console.log(JSON.stringify(dataJson.data))
+					_this.customer_id = dataJson.data.customer_id;
+					//orderid
+					_this.id = dataJson.data.id;
+					console.log(_this.customer_id,_this.id,_this.product_price_val)
+				})
+				.catch(function(err){
+					alert(err);
+				});
+
+
+
 			}
 		}
 		//console.log(JSON.stringify(_this.delivery_nav))
@@ -243,6 +249,9 @@ export default {
 	.catch(function(err){
 		alert(err);
 	});
+
+
+
 
 	//钱包金额请求	
 	axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
@@ -308,7 +317,7 @@ export default {
 				'disccount':'all'
 		 	}))
 			.then(function(dataJson){
-				console.log(dataJson)
+				console.log(JSON.stringify(dataJson.data))
 				if(dataJson.data.status==2){
 					_this.$router.push({ name: 'order'})
 				}

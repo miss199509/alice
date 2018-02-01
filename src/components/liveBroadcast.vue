@@ -1667,6 +1667,7 @@ export default {
 	  	}))
 		.then(function(dataJson){
 			if(dataJson.data.result){
+				console.log(dataJson.data)
   				localStorage.setItem('tutorials',0);
 			}
 		})

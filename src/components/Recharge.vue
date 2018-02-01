@@ -97,7 +97,7 @@
 								<!-- 商户订单唯一id 不可重复 -->
 								<input type="hidden" name="invoice" id="invoice" :value="id">
 								 <!--支付成功后台通知地址-->
-								<input type="hidden" name="notify_url" id="notify_url" value="http://red.alice.live/wallet/finish-paypal">
+								<input type="hidden" name="notify_url" id="notify_url" value="http://dev.alice.live/wallet/finish-paypal">
 								<!--支付成功返回地址-->
 								<input type="hidden" name="return" id="return" :value="return_url">
 								<input type="hidden" name="lc" id="lc" value="China">
@@ -202,9 +202,8 @@ export default {
 		var ar = arr[0];
 	  	_this.cancel_return = ar+'?num=0';
 	  	_this.return_url = ar+'?num='+_this.balance;
-	  	console.log(_this.return_url)
 	  	
-	  	if(_this.GetRequest().num==_this.balance){
+	  	if(_this.$route.query.num==_this.balance){
 	  		_this.recharge_login_boll = true;
 			var j = setInterval(function(){  
 		        axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
@@ -305,6 +304,7 @@ export default {
 			alert(err);
 		});
 
+		//console.log(_this.customer_id)
 		document.pay_form.submit();
 
 
@@ -349,19 +349,7 @@ export default {
 		.catch(function(err){
 			alert(err);
 		});
-  	},
-  	GetRequest() {
-	   var url = location.href; //获取url中"?"符后的字串
-	   var theRequest = new Object();
-	   if (url.indexOf("?") != -1) {
-	      var str = url.substr(1);
-	      var strs = str.split("&");
-	      for(var i = 0; i < strs.length; i ++) {
-	         theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
-	      }
-	   }
-	   return theRequest;
-	}
+  	}
   }
 }
 </script>
