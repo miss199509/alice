@@ -135,6 +135,8 @@
 				<form id="pay_form" name="pay_form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 					<!-- 支付金额-->
 					<input type="hidden" name="amount" id="amount" :value="product_price_val/100">
+					<input type="hidden" name="item_number" id="item_number" value="xiu90 coins:50">
+					<input type="hidden" name="item_name" id="item_name" value="buy xiu90 coins">
 					<!-- 表示立即支付-->
 					<input type="hidden" name="cmd" id="cmd" value="_xclick">
 					<!-- 自定义id -->
@@ -142,7 +144,7 @@
 					<!-- 商户订单唯一id 不可重复 -->
 					<input type="hidden" name="invoice" id="invoice" :value="id">
 					 <!--支付成功后台通知地址-->
-					<input type="hidden" name="notify_url" id="notify_url" value="http://red.alice.live/wallet/finish-paypal">
+					<input type="hidden" name="notify_url" id="notify_url" value="http://dev.alice.live/wallet/finish-paypal">
 					<!--支付成功返回地址-->
 					<input type="hidden" name="return" id="return" value="http://10.1.106.21:8087/#/order">
 					<input type="hidden" name="lc" id="lc" value="China">
@@ -186,6 +188,7 @@ export default {
       cartData:'',
       shipping_id:'',
       customer_id:'',
+      order_id:'',
       id:'',
       payment_boll:false,
       cancel_return:''
@@ -223,22 +226,36 @@ export default {
 				_this.delivery_nav = dataJson.data.info[key];
 
 				//购买参数写入
-			  	console.log(_this.$store.state.cid_talk,_this.cartData,_this.shipping_id)
-			  	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
+				axios.post(_this.$store.state.url_talk+'/order/register',qs.stringify({
 			 		cid:_this.$store.state.cid_talk,
 					cart_id:_this.cartData,
-					shippingaddressid:_this.shipping_id,
 			 	}))
 				.then(function(dataJson){
-					console.log(JSON.stringify(dataJson.data))
-					_this.customer_id = dataJson.data.customer_id;
-					//orderid
-					_this.id = dataJson.data.id;
-					console.log(_this.customer_id,_this.id,_this.product_price_val)
+					_this.order_id = dataJson.data.order_id;
+					//console.log(_this.$store.state.cid_talk,_this.cartData,_this.shipping_id)
+				  	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
+				 		cid:_this.$store.state.cid_talk,
+				 		order_id:_this.order_id,
+						shippingaddressid:_this.shipping_id,
+						disccount:0,
+						paymentform:5,
+				 	}))
+					.then(function(dataJson){
+						console.log(JSON.stringify(dataJson.data))
+						_this.customer_id = dataJson.data.customer_id;
+						//orderid
+						_this.id = dataJson.data.id;
+						console.log(_this.customer_id,_this.id,_this.product_price_val)
+					})
+					.catch(function(err){
+						alert(err);
+					});
+
 				})
 				.catch(function(err){
 					alert(err);
 				});
+			  	
 
 
 
@@ -359,7 +376,7 @@ export default {
   		// }else{
   		// 	this.img_unchecked = require('../assets/liveBroadcast/icon_checked@2x.png')
   		// }
-  		this.payment_boll?this.payment_boll = false:this.payment_boll = true
+  		this.payment_boll?this.payment_boll = false:this.payment_boll = true;
   	}
   }
 }

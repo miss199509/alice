@@ -89,7 +89,9 @@
 							<!-- paypal沙盒支付测试地址 -->
 							<form id="pay_form" name="pay_form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 								<!-- 支付金额-->
-								<input type="hidden" name="amount" id="amount" :value="num">
+								<input type="hidden" name="amount" id="amount" :value="num"><!-- num -->
+								<input type="hidden" name="item_number" id="item_number" value="xiu90 coins:50">
+								<input type="hidden" name="item_name" id="item_name" value="buy xiu90 coins">
 								<!-- 表示立即支付-->
 								<input type="hidden" name="cmd" id="cmd" value="_xclick">
 								<!-- 自定义id -->
@@ -292,7 +294,7 @@ export default {
   		if(_this.email_val==''){
   			return false
   		};
-  		axios.post(_this.$store.state.url_talk+'/wallet/prepay-cloud-moolah',qs.stringify({
+  		axios.post(_this.$store.state.url_talk+'/customer/set-email',qs.stringify({
 	  		cid:localStorage.getItem('cid'),
 	  		email:_this.email_val,
 	  		sessionid:localStorage.getItem('session_id')

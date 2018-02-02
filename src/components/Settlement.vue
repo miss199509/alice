@@ -108,7 +108,7 @@ export default {
 		
 		//console.log(JSON.stringify(dataJson.data))
 		for(let id in dataJson.data){
-			_this.priceVal+=dataJson.data[id].origin_price*dataJson.data[id].product_amount;
+			_this.priceVal+=dataJson.data[id].product_price*dataJson.data[id].product_amount;
 			// function getLocalTime(nS) {     
 			//     return new Date(parseInt(nS) * 1000).toLocaleString().substr(0,17)
 			// }     
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
   	register(){
-  		if(this.priceVal<=0){
+  		if(this.shoppingCart.length<=0){
   			return false;
   		};
   		let attr = []

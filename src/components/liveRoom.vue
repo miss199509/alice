@@ -8,11 +8,14 @@
         <div class="liveHeader_qty">
           <label>
            {{received_msg_box.online}}人
-           <br/>在线
+           <br/>{{parseInt($store.state.language)?'online':'在线'}}
           </label>
           <p>
             <!-- <span v-for="(val,key) in received_msg" >{{val}}</span> -->
             <img v-for="(val,key) in received_msg" width="33px;" :src="val.portrait"/>
+            <router-link :to="{ name: 'Settlement'}">
+              <img class="cart" width="27px;" src="../assets/liveBroadcast/icon_cart@2x.png"/>
+            </router-link>
           </p>
         </div>
       </header>
@@ -31,7 +34,7 @@
             <img width="33px;" :src="gamePlayer.portrait"/>
             <p>
               <label>{{gamePlayer.nickname}}</label>
-              <strong>游戏中</strong>
+              <strong>{{parseInt($store.state.language)?'playing':'游戏中'}}</strong>
             </p>
           </div>
           <!-- <img src="../assets/liveBroadcast/icon_countdown@2x.png"/> -->
@@ -44,7 +47,7 @@
         <img @click="switchCamera()" class="switch" width="47px;" src="../assets/btn_switch@2x.png"/>
 
 
-        <div class="the_game" :style="{height:height_video+'px'}"></div>
+        <div @click="the_game_eve()" class="the_game" :style="{height:height_video+'px'}"></div>
 
       </div>
     
@@ -52,12 +55,12 @@
         <div class="operation_padding" v-show="wait">
           <ul class="livePrice">
             <li>
-              <label>本次:</label>
+              <label>{{parseInt($store.state.language)?'this round':'本次'}}:</label>
               <img width="23px;" src="../assets/icon_dc@2x.png"/>
-              <label>{{received_msg_box.play_pool/100}}.00/次</label>
+              <label>{{received_msg_box.play_pool/100}}.00/{{parseInt($store.state.language)?'times':'次'}}</label>
             </li>
             <li>
-              <label>余额:</label>
+              <label>{{parseInt($store.state.language)?'Payment':'余额'}}:</label>
               <img width="23px;" src="../assets/icon_dc@2x.png"/>
               <label>{{received_msg_box.balance/100}}.00</label>
             </li>
@@ -66,15 +69,15 @@
           <div class="wait">
             <img @click="icon_chat_click()" width="70px;" src="../assets/icon_chat_click@2x.png"/>
             <div @click="lineUp()" :class="{lineUpBox:lineUpBoll}">
-              <strong class="lineUp" v-if="lineUpBoll">排队中...</strong>
-              <p v-else>
+              <p v-if="lineUpBoll">
                 <strong>
-                  预约排队
+                  {{parseInt($store.state.language)?'Queuing':'排队中'}}...
                 </strong>
                 <span>
-                  前面{{received_msg.length}}人
+                  {{parseInt($store.state.language)?'Front':'前面'}} {{received_msg.length}} {{parseInt($store.state.language)?'people':'人'}}
                 </span>
               </p>
+              <strong class="lineUp" v-else>{{parseInt($store.state.language)?'Start':'开始游戏'}}</strong>
             </div>
             <router-link :to="{ name: 'Recharge'}">
               <img width="70px;" src="../assets/btn_Recharge_click@2x.png"/>
@@ -84,13 +87,13 @@
 
         <div class="operation" v-show="operation">
           <div>
-            <span class="btn_up" @click="btn_upEve()" v-on:mouseup="eve()"></span>
+            <span class="btn_up" @click="btn_downEve()" v-on:mouseup="eve()"></span>
             <!-- <img class="btn_up" @click="btn_upEve()" v-on:mouseup="eve()" width="60px;" src="../assets/btn_up@2x.png"/> -->
             <p>
               <img width="60px;" @click="btn_leftEve()" src="../assets/btn_left@2x.png"/>
               <img class="btn_right" @click="btn_rightEve()" width="60px;" src="../assets/btn_right@2x.png"/>
             </p>
-            <img class="btn_down" @click="btn_downEve()" width="60px;" src="../assets/btn_down@2x.png"/>
+            <img class="btn_down" @click="btn_upEve()" width="60px;" src="../assets/btn_down@2x.png"/>
           </div>
 
           <p>
@@ -112,11 +115,11 @@
               <img width="230px;" height="156px;" :src="portraitImg"/>
             </li>
             <li class="continueBox_tips">
-              <p>本局你还有<img width="23px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>58个币</p>是否再来一局？
+              <p>本局你还有<img width="23px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>{{received_msg_box.play_pool/100}}.00个币</p>是否再来一局？
             </li>
             <li>
               <p class="continueBox_btn_click continueBox_btn" @click="continueEnd()">稍后在试</p>
-              <p class="continueBox_btn_normal continueBox_btn" @click="continueEve()">再来一局({{received_msg_box.enjoy_time2}})</p>
+              <p class="continueBox_btn_normal continueBox_btn" @click="continueEve()">再来一局({{received_msg_box.enjoy_time2}})</p><!-- received_msg_box.enjoy_time2 -->
             </li>
           </ul>
         </div>
@@ -131,6 +134,7 @@
         </p>
       </div>
     </div>
+    <img class="record_tipsImg" src="../assets/btn_Pulldown@2x.png"/>
     <word></word>
   </div>
 </template>
@@ -174,7 +178,8 @@ export default {
       box_heigth:0,
       //商品id
       product_schedule_id:0,
-      continueBox_val:'差一点点就抓到了！'
+      continueBox_val:'差一点点就抓到了！',
+      confirm_time:0
     }
   },
   components:{
@@ -183,7 +188,7 @@ export default {
   mounted(){
     console.log(this.$route.query.cid)
     // document.getElementById('jsmpeg-player').style.width = "100%";
-    let height_ = document.documentElement.clientHeight-207;
+    let height_ = document.documentElement.clientHeight-220;
     this.box_heigth = document.documentElement.clientHeight;
     this.height_video = height_
     //console.log(height_)
@@ -285,20 +290,10 @@ export default {
         let received_msg = JSON.parse(evt.data);
         if(received_msg.cmd==66){
           for(let i in received_msg.cmds){
-            console.log(received_msg.cmds[i].id==11+'---')
+            //商品
             if(received_msg.cmds[i].id==224){
-              //console.log(JSON.stringify(received_msg.cmds[i].content[0].product_schedule_id))
-              _this.product_schedule_id = received_msg.cmds[i].content[0].product_schedule_id
-              //娃娃商品
-              /*
-              axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:received_msg.cmds[i].content[0].product_schedule_id}))
-              .then(function(dataJson){
-                _this.portraitImg = dataJson.data.images[0]
-              })
-              .catch(function(err){
-                alert(err);
-              });
-              */
+              // 获取到商品id
+              _this.product_schedule_id = received_msg.cmds[i].content[0].product_schedule_id;
 
             };
             //弹幕
@@ -313,17 +308,26 @@ export default {
               _this.received_msg_box = received_msg.cmds[i];
               //console.log(JSON.stringify(received_msg.cmds[i].content))
               //判断是否抓到娃娃
+              console.log(received_msg.cmds[i].catch_result+'----------------------')
               if(received_msg.cmds[i].catch_result==0){
                 _this.portraitImg = require('../assets/icon@2x.png');
                 console.log('没抓到');
-                _this.continueBox_val = '差一点点就抓到了！'
+                _this.continueBox_val = '差一点点就抓到了！';
+                _this.bollStart = true;
+                _this.continueBoll = true;
+                _this.uesBoll = false;
+
               }
               if(received_msg.cmds[i].catch_result==1){
                 console.log('抓到了');
                 axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.product_schedule_id}))
                 .then(function(dataJson){
                   _this.portraitImg = dataJson.data.images[0];
-                  _this.continueBox_val = '恭喜您抓到了！'
+                  _this.continueBox_val = '恭喜您抓到了！';
+                  _this.bollStart = true;
+                  _this.continueBoll = true;
+                  _this.uesBoll = false;
+
                 })
                 .catch(function(err){
                   alert(err);
@@ -343,48 +347,26 @@ export default {
               }
 
 
+
               if(received_msg.cmds[i].content.length>0){
                 _this.gamePlayer = received_msg.cmds[i].content[0];
-                
-                console.log(JSON.stringify(_this.gamePlayer.id))
-                console.log(_this.$route.query.cid)
-                console.log(received_msg.cmds[i].enjoy_time2)
-
-                //判断玩家抓取成功
-                if(received_msg.cmds[i].enjoy_time2==0 && _this.gamePlayer.id==_this.$route.query.cid && !_this.bollStart){
-                  _this.bollStart = true;
-                  _this.continueBoll = true;
-                  _this.uesBoll = false;
-                }else{
-                  //_this.continueBoll = false;
-                }
+                console.log(JSON.stringify(_this.gamePlayer.id));
+                console.log(_this.$route.query.cid);
+                console.log(received_msg.cmds[i].enjoy_time2+'=====');
                 //判断是否到当前玩家抓取的时间
                 if(_this.gamePlayer.id==_this.$route.query.cid && _this.bollStart && received_msg.cmds[i].enjoy_time2>0){
                   _this.start()
                 }
-
+                //console.log(JSON.stringify(JSON.stringify(received_msg.cmds[i].content)+'************'))
                 _this.received_msg = received_msg.cmds[i].content;
               }else{
                 _this.gamePlayer = {'nickname':'二狗子','portrait':require('../assets/avatar@2x.png')};
+                _this.received_msg = [];
               }
               //console.log(JSON.stringify(_this.gamePlayer))
             }
           }
-          //_this.gamePlayer = received_msg.cmds[0].content[0];
-          //console.log(JSON.stringify(_this.gamePlayer))
-          /*
-          //当前玩家
-          if(received_msg.current_user.nickname!=undefined){
-            _this.gamePlayer = received_msg.current_user;
-          }
-          //倒计时
-          _this.time_config = received_msg.time_config;
-          //console.log(JSON.stringify(received_msg.cmds))
-          for(let inde in received_msg.cmds){
-            //console.log(JSON.stringify(received_msg.cmds[inde].content))
-            _this.received_msg = received_msg.cmds[inde].content
-          }
-          */
+
         }
         console.log("数据已接收...");
        };
@@ -421,7 +403,7 @@ export default {
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
-          var json = {"cmd":66,"cid":_this.$route.query.cid,"roomid":_this.$route.query.roomid,"join":1,'flag':0};
+          var json = {"cmd":66,"cid":_this.$route.query.cid,"roomid":_this.$route.query.roomid,"join":1,'flag':1};
 
           ws.send(JSON.stringify(json));
           //console.log("数据发送中...");
@@ -431,7 +413,8 @@ export default {
           console.log(evt.data)
           let received_msg = JSON.parse(evt.data);
           if(received_msg.cmd==66){
-            //当前玩家
+            //确认时间配置
+            _this.confirm_time = received_msg.time_config.confirm_time;
             //当前玩家
             if(received_msg.current_user!={}){
               _this.gamePlayer = received_msg.current_user;
@@ -468,10 +451,20 @@ export default {
       let _this = this;
       axios.post(_this.$store.state.url_talk+'/wawa/catch-start',qs.stringify({cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
       .then(function(dataJson){
-        console.log(JSON.stringify(dataJson.data))
-        _this.wawaCode = dataJson.data.data;
-        _this.bollStart = false;
-        _this.continueBoll = false;
+        
+        console.log(JSON.stringify(dataJson.data+'++++++'))//{"result":1,"code":-1,"mess":"上次抓取未结束","data":""}
+        var j = setInterval(function(){  
+          if(dataJson.data.result){
+              if(dataJson.data.data!=''){
+                _this.wawaCode = dataJson.data.data;
+                _this.bollStart = false;
+                _this.continueBoll = false;
+                clearInterval(j);
+                return false;
+              }
+          };
+        },1000);
+
       })
       .catch(function(err){
         alert(err);
@@ -556,6 +549,11 @@ export default {
     },
     //继续玩
     continueEve(){
+      this.continueBoll = false;
+      this.operation = false;
+      this.wait = true;
+      this.lineUpBoll = false;
+      
       let _this = this
       //WebSocket推流操作
       if ("WebSocket" in window){
@@ -594,6 +592,36 @@ export default {
       this.operation = false;
       this.wait = true;
       this.lineUpBoll = false;
+      let _this = this;
+      if ("WebSocket" in window){
+         //console.log("您的浏览器支持 WebSocket!");
+         
+         // 打开一个 web socket
+         var ws = new WebSocket("ws://dev.alice.live:9001");
+        
+         ws.onopen = function(){
+          // Web Socket 已连接上，使用 send() 方法发送数据
+          var json = {"cmd":66,"cid":_this.$route.query.cid,"roomid":_this.$route.query.roomid,"join":0,'flag':0};
+
+          ws.send(JSON.stringify(json));
+          //console.log("数据发送中...");
+         };
+        
+         ws.onmessage = function (evt) {
+          console.log(evt.data)
+          //console.log("数据已接收...");
+         };
+        
+         ws.onclose = function(){ 
+          // 关闭 websocket
+          console.log("连接已关闭..."); 
+         };
+      }else{
+         // 浏览器不支持 WebSocket
+         alert("您的浏览器不支持 WebSocket!");
+      }
+
+
     },
     //聊天框失去焦点
     chatBoxSubmit(){
@@ -650,6 +678,12 @@ export default {
       }); 
 
     },
+    the_game_eve(){
+      console.log(this.client.close())
+      //this.client.CLIENT_ROLE_BROADCASTERs = 1//主播
+      //this.client.setClientRole(1);
+      //CLIENT_ROLE_AUDIENCE = 2//观众
+    }
   }
 }
 </script>
@@ -666,13 +700,7 @@ ul {
 a {
   color: #42b983;
 }
-#jsmpeg-player{
-  position: absolute;
-  left: 50%;
-  transform : translate(-50%,-50%);
-  top: 50%;
-}
-#jsmpeg-player2{
+#jsmpeg-player,#jsmpeg-player2{
   position: absolute;
   left: 50%;
   transform : translate(-50%,-50%);
@@ -782,14 +810,14 @@ a {
   padding-bottom: 7px;
 }
 .livePrice label{
-  font-size: 17px;
+  font-size: 15px;
 }
 
 
 
 .operation_box{
   position: absolute;
-  bottom: 0px;
+  bottom: 13px;
   width: 100%;
   left: 0px;
 }
@@ -819,9 +847,9 @@ a {
 }
 .wait strong{
   display: block;
-  font-size: 23px;
+  font-size: 20px;
   color: #F63630;
-  margin-top: 11px;
+  margin-top: 17px;
 }
 .wait span{
   color: #939292;
@@ -950,6 +978,7 @@ a {
     bottom: 0px;
     width: 100%;
     left: 0px;
+    z-index: 2;
 }
 
 .chatBox input{
@@ -973,5 +1002,17 @@ a {
   color: #fff;
   position: absolute;
   right: 0px;
+}
+
+.liveHeader_qty .cart{
+  border:none;
+  margin-left: 9px;
+}
+.record_tipsImg{
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  z-index: 1;
+  bottom: 0px;
 }
 </style>

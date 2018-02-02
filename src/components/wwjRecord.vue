@@ -3,7 +3,7 @@
   
     <header class="record_nav">
       <strong v-for="(val,key) in record_navList" @click="select_record(val,key)" :class="{'recordMark':val.boll}">
-        {{val.text}}
+        {{parseInt($store.state.language)?val.textNew:val.text}}
       </strong>
     </header>
 
@@ -87,9 +87,9 @@ export default {
   data () {
     return {
       record_navList:[
-        {text:'娃娃详情',boll:true},
-        {text:'抓中记录',boll:false},
-        {text:'抓取达人',boll:false}
+        {text:'娃娃详情',textNew:'Doll details',boll:true},
+        {text:'抓中记录',textNew:'Winning Records',boll:false},
+        {text:'抓取达人',textNew:'Best Catchers',boll:false}
       ],
       recordListRecord:[],
       height_box:0,
@@ -110,8 +110,9 @@ export default {
       room_id:59,
     }))
     .then(function(dataJson){
-      //console.log(JSON.stringify(dataJson.data))
-      _this.recordListRecord = dataJson.data
+      if(dataJson.data.result){
+        _this.recordListRecord = dataJson.data.info;
+      }
 
     })
     .catch(function(err){
@@ -122,11 +123,15 @@ export default {
       room_id:59,
     }))
     .then(function(dataJson){
-      _this.rankingBack_one = dataJson.data[0];
-      _this.rankingBack_two = dataJson.data[1];
-      _this.rankingBack_three = dataJson.data[2];
-      dataJson.data.splice(0,3)
-      _this.rankingBack = dataJson.data;
+      //console.log(JSON.stringify(dataJson.data))
+      if(dataJson.data.result){
+        _this.rankingBack_one = dataJson.data.info[0];
+        console.log(dataJson.data.info[1])
+        //_this.rankingBack_two = dataJson.data.info[1];
+        //_this.rankingBack_three = dataJson.data.info[2];
+        dataJson.data.splice(0,3)
+        _this.rankingBack = dataJson.data;
+      }
 
     })
     .catch(function(err){
@@ -184,14 +189,15 @@ a {
 
 .record_nav{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  padding: 15px 13px;
+  padding: 15px 0px;
 }
 .record_nav strong{
-  font-size: 21px;
+  font-size: 16px;
   color: #AEAEAE;
   padding-bottom: 3px;
+  white-space:nowrap;
 }
 
 
