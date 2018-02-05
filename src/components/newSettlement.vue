@@ -294,7 +294,8 @@ export default {
 		}
 		//console.log(JSON.stringify(_this.shoppingCart))
 		for(let id in _this.shoppingCart){
-			_this.product_price_val+=_this.shoppingCart[id].product_amount*_this.shoppingCart[id].origin_price;
+			
+			_this.product_price_val+=_this.shoppingCart[id].product_amount*_this.shoppingCart[id].product_price;
 
 			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.shoppingCart[id].product_id}))
 			.then(function(dataJson){

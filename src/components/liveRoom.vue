@@ -60,7 +60,7 @@
               <label>{{received_msg_box.play_pool/100}}.00/{{parseInt($store.state.language)?'times':'次'}}</label>
             </li>
             <li>
-              <label>{{parseInt($store.state.language)?'Payment':'余额'}}:</label>
+              <label>{{parseInt($store.state.language)?'Balance':'余额'}}:</label>
               <img width="23px;" src="../assets/icon_dc@2x.png"/>
               <label>{{received_msg_box.balance/100}}.00</label>
             </li>
@@ -115,11 +115,16 @@
               <img width="230px;" height="156px;" :src="portraitImg"/>
             </li>
             <li class="continueBox_tips">
-              <p>本局你还有<img width="23px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>{{received_msg_box.play_pool/100}}.00个币</p>是否再来一局？
+              <p>
+              {{parseInt($store.state.language)?'You still have':'本局你还有'}}
+              <img width="23px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+              {{received_msg_box.balance/100}}.00{{parseInt($store.state.language)?'in this round':'个币'}}</p>
+              {{parseInt($store.state.language)?'want to try again':'是否再来一局'}}？
             </li>
             <li>
-              <p class="continueBox_btn_click continueBox_btn" @click="continueEnd()">稍后在试</p>
-              <p class="continueBox_btn_normal continueBox_btn" @click="continueEve()">再来一局({{received_msg_box.enjoy_time2}})</p><!-- received_msg_box.enjoy_time2 -->
+              <p class="continueBox_btn_click continueBox_btn" @click="continueEnd()">{{parseInt($store.state.language)?'TRY LATER':'稍后在试'}}</p>
+              <p class="continueBox_btn_normal continueBox_btn" @click="continueEve()">{{parseInt($store.state.language)?'TRY AGAIN':'再来一局'}}({{confirm_time}})</p>
+              <!-- received_msg_box.enjoy_time2 -->
             </li>
           </ul>
         </div>
@@ -312,10 +317,20 @@ export default {
               if(received_msg.cmds[i].catch_result==0){
                 _this.portraitImg = require('../assets/icon@2x.png');
                 console.log('没抓到');
-                _this.continueBox_val = '差一点点就抓到了！';
+                _this.continueBox_val = _this.$store.state.language?'Almost succeed!':'差一点点就抓到了！';
                 _this.bollStart = true;
                 _this.continueBoll = true;
                 _this.uesBoll = false;
+                console.log('***********************')
+                var w = setInterval(function(){
+                  _this.confirm_time-=1;
+                  if(_this.confirm_time<=0){
+                    clearInterval(w);
+                    _this.confirm_time = 10;
+                  };
+                },1000);
+
+
 
               }
               if(received_msg.cmds[i].catch_result==1){
@@ -323,10 +338,18 @@ export default {
                 axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.product_schedule_id}))
                 .then(function(dataJson){
                   _this.portraitImg = dataJson.data.images[0];
-                  _this.continueBox_val = '恭喜您抓到了！';
+                  _this.continueBox_val = _this.$store.state.language?'Congratulations!You caught it！':'恭喜您！抓到了！';
                   _this.bollStart = true;
                   _this.continueBoll = true;
                   _this.uesBoll = false;
+                  var w = setInterval(function(){
+                    _this.confirm_time-=1;
+                    if(_this.confirm_time<=0){
+                      clearInterval(w);
+                      _this.confirm_time = 10;
+                    };
+                  },1000);
+
 
                 })
                 .catch(function(err){
@@ -862,7 +885,7 @@ a {
 .switch{
   position: absolute;
   right: 0px;
-  bottom: 33px;
+  bottom: 5px;
   z-index: 111;
 }
 /*操作*/
@@ -944,7 +967,10 @@ a {
 .continueBox_tips p{
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: end;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .continueBox_tips img{
   margin: 0px 11px;
@@ -955,13 +981,13 @@ a {
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  width: 100%;
+  width: 230px;
   height: 43px;
   line-height: 43px;
   text-align: center;
   color: #454545;
   font-size: 19px;
-  margin: 9px 0px;
+  margin: 9px auto;
 }
 .continueBox_btn_click{
   background-image: url('../assets/btn_click@2x.png');

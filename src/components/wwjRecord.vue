@@ -49,9 +49,9 @@
             <span class="three">{{rankingBack_three.nickname}}</span>
           </p>
           <p class="num">
-            <span>抓取<i>{{rankingBack_two.number}}</i>次</span>
-            <span>抓取<i>{{rankingBack_one.number}}</i>次</span>
-            <span>抓取<i>{{rankingBack_three.number}}</i>次</span>
+            <span>{{parseInt($store.state.language)?'Tried':'抓取'}}<i>{{rankingBack_two.number}}</i>{{parseInt($store.state.language)?'times':'次'}}</span>
+            <span>{{parseInt($store.state.language)?'Tried':'抓取'}}<i>{{rankingBack_one.number}}</i>{{parseInt($store.state.language)?'times':'次'}}</span>
+            <span>{{parseInt($store.state.language)?'Tried':'抓取'}}<i>{{rankingBack_three.number}}</i>{{parseInt($store.state.language)?'times':'次'}}</span>
           </p>
         </div>
 
@@ -63,9 +63,9 @@
               <strong>{{val.nickname}}</strong>
             </p>
             <p>
-              <span>抓取</span>
+              <span>{{parseInt($store.state.language)?'Tried':'抓取'}}</span>
               <b>{{val.number}}</b>
-              <span>次</span>
+              <span>{{parseInt($store.state.language)?'times':'次'}}</span>
             </p>
           </li>
         </ul>
@@ -87,8 +87,8 @@ export default {
   data () {
     return {
       record_navList:[
-        {text:'娃娃详情',textNew:'Doll details',boll:true},
-        {text:'抓中记录',textNew:'Winning Records',boll:false},
+        {text:'娃娃详情',textNew:'Dolls Detail',boll:true},
+        {text:'抓中记录',textNew:'Records',boll:false},
         {text:'抓取达人',textNew:'Best Catchers',boll:false}
       ],
       recordListRecord:[],

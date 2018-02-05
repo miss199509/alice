@@ -589,7 +589,7 @@ export default {
       //最大押注
       max_bet:0,
       //请求地址
-      WS_SERVER:'ws://red.alice.live:9001',
+      WS_SERVER:'ws://dev.alice.live:9001',
       //牌
       CMD_ACTION_CMDS:3,
       //倒计时时间
