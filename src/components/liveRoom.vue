@@ -553,7 +553,7 @@ export default {
       this.operation = false;
       this.wait = true;
       this.lineUpBoll = false;
-      
+
       let _this = this
       //WebSocket推流操作
       if ("WebSocket" in window){
@@ -679,7 +679,6 @@ export default {
 
     },
     the_game_eve(){
-      console.log(this.client.close())
       //this.client.CLIENT_ROLE_BROADCASTERs = 1//主播
       //this.client.setClientRole(1);
       //CLIENT_ROLE_AUDIENCE = 2//观众

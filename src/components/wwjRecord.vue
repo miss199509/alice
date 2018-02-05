@@ -125,12 +125,19 @@ export default {
     .then(function(dataJson){
       //console.log(JSON.stringify(dataJson.data))
       if(dataJson.data.result){
-        _this.rankingBack_one = dataJson.data.info[0];
-        console.log(dataJson.data.info[1])
-        //_this.rankingBack_two = dataJson.data.info[1];
-        //_this.rankingBack_three = dataJson.data.info[2];
-        dataJson.data.splice(0,3)
-        _this.rankingBack = dataJson.data;
+
+        if(dataJson.data.info[0]!=undefined){
+          _this.rankingBack_one = dataJson.data.info[0];
+        };
+        if(dataJson.data.info[1]!=undefined){
+          _this.rankingBack_two = dataJson.data.info[1];
+        };
+        if(dataJson.data.info[2]!=undefined){
+          _this.rankingBack_three = dataJson.data.info[2];
+        };
+
+        dataJson.data.info.splice(0,3)
+        _this.rankingBack = dataJson.data.info;
       }
 
     })
@@ -278,6 +285,7 @@ a {
   width: 56px;
   margin-top: 6px;
   margin-left: 3px;
+  border-radius: 50%;
 }
 .record_ranking_title .icon_two{
   background-image: url('../assets/icon_two@2x.png');
@@ -301,6 +309,9 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.recordList img{
+  border-radius: 50%;
 }
 .recordList label{
   margin-right: 11px;
@@ -335,7 +346,9 @@ a {
 .recordListRecord li{
   margin: 13px 0px;
 }
-
+.recordListRecord li img{
+  border-radius: 50%;
+}
 .products{
   position: absolute;
   top: 50%;
