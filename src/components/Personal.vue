@@ -89,7 +89,7 @@ export default {
       	{'navName':'RELOAD','navName_new':'充值','imgae':require('../assets/personal/iconreloadi6.png'),'url':'Recharge'},
       	{'navName':'FOLLOWLNG','navName_new':'关注','imgae':require('../assets/personal/iconfollowingi6.png'),'url':'follow'},
       	{'navName':'ADDRESS BOOK','navName_new':'地址簿','imgae':require('../assets/personal/iconaddressbooki6.png'),'url':'Delivery'},
-      	{'navName':'HLSTORY','navName_new':'购买记录','imgae':require('../assets/personal/iconhistoryi6.png'),'url':'FOLLOWING'},
+      	{'navName':'HLSTORY','navName_new':'购买记录','imgae':require('../assets/personal/iconhistoryi6.png'),'url':'History'},
       	//{'navName':'SETTLNG','navName_new':'设置','imgae':require('../assets/personal/iconsettingsi6.png'),'url':'setUp'}
       ],
       popup:false,
@@ -151,11 +151,15 @@ export default {
   	determine(){
   		var _this = this;
   		var fileObj = document.getElementById("file").files[0]; // js 获取文件对象
+  		console.log(fileObj)
+  		if(_this.fileObj==undefined){
+  			_this.popup = false;
+  			return false;
+  		}
 		var fd = new FormData();
 		fd.append('id',_this.$store.state.cid_talk)
 		fd.append('img',fileObj);//上传的文件： 键名，键值
 		var url = _this.$store.state.url_talk+'/customer/upload-profile-picture';//接口
-		//url = url ? url : '';
 		var XHR = null;
 		if (window.XMLHttpRequest) {
 			// 非IE内核

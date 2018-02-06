@@ -29,7 +29,7 @@
           <span class="borderRight"></span>
         </p>
 
-        <div class="videoSet_up">
+        <div class="videoSet_up" v-show="uesHideBoll">
           <div class="">
             <img width="33px;" :src="gamePlayer.portrait"/>
             <p>
@@ -184,7 +184,8 @@ export default {
       //商品id
       product_schedule_id:0,
       continueBox_val:'差一点点就抓到了！',
-      confirm_time:0
+      confirm_time:0,
+      uesHideBoll:false
     }
   },
   components:{
@@ -243,7 +244,7 @@ export default {
                     console.log(JSON.stringify(json))
                     ws.send(JSON.stringify(json));
                     //弹幕发言调用函数
-                    _this.barrage(_this.chatVal,false);
+                    //_this.barrage(_this.chatVal,false);
                     console.log("数据发送中...");
                     _this.chatVal = '';
                   }
@@ -251,6 +252,15 @@ export default {
 
                ws.onmessage = function (evt){
                   console.log(evt.data)
+                  let received_msg = JSON.parse(evt.data);
+                  for(let i in received_msg.cmds){
+                    if(received_msg.cmds[i].id==11){
+                      for(let contentKey in received_msg.cmds[i].content){
+                        _this.barrage(received_msg.cmds[i].content[contentKey].name+'：'+received_msg.cmds[i].content[contentKey].content,false);
+                      }
+                    };
+                  }
+
                   console.log("数据已接收...");
                };
 
@@ -304,7 +314,8 @@ export default {
             //弹幕
             if(received_msg.cmds[i].id==11){
               for(let contentKey in received_msg.cmds[i].content){
-                _this.barrage(received_msg.cmds[i].content[contentKey].content,false);
+                //console.log(JSON.stringify(received_msg.cmds[i].content[contentKey]))
+                _this.barrage(received_msg.cmds[i].content[contentKey].name+'：'+received_msg.cmds[i].content[contentKey].content,false);
               }
             };
 
@@ -377,6 +388,11 @@ export default {
                 console.log(_this.$route.query.cid);
                 console.log(received_msg.cmds[i].enjoy_time2+'=====');
                 //判断是否到当前玩家抓取的时间
+                if(_this.gamePlayer.id==_this.$route.query.cid){
+                  _this.uesHideBoll = true;
+                }else{
+                  _this.uesHideBoll = false;
+                }
                 if(_this.gamePlayer.id==_this.$route.query.cid && _this.bollStart && received_msg.cmds[i].enjoy_time2>0){
                   _this.start()
                 }
@@ -385,6 +401,7 @@ export default {
               }else{
                 _this.gamePlayer = {'nickname':'二狗子','portrait':require('../assets/avatar@2x.png')};
                 _this.received_msg = [];
+                _this.uesHideBoll = false;
               }
               //console.log(JSON.stringify(_this.gamePlayer))
             }

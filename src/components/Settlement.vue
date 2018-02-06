@@ -217,11 +217,12 @@ export default {
 
 .administration{
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: stretch;
 	align-items: center;
 	padding: 13px 0px;
-
-
+}
+.product_class{
+	margin: 0px 17px;
 }
 .product_class img{
 	border: 2px solid #E0E0E0;
