@@ -22,6 +22,9 @@
 	    </header>
 
 		<div class="shoppingl_list shoppingl_global" :style="{ height: _height + 'px' }">
+			<p style="text-align: center;" v-show="loadingBoll">
+				<img width="60px;" src="../assets/liveBroadcast/loading.png"/>
+			</p>
 		    <ul>
 				<li class="listGoods overflowRemove" v-for="(val,key) in shopping_list" @click="shopping_eve(key)">
 
@@ -58,7 +61,8 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       shopping_list:[],
-      _height:''
+      _height:'',
+      loadingBoll:true
     }
   },
   created(){
@@ -67,11 +71,11 @@ export default {
   	var _this = this
   	axios.post(_this.$store.state.url_talk+'/products/mall-product','')
 	.then(function(dataJson){
-		console.log(JSON.stringify(dataJson.data.info[0].en_name))
 		for(let id in dataJson.data.info){
-			dataJson.data.info[id].price = dataJson.data.info[id].price/100
-		}
-		_this.shopping_list = dataJson.data.info
+			dataJson.data.info[id].price = dataJson.data.info[id].price/100;
+		};
+		_this.shopping_list = dataJson.data.info;
+		_this.loadingBoll = false;
 	})
 	.catch(function(err){
 		alert(err);

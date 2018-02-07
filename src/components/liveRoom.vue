@@ -51,7 +51,7 @@
 
       </div>
     
-      <div class="operation_box">
+      <div class="operation_box" v-show="operationBoll">
         <div class="operation_padding" v-show="wait">
           <ul class="livePrice">
             <li>
@@ -67,7 +67,7 @@
           </ul>
           
           <div class="wait">
-            <img @click="icon_chat_click()" width="70px;" src="../assets/icon_chat_click@2x.png"/>
+            <img @click="icon_chat_click()" id="btn" width="70px;" src="../assets/icon_chat_click@2x.png"/>
             <div @click="lineUp()" :class="{lineUpBox:lineUpBoll}">
               <p v-if="lineUpBoll">
                 <strong>
@@ -134,12 +134,12 @@
       <!-- 聊天框 -->
       <div class="chatBox boxGifts" v-show="chatPopup">
         <p>
-          <input id="icon_chat" type="text" v-model="chatVal" @focus="chatBoxSubmit()"/>
+          <input id="icon_chat" type="text" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
           <!-- <label @click="chatBoxSubmit()">SEND</label> -->
         </p>
       </div>
     </div>
-    <img class="record_tipsImg" src="../assets/btn_Pulldown@2x.png"/>
+    <img class="record_tipsImg" v-show="operationBoll" src="../assets/btn_Pulldown@2x.png"/>
     <word></word>
   </div>
 </template>
@@ -185,7 +185,8 @@ export default {
       product_schedule_id:0,
       continueBox_val:'差一点点就抓到了！',
       confirm_time:0,
-      uesHideBoll:false
+      uesHideBoll:false,
+      operationBoll:true
     }
   },
   components:{
@@ -665,13 +666,31 @@ export default {
     },
     //聊天框失去焦点
     chatBoxSubmit(){
+      // var input = document.getElementById("your-input-id");
+      // input.blur();
+      console.log(0)
+      let icon_chat = document.getElementById('icon_chat');
+      icon_chat.select();
+      icon_chat.focus();
+      this.operationBoll = false;
+    },
+    eve(){
+      this.chatPopup = false;
+      let _this = this;
+      var j = setInterval(function(){
+        _this.operationBoll = true;
+        clearInterval(j);
+      },200);
 
     },
     icon_chat_click(){
       this.chatPopup = true;
       this.$nextTick(function(){
         if(this.chatPopup){
-          document.getElementById('icon_chat').focus();
+          let icon_chat = document.getElementById('icon_chat');
+          icon_chat.select();
+          icon_chat.focus();
+
         }
       })
 
@@ -792,7 +811,9 @@ a {
   align-items: center;
 
 }
-
+.videoSet_up img{
+  border-radius: 50%;
+}
 .videoSet_up div{
   background-image: url('../assets/bg_avatar@2x.png');
   background-position: center center;
@@ -1057,4 +1078,5 @@ a {
   z-index: 1;
   bottom: 0px;
 }
+
 </style>

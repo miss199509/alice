@@ -146,7 +146,7 @@
 					 <!--支付成功后台通知地址-->
 					<input type="hidden" name="notify_url" id="notify_url" value="http://dev.alice.live/wallet/finish-paypal">
 					<!--支付成功返回地址-->
-					<input type="hidden" name="return" id="return" value="http://10.1.106.21:8087/#/order">
+					<input type="hidden" name="return" id="return" :value="returnUrl">
 					<input type="hidden" name="lc" id="lc" value="China">
 					<!--支付取消返回地址-->
 					<input type="hidden" name="cancel_return" id="cancel_return" :value="cancel_return">
@@ -192,7 +192,8 @@ export default {
       id:'',
       payment_boll:false,
       cancel_return:'',
-      elementBoll:false
+      elementBoll:false,
+      returnUrl:''
     }
   },
   mounted(){//mounted
@@ -206,6 +207,8 @@ export default {
   	let href_data = location.href.substr(location.href.indexOf('?')+1,location.href.length);
   	
   	this.cancel_return = location.href;
+
+  	this.returnUrl = this.cancel_return.substring(0,this.cancel_return.indexOf('/#/')+3)+'order';
 
   	let href_dataVal = href_data.replace(/&product_id/g,',').replace(/=/g,'').replace(/product_id/g,'');
   	this.cartData = href_dataVal;

@@ -60,7 +60,7 @@
 						</p>
 					</div>
 					<p style="position: relative;">
-						<img width="100%" height="230px;" :src='val.r_image'/>
+						<img width="100%" :src='val.r_image'/>
 						<img style="position: absolute;top: 7px;right: 7px;" width="43px;" src="../assets/liveBroadcast/live.png"/>
 					</p>
 				</li>
