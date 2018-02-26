@@ -96,7 +96,6 @@ export default {
   	this.product_height = document.documentElement.clientHeight-360;
 
   	var _this = this;
-  	_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg';
 
   	axios.post(_this.$store.state.url_talk+'/customer/get-orders',qs.stringify({
   		cid:_this.$route.query.cid,

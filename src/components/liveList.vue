@@ -60,7 +60,7 @@
 						</p>
 					</div>
 					<p style="position: relative;">
-						<img width="100%" :src='val.r_image'/>
+						<img width="100%" style="min-height: 170px;" :src='val.r_image'/>
 						<img style="position: absolute;top: 7px;right: 7px;" width="43px;" src="../assets/liveBroadcast/live.png"/>
 					</p>
 				</li>
@@ -332,7 +332,15 @@ export default {
   		sessionid:localStorage.getItem('session_id')
   	}))
 	.then(function(dataJson){
-		console.log(JSON.stringify(dataJson.data))
+		console.log(JSON.stringify(dataJson.data.info))
+		for(let i in dataJson.data.info){
+			if(dataJson.data.info[i].dealer_portrait==undefined){
+				dataJson.data.info[i]['dealer_portrait'] = require('../assets/avatar@2x.png');
+			};
+			if(dataJson.data.info[i].dealer_name==undefined){
+				dataJson.data.info[i]['dealer_name'] = '游客';
+			};
+		}
 		_this.broadcastList = dataJson.data.info;
 	})
 	.catch(function(err){
@@ -581,7 +589,7 @@ export default {
 .popup_back{
 	background-position: center center;
 	background-repeat: no-repeat;
-	height: 190px;
+	height: 210px;
 	box-shadow: 0px 8px 17px #514343;
 	background-size: 100% 100%;
 	background-position: 100% 100%;

@@ -29,7 +29,7 @@
 				<li class="listGoods overflowRemove" v-for="(val,key) in shopping_list" @click="shopping_eve(key)">
 
 					<div class="listGoods_img">
-						<img :src='val.image'/>
+						<img :src='val.image' onerror="this.src='https://cdn-resource.alice.live/TestPicture/products/1515659060.png'"/>
 						<div class="">
 							<h3 class="color_aimai">{{val.en_name}}</h3>
 							<p>
