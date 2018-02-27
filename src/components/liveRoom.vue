@@ -772,6 +772,8 @@ a {
   background-repeat: no-repeat;
   height: 100%;
   /*padding: 0px 11px;*/
+  position: relative;
+  overflow: auto;
 }
 
 .liveHeader{
@@ -997,10 +999,14 @@ a {
 .continueBox_title{
   font-size: 21px;
   color: #aeaeae;
+  width: 80%;
+  margin: auto;
 }
 .continueBox_tips{
   font-size: 18px;
   color: #aeaeae;
+  width: 80%;
+  margin: auto;
 }
 .continueBox_tips p{
   display: flex;
