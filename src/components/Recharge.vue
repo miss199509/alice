@@ -7,9 +7,9 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					
-					<router-link :to="{ name: 'Personal'}">
-						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
-					</router-link>
+					<!-- <router-link :to="{ name: 'Personal'}"> -->
+						<img @click="personal_eve()" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+					<!-- </router-link> -->
 				</li>
 				<li style="display: inline-block;">
 					<strong class="color_aimai">{{parseInt($store.state.language)?'Reload':'充值'}}</strong>
@@ -46,7 +46,7 @@
 					<li>
 
 						<span class="color_aimai">{{parseInt($store.state.language)?'Reload':'充值'}}</span>
-						<input v-on:input="inputFunc" class="inputMye" type="text" v-model="num" placeholder="￥10" style="text-align:right" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)"/>
+						<input v-on:input="inputFunc" class="inputMye" type="tel" v-model="num" placeholder="￥10" style="text-align:right" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)"/>
 					
 					</li>
 
@@ -76,13 +76,13 @@
 
 				</div>
 				<div class="">
-					<div id="reload">
-						<div class="">
+					<div id="reload" :class="{reload:rechargeHeightBoll}">
+						<div class="" style="padding: 0px 7px;">
 							<p class="email">
 								<span>
 									<label>{{parseInt($store.state.language)?'Email：':'邮箱：'}}</label>
-									<input tyle="text" placeholder="Please enter your email address" v-model="email_val" v-if="$store.state.language"/>
-									<input tyle="text" placeholder="请输入邮箱地址" v-model="email_val" v-else/>
+									<input type="url" placeholder="Please enter your email address" v-model="email_val" v-if="$store.state.language"/>
+									<input type="url" placeholder="请输入邮箱地址" v-model="email_val" v-else/>
 								</span>
 								<img @click="show_emailboll" width="23px;" src="../assets/liveBroadcast/btn_info@2x.png"/>
 							</p>
@@ -139,8 +139,23 @@
 			<div class="boxPopup" style="z-index: 1111" v-show="recharge_login_boll">
 				<img class="img_login" width="70px" src="../assets/liveBroadcast/loading.png"/>
 			</div>
+			
 
-
+			<div id="boxPopup" style="z-index: 11" v-show="emailTips"></div>
+			<div class="explainPopup productPopup" v-show="emailTips">
+			  	<h3 class="tips_title color_aimai">
+			  		<span></span>
+			  		<strong>{{parseInt($store.state.language)?'tips':'提示'}}</strong>
+			  		<img @click="emailTips = !emailTips" width="17px;" src="../assets/liveBroadcast/btn_close.png"/>
+			  	</h3>
+			  	<ul class="transaction">
+					<li>
+						<p class="recharge_tips color_aimai" style="text-align: center;">
+							{{parseInt($store.state.language)?'Please enter the correct mailbox!':'请输入正确的邮箱！'}}
+						</p>
+					</li>
+				</ul>
+			</div>
 		
 		</div>
 
@@ -175,6 +190,7 @@ export default {
       idOrder:0,
       email_val:'',
       emailboll:false,
+      emailTips:false,
       balance:0,
       //支付传递参数
       customer_id:'',
@@ -182,10 +198,26 @@ export default {
       //
       cancel_return:'',
       return_url:'',
-      recharge_login_boll:false
+      recharge_login_boll:false,
+      rechargeHeight:0,
+      rechargeHeightBoll:true
     }
   },
   created(){
+
+  	//520
+  	this.rechargeHeight = document.documentElement.clientHeight;
+  	if(this.rechargeHeight<=520){
+  		this.rechargeHeightBoll = false
+  	}
+
+  	if(this.$route.query.language!=undefined){
+	  	if(this.$route.query.language==1){
+	  		this.$store.state.language = 1;
+	  	}else{
+	  		this.$store.state.language = 0;
+	  	};
+  	}
     var _this = this;
   	
 	//获取订单
@@ -291,8 +323,10 @@ export default {
   		//发送邮件
   		
   		let _this = this;
-  		if(_this.email_val==''){
-  			return false
+  		let ele = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+  		if(!ele.test(_this.email_val)){
+  			this.emailTips = true;
+  			return false;
   		};
   		axios.post(_this.$store.state.url_talk+'/customer/set-email',qs.stringify({
 	  		cid:localStorage.getItem('cid'),
@@ -344,13 +378,18 @@ export default {
   		axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
 		.then(function(dataJson){
 			console.log(JSON.stringify(dataJson.data))
-			_this.balance = dataJson.data.balance/100
+			_this.balance = dataJson.data.balance/100;
 			_this.$store.state.balance_talk = _this.balance.toFixed(2);
 
 		})
 		.catch(function(err){
 			alert(err);
 		});
+  	},
+  	personal_eve(){
+  		if(this.$route.query.app==undefined){
+			this.$router.push({ name: 'Personal'})
+  		}
   	}
   }
 }
@@ -398,6 +437,7 @@ export default {
 	border: none;
 	font-size: 18px;
 	color: #E0B553;
+	width: 90px;
 }
 .nav_recharge span{
 	font-size: 15px;
@@ -407,8 +447,8 @@ export default {
 }
 
 
-#reload{
-	width: 97%;
+.reload{
+	width: 100%;
     bottom: 7px;
     position: absolute;
     left: 50%;
@@ -459,6 +499,7 @@ export default {
 .email input{
 	border: none;
 	font-size: 15px;
+	width: 130px;
 }
 .productBet{
 	background:url('../assets/loading/btn_GetCod@2x.png');

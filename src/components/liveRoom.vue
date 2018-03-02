@@ -134,7 +134,7 @@
       <!-- 聊天框 -->
       <div class="chatBox boxGifts" v-show="chatPopup">
         <p>
-          <input id="icon_chat" type="text" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
+          <input id="icon_chat" type="search" value="发送" placeholder="点击输入弹幕" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
           <!-- <label @click="chatBoxSubmit()">SEND</label> -->
         </p>
       </div>
@@ -193,6 +193,7 @@ export default {
     'word':word
   },
   mounted(){
+    //this.$store.state.language = 0;
     console.log(this.$route.query.cid)
     // document.getElementById('jsmpeg-player').style.width = "100%";
     let height_ = document.documentElement.clientHeight-220;
@@ -1043,7 +1044,7 @@ a {
 
 /*聊天*/
 .chatBox{
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     width: 100%;
     left: 0px;

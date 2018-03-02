@@ -7,7 +7,7 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'liveList'}">
-						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">

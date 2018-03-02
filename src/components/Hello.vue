@@ -173,7 +173,7 @@ export default {
     	let training_room = localStorage.getItem('training_room');
     	localStorage.setItem('language',1)
     	
-
+    	
 	    let _this = this;
 	    //判断是否有本地存储数据
     	if(access_token==null || session_id==null || id==null || portrait==null || nickname==null || tutorials==null || training_room==null){
