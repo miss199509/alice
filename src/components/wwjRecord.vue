@@ -18,7 +18,7 @@
           <li v-for="(val,key) in recordListRecord">
             <p>
               <img width="37px" :src="val.picture"/>
-              <strong>{{val.nickname}}</strong>
+              <strong>{{val.nickname}}{{val.customer_id}}</strong>
             </p>
             <p>
               <span>{{val.create_time}}</span>
@@ -44,9 +44,9 @@
         
         <div class="rankingBack">
           <p class="name">
-            <span>{{rankingBack_two.nickname}}</span>
-            <span class="one">{{rankingBack_one.nickname}}</span>
-            <span class="three">{{rankingBack_three.nickname}}</span>
+            <span>{{rankingBack_two.nickname}}{{rankingBack_two.customer_id}}</span>
+            <span class="one">{{rankingBack_one.nickname}}{{rankingBack_one.customer_id}}</span>
+            <span class="three">{{rankingBack_three.nickname}}{{rankingBack_three.customer_id}}</span>
           </p>
           <p class="num">
             <span>{{parseInt($store.state.language)?'Tried':'抓取'}}<i>{{rankingBack_two.number}}</i>{{parseInt($store.state.language)?'times':'次'}}</span>
@@ -60,7 +60,7 @@
             <p>
               <label>{{val.location}}</label>
               <img width="37px" src="../assets/avatar@2x.png"/>
-              <strong>{{val.nickname}}</strong>
+              <strong>{{val.nickname}}{{val.customer_id}}</strong>
             </p>
             <p>
               <span>{{parseInt($store.state.language)?'Tried':'抓取'}}</span>
@@ -101,13 +101,14 @@ export default {
       productsImg:''
     }
   },
+  props:['logo'],
   mounted(){
     let _this = this;
     _this.height_box = document.documentElement.clientHeight-150;
     _this.recordList = document.documentElement.clientHeight-345;
     
     axios.post(_this.$store.state.url_talk+'/wawa/record',qs.stringify({
-      room_id:59,
+      room_id:_this.$route.query.roomid,
     }))
     .then(function(dataJson){
       if(dataJson.data.result){
@@ -120,7 +121,7 @@ export default {
     });
     //抓取达人
     axios.post(_this.$store.state.url_talk+'/wawa/win',qs.stringify({
-      room_id:59,
+      room_id:_this.$route.query.roomid,
     }))
     .then(function(dataJson){
       //console.log(JSON.stringify(dataJson.data))
@@ -146,7 +147,7 @@ export default {
     });
     //娃娃详情
     axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({
-      id:390,
+      id:_this.logo,
     }))
     .then(function(dataJson){
       _this.productsImg = dataJson.data.images[0]
@@ -296,6 +297,7 @@ a {
 
 .recordList{
   overflow: auto;
+  padding: 0px 15px;
 }
 .recordList li{
   display: flex;

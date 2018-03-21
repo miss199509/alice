@@ -31,7 +31,7 @@
 	<div class="loadingExplain">
 		<div class="">
 			<p class="playing">Start playing with</p>
-			<img @click="loginFacebook()" width="27px;" src="../assets/loading/btn_Lfacebook@2x.png"/>
+			<img v-show="language" @click="loginFacebook()" width="27px;" src="../assets/loading/btn_Lfacebook@2x.png"/>
 			<img @click="wechat()" width="27px;" src="../assets/loading/btn_weixin1@2x.png" style="display: none;"/>
 			<img @click="land()" width="27px;" src="../assets/loading/btn_phone.png"/>
 		</div>
@@ -113,48 +113,33 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       explainPopup:false,
       auth2:'',
-      mailbox_boll:false
+      mailbox_boll:false,
+      language:0
     }
   },
   mounted(){
   	let _this = this;
+  	this.language = parseInt(this.$route.query.language);
+  	if(_this.language){
+		window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '1475634259145456',
+		      cookie     : true,  // enable cookies to allow the server to access 
+		                          // the session
+		      xfbml      : true,  // parse social plugins on this page
+		      version    : 'v2.8' // use graph api version 2.8
+		    });
+		};
 
-
-	window.fbAsyncInit = function() {
-	    FB.init({
-	      appId      : '1475634259145456',
-	      cookie     : true,  // enable cookies to allow the server to access 
-	                          // the session
-	      xfbml      : true,  // parse social plugins on this page
-	      version    : 'v2.8' // use graph api version 2.8
-	    });
-
-	    // Now that we've initialized the JavaScript SDK, we call 
-	    // FB.getLoginStatus().  This function gets the state of the
-	    // person visiting this page and can return one of three states to
-	    // the callback you provide.  They can be:
-	    //
-	    // 1. Logged into your app ('connected')
-	    // 2. Logged into Facebook, but not your app ('not_authorized')
-	    // 3. Not logged into Facebook and can't tell if they are logged into
-	    //    your app or not.
-	    //
-	    // These three cases are handled in the callback function.
-	    //默认调用取消
-	    // FB.getLoginStatus(function(response) {
-	    //   _this.statusChangeCallback(response);
-	    // });
-	};
-
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
+		// Load the SDK asynchronously
+		(function(d, s, id) {
+		    var js, fjs = d.getElementsByTagName(s)[0];
+		    if (d.getElementById(id)) return;
+		    js = d.createElement(s); js.id = id;
+		    js.src = "https://connect.facebook.net/en_US/sdk.js";
+		    fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	}
 
 
 
@@ -190,7 +175,7 @@ export default {
 				localStorage.setItem('nickname',dataJson.data.nickname)
 				localStorage.setItem('tutorials',dataJson.data.tutorials)
 				localStorage.setItem('training_room',dataJson.data.training_room)
-				_this.$router.push({ name: 'liveList'})
+				_this.$router.push({ name: 'liveList',query:{cid:dataJson.data.id,session_id:dataJson.data.session_id}})
 				window.location.reload();
 			})
 			.catch(function(err){
@@ -208,7 +193,7 @@ export default {
 				// localStorage.setItem('cid',dataJson.data.id)
 				// localStorage.setItem('portrait',dataJson.data.portrait)
 				// localStorage.setItem('nickname',dataJson.data.nickname)
-				_this.$router.push({ name: 'liveList'})
+				_this.$router.push({ name: 'liveList',query:{cid:dataJson.data.id,session_id:dataJson.data.session_id}})
 				window.location.reload();
 			})
 			.catch(function(err){

@@ -6,7 +6,7 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					<router-link :to="{ name: 'liveList'}">
+					<router-link :to="{ name: 'liveList',query:{session_id:session}}">
 						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>

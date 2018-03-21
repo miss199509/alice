@@ -92,7 +92,7 @@ export default {
 
   	var _this = this;
   	//收货地址
-  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$store.state.cid_talk}))
+  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$route.query.cid}))
 	.then(function(dataJson){
 		//console.log(JSON.stringify(dataJson))
 		for(let key in dataJson.data.info){
@@ -112,7 +112,7 @@ export default {
 		this.total+=this.shoppingCart[i].product_price;
 	};
 	var j = setInterval(function(){
-		axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$store.state.cid_talk}))
+		axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$route.query.cid}))
 		.then(function(dataJson){
 			console.log(JSON.stringify(dataJson.data))
 			if(dataJson.data.length<=0){
@@ -131,7 +131,8 @@ export default {
   },
   methods: {
   	register(){
-  		this.$router.push({ name: 'liveList'})
+  		let _this = this;
+  		this.$router.push({ name: 'liveList',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy}})
   	}
   }
 }

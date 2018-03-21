@@ -71,11 +71,14 @@ a{
 ul,li{
   list-style: none;
 }
+.cursor{
+  cursor: pointer;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  max-width: 600px;
+  max-width: 700px;
   height: 100%;
   margin: auto;
 }
@@ -146,14 +149,12 @@ ul,li{
 
 
 .headerNav{
-  height: 100%;
   color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0px 13px;
   height: 37px;
-  max-width: 574px;
 }
 
 
@@ -164,23 +165,26 @@ ul,li{
   background-size: 100% 100%;
   background-repeat: no-repeat;
   position: absolute;
-  max-width: 600px;
+  max-width: 700px;
   min-height: 100%;
   width: 100%;
 }
 
-.shoppingl_global{
+/*.shoppingl_global{
   margin-top: 40px;
-}
+}*/
 
 
-.liveList header{
+/*.liveList header{
   position: fixed;
   top: 0px;
   width: 100%;
   height: 37px;
   border-bottom: 2px solid #DEB64D;
   z-index: 1;
+}*/
+.liveList header{
+  border-bottom: 2px solid #DEB64D;
 }
 
 .headerClass{

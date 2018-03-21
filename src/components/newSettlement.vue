@@ -6,7 +6,7 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					<router-link :to="{ name: 'Settlement'}">
+					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
@@ -31,7 +31,7 @@
 							<p>{{delivery_nav.state}}{{delivery_nav.postcode}}</p>
 						</div>
 
-						<router-link :to="{ name: 'Delivery',query:{cid:$store.state.cid_talk}}">
+						<router-link :to="{ name: 'Delivery',query:{cid:$route.query.cid,candy:$route.query.candy,session_id:$route.query.session_id}}">
 							<p class="floatRight">
 								<img width="23px;" src="../assets/liveBroadcast/proceed_button.png"/>
 							</p>
@@ -47,7 +47,7 @@
 				</div>
 				<p class="payment_select" @click="payment_select_eve()">
 					{{parseInt($store.state.language)?'Use balance payment':'使用余额支付'}}:
-					<span>{{parseFloat($store.state.balance_talk/100).toFixed(2)}}</span>
+					<span>{{$store.state.balance_talk}}</span>
 					<img v-if="payment_boll" width="23px;" src="../assets/liveBroadcast/icon_checked@2x.png"/>
 					<img v-else width="23px;" src="../assets/liveBroadcast/icon_unchecked@2x.png"/>
 				</p>
@@ -190,7 +190,7 @@ export default {
       customer_id:'',
       order_id:'',
       id:'',
-      payment_boll:false,
+      payment_boll:true,
       cancel_return:'',
       elementBoll:false,
       returnUrl:''
@@ -216,11 +216,11 @@ export default {
 
 
   	//收货地址
-  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$store.state.cid_talk}))
+  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$route.query.cid}))
 	.then(function(dataJson){
 		//console.log(JSON.stringify(dataJson.data))
 		if(dataJson.data.info.length<=0){
-			_this.$router.push({ name: 'newAddress',query:{id:'1'}})
+			_this.$router.push({ name: 'newAddress',query:{cid:_this.$route.query.cid,id:'1',candy:_this.$route.query.candy,session_id:_this.$route.query.session_id}})
 		};
 		for(let key in dataJson.data.info){
 			if(dataJson.data.info[key].is_default==1){
@@ -235,22 +235,43 @@ export default {
 		alert(err);
 	});
 
+	//钱包请求
+	if(this.$route.query.candy==undefined){
+
+		axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({
+			cid:_this.$route.query.cid,
+			sessionId:localStorage.getItem('session_id')
+		}))
+		.then(function(dataJson){
+			console.log(JSON.stringify(dataJson.data))
+			let balance = dataJson.data.balance/100
+			_this.$store.state.balance_talk = balance.toFixed(2);
+
+		})
+		.catch(function(err){
+			//alert(err);
+		});
+
+	}else{
+		axios.post(_this.$store.state.url_talk+'/api/refresh-wallet',qs.stringify({
+			cid:_this.$route.query.cid,
+			sessionId:localStorage.getItem('session_id')
+		}))
+		.then(function(dataJson){
+			let balance = dataJson.data.app_dc.king_token;
+			_this.$store.state.balance_talk = balance.toFixed(2);
+
+		})
+		.catch(function(err){
+			//alert(err);
+		});
+	}
 
 
-
-	//钱包金额请求	
-	axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
-	.then(function(dataJson){
-		_this.$store.state.balance_talk = dataJson.data.balance;
-
-	})
-	.catch(function(err){
-		alert(err);
-	});
 
 
 	//购买的商品信息
- 	axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$store.state.cid_talk}))
+ 	axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$route.query.cid}))
 	.then(function(dataJson){
 		//console.log(JSON.stringify(dataJson.data))
 		for(let i in dataJson.data){
@@ -270,11 +291,11 @@ export default {
 			console.log(_this.product_price_val)
 		  	if(_this.product_price_val>0){
 			  	//收货地址
-			  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$store.state.cid_talk}))
+			  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$route.query.cid}))
 				.then(function(dataJson){
 					//console.log(JSON.stringify(dataJson.data))
 					if(dataJson.data.info.length<=0){
-						_this.$router.push({ name: 'newAddress',query:{id:'1'}})
+						_this.$router.push({ name: 'newAddress',query:{cid:_this.$route.query.cid,id:'1',candy:_this.$route.query.candy,session_id:_this.$route.query.session_id}})
 					};
 					for(let key in dataJson.data.info){
 						if(dataJson.data.info[key].is_default==1){
@@ -284,14 +305,14 @@ export default {
 
 							//购买参数写入
 							axios.post(_this.$store.state.url_talk+'/order/register',qs.stringify({
-						 		cid:_this.$store.state.cid_talk,
+						 		cid:_this.$route.query.cid,
 								cart_id:_this.cartData,
 						 	}))
 							.then(function(dataJson){
 								_this.order_id = dataJson.data.order_id;
 								//console.log(_this.$store.state.cid_talk,_this.cartData,_this.shipping_id)
 							  	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
-							 		cid:_this.$store.state.cid_talk,
+							 		cid:_this.$route.query.cid,
 							 		order_id:_this.order_id,
 									shippingaddressid:_this.shipping_id,
 									disccount:0,
@@ -356,18 +377,17 @@ export default {
   	register(){
   		var _this = this;
   		localStorage.setItem('shoppingCart',JSON.stringify(_this.shoppingCart));
-  		if(_this.elementBoll){
-  			
+  		if(this.elementBoll){//_this.elementBoll
 			//购买参数写入
 			axios.post(_this.$store.state.url_talk+'/order/register',qs.stringify({
-		 		cid:_this.$store.state.cid_talk,
+		 		cid:_this.$route.query.cid,
 				cart_id:_this.cartData,
 		 	}))
 			.then(function(dataJson){
 				_this.order_id = dataJson.data.order_id;
-				//console.log(_this.$store.state.cid_talk,_this.cartData,_this.shipping_id)
+				console.log(_this.$store.state.cid_talk,_this.cartData,_this.shipping_id)
 			  	axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
-			 		cid:_this.$store.state.cid_talk,
+			 		cid:_this.$route.query.cid,
 			 		order_id:_this.order_id,
 					shippingaddressid:_this.shipping_id,
 					disccount:0,
@@ -379,26 +399,22 @@ export default {
 					//orderid
 					_this.id = dataJson.data.id;
 					console.log(_this.customer_id,_this.id,_this.product_price_val)
+					_this.$router.push({ name: 'order',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy}})
+					//return false;
 				})
 				.catch(function(err){
-					_this.$router.push({ name: 'order'})
+					_this.$router.push({ name: 'order',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy}})
 				});
 
 			})
 			.catch(function(err){
 				alert(err);
 			});
-
-  				
-
-
-			return false;
-
   		};
+  		console.log(_this.$route.query.cid,_this.cartData,_this.shipping_id)
   		if(this.payment_boll){
-  			
   			axios.post(_this.$store.state.url_talk+'/order/register-paypal',qs.stringify({
-		 		cid:_this.$store.state.cid_talk,
+		 		cid:_this.$route.query.cid,
 				cart_id:_this.cartData,
 				shippingaddressid:_this.shipping_id,
 				'disccount':'all'
@@ -406,7 +422,7 @@ export default {
 			.then(function(dataJson){
 				console.log(JSON.stringify(dataJson.data))
 				if(dataJson.data.status==2){
-					_this.$router.push({ name: 'order'})
+					_this.$router.push({ name: 'order',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy}})
 				}
 			})
 			.catch(function(err){
@@ -417,25 +433,6 @@ export default {
 			document.pay_form.submit();
   		};
 
-  		//支付
-  		/*
-  		return false;
-	 	axios.post(_this.$store.state.url_talk+'/order/register-cloud-moolah',qs.stringify({
-	 		cid:_this.$store.state.cid_talk,
-	 		cart_id:_this.cart_list.join(','),
-	 		shippingaddressid:_this.delivery_nav.id,
-	 		sessionid:localStorage.getItem('session_id')
-	 	}))
-		.then(function(dataJson){
-			console.log(JSON.stringify(dataJson.data))
-			if(dataJson.data.status){
-				_this.$router.push({ name: 'order'})
-			}
-		})
-		.catch(function(err){
-			alert(err);
-		});
-		*/
   	},
   	commodity_eve(){
   		this.commodity_boll?this.commodity_boll = false:this.commodity_boll = true;
@@ -454,12 +451,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.liveList header{
-	position: fixed;
-	top: 0px;
-	width: 100%;
-	height: 37px;
-}
 
 .information{
 	width: 97%;

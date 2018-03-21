@@ -7,7 +7,7 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					
-					<router-link :to="{ name: 'liveList'}">
+					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
@@ -15,7 +15,7 @@
 					<strong class="color_aimai">{{parseInt($store.state.language)?'Account':'个人信息'}}</strong>
 				</li>
 				<li class="floatRight">
-					<router-link :to="{ name: 'Settlement'}">
+					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
@@ -42,9 +42,10 @@
 						<img width="23px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
 						<strong>{{$store.state.balance_talk}}</strong>
 					</p>
+					<p class="thisId">id:{{$route.query.cid}}</p>
 					<nav class="portrait_nav">
 						<ul>
-							<router-link v-for="(val,key) in portrait_nav" :to="{name:val.url,query: {cid:$store.state.cid_talk}}">
+							<router-link v-for="(val,key) in portrait_nav" :to="{name:val.url,query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 							<!--query: {plan:666}}">{ name: 'history', params: { deviceId: 123, dataId:456 }}-->
 								<li>
 									<img width="25px" :src="val.imgae"/>
@@ -98,15 +99,36 @@ export default {
   mounted(){
   	let _this = this
   	//_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg';
-  	axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
-	.then(function(dataJson){
-		let balance = dataJson.data.balance/100
-		_this.$store.state.balance_talk = balance.toFixed(2);
+  	if(this.$route.query.candy==undefined){
 
-	})
-	.catch(function(err){
-		alert(err);
-	});
+		axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({
+			cid:_this.$route.query.cid,
+			sessionId:localStorage.getItem('session_id')
+		}))
+		.then(function(dataJson){
+			console.log(JSON.stringify(dataJson.data))
+			let balance = dataJson.data.balance/100
+			_this.$store.state.balance_talk = balance.toFixed(2);
+
+		})
+		.catch(function(err){
+			//alert(err);
+		});
+
+	}else{
+		axios.post(_this.$store.state.url_talk+'/api/refresh-wallet',qs.stringify({
+			cid:_this.$route.query.cid,
+			sessionId:localStorage.getItem('session_id')
+		}))
+		.then(function(dataJson){
+			let balance = dataJson.data.app_dc.king_token;
+			_this.$store.state.balance_talk = balance.toFixed(2);
+
+		})
+		.catch(function(err){
+			//alert(err);
+		});
+	}
 
 	//获取当前玩家的个人中心数据
 	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$store.state.cid_talk}))
@@ -280,5 +302,11 @@ export default {
     padding: 7px 0px;
     margin: 7px 0px;
     font-size: 13px;
+}
+.thisId{
+	color: #ccc;
+	font-size: 13px;
+	margin: 7px 0px;
+	padding-left: 13px;
 }
 </style>

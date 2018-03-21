@@ -212,6 +212,7 @@ export default {
   	}
 
   	if(this.$route.query.language!=undefined){
+  		console.log(0)
 	  	if(this.$route.query.language==1){
 	  		this.$store.state.language = 1;
 	  	}else{
@@ -225,7 +226,7 @@ export default {
 
 
     //钱
-    axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
+    axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$route.query.cid}))
 	.then(function(dataJson){
 		console.log(JSON.stringify(dataJson.data))
 		_this.balance = dataJson.data.balance/100
@@ -240,7 +241,7 @@ export default {
 	  	if(_this.$route.query.num==_this.balance){
 	  		_this.recharge_login_boll = true;
 			var j = setInterval(function(){  
-		        axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
+		        axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$route.query.cid}))
 				.then(function(dataJson){
 					console.log(JSON.stringify(dataJson.data))
 					console.log(_this.balance)
@@ -375,7 +376,7 @@ export default {
 
   	},
   	balance_eve(){
-  		axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$store.state.cid_talk}))
+  		axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({cid:_this.$route.query.cid}))
 		.then(function(dataJson){
 			console.log(JSON.stringify(dataJson.data))
 			_this.balance = dataJson.data.balance/100;
@@ -387,7 +388,7 @@ export default {
 		});
   	},
   	personal_eve(){
-  		if(this.$route.query.app==undefined){
+  		if(this.$route.query.app==undefined||this.$route.query.app==0){
 			this.$router.push({ name: 'Personal'})
   		}
   	}

@@ -7,19 +7,21 @@
 				<li class="floatLeft">
 					
 					<!-- <router-link :to="{ name: 'Personal'}">list_popup() -->
-						<img @click="popup_box_boll = !popup_box_boll" width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img v-if="$route.query.candy==undefined" @click="popup_box_boll = !popup_box_boll" width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<span v-else class="btn_back"></span>
 					<!-- </router-link> -->
 
-					<router-link :to="{ name: 'Shoppingl'}">
+					<router-link :to="{ name: 'Shoppingl'}" v-show="$route.query.candy==undefined">
 						<img class="headerClass" width="20px;" src="../assets/liveBroadcast/icon_shop@2x.png"/>
 					</router-link>
 				</li>
-				<li style="display: inline-block;">
-					<img width="15px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+				<li class="dc_css">
+					<img v-if="$route.query.candy==undefined" width="15px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+					<img v-else width="20px;" src="../assets/new_icon_bluetoken@2x.png"/>
 					<strong class="color_aimai">{{$store.state.balance_talk}}</strong>
 				</li>
 				<li class="floatRight information_box">
-					<router-link :to="{ name: 'Settlement'}">
+					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
@@ -27,7 +29,7 @@
 	    </header>
 	    <div class="shoppingl_global" @click="video_eve()">
 			<img v-show="loginBoll" style="width: 45px;display: block;margin: auto;" src="../assets/liveBroadcast/loading.png"/>
-			<img width="100%" :src='image'/>
+			<img class="headerImg" id="img" width="100%" src='../assets/banner _1.jpg'/><!-- image -->
 	    </div>
 	    	
 	    <!-- 视频 -->
@@ -104,7 +106,7 @@
 
 					<nav class="navList">
 						<ul>
-							<router-link :to="{ name: 'Personal'}">
+							<router-link :to="{ name: 'Personal',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 								<li>
 									<img width="23px;" src="../assets/liveBroadcast/btn_profile@2x.png"/>
 									<span class="color_aimai">{{parseInt($store.state.language)?'Profile':'个人信息'}}</span>
@@ -115,7 +117,7 @@
 								<span class="color_aimai">{{parseInt($store.state.language)?'Home':'大厅'}}</span>
 							</li>
 							
-							<router-link :to="{ name: 'information'}">
+							<router-link :to="{ name: 'information',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 								<li>
 									<img width="23px;" src="../assets/liveBroadcast/btn_event@2x.png"/>
 									<span class="color_aimai">{{parseInt($store.state.language)?'News':'新闻'}}</span>
@@ -290,6 +292,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 import aa from './talk'
+import $ from 'jquery'
 
 export default {
   name: 'liveList',
@@ -309,11 +312,24 @@ export default {
       show: true,
       loginBoll:true,
       language_boll:0,
-      height_room:0
+      height_room:0,
     }
   },
+  updated(){
+  	let _this = this;
+  	
+  	_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
+  	if(_this.height_room==0){
+		let showTimeInterval = setInterval(function(){
+			_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
+			if(_this.height_room>0){
+				clearInterval(showTimeInterval);
+			}
+		},1000);
+  	}
+
+  },
   mounted(){
-  	this.height_room = document.documentElement.clientHeight-170;
   	//中英文状态初始化
   	this.language_boll = parseInt(localStorage.getItem('language'));
   	//判断当前用户是否是新手
@@ -328,11 +344,10 @@ export default {
   	//http://red.aimai.live/lobby/get-room-list?room_type=2
   	console.log(this.$store.state.cid_talk)
   	axios.post(_this.$store.state.url_talk+'/lobby/get-room-list',qs.stringify({
-  		cid:_this.$store.state.cid_talk,
+  		cid:_this.$route.query.cid,
   		sessionid:localStorage.getItem('session_id')
   	}))
 	.then(function(dataJson){
-		console.log(JSON.stringify(dataJson.data.info))
 		for(let i in dataJson.data.info){
 			if(dataJson.data.info[i].dealer_portrait==undefined){
 				dataJson.data.info[i]['dealer_portrait'] = require('../assets/avatar@2x.png');
@@ -340,25 +355,50 @@ export default {
 			if(dataJson.data.info[i].dealer_name==undefined){
 				dataJson.data.info[i]['dealer_name'] = '游客';
 			};
+			//console.log(JSON.stringify(dataJson.data.info[i].product_schedule_id))
+		};
+		if(_this.$route.query.candy!=undefined){
+			for(let i in dataJson.data.info){
+				if(dataJson.data.info[i].room_type!=3){
+					dataJson.data.info.splice(i,1);
+				}
+			}
 		}
 		_this.broadcastList = dataJson.data.info;
 	})
 	.catch(function(err){
 		alert(err);
 	});
-	axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({
-		cid:_this.$store.state.cid_talk,
-		sessionId:localStorage.getItem('session_id')
-	}))
-	.then(function(dataJson){
-		console.log(JSON.stringify(dataJson.data))
-		let balance = dataJson.data.balance/100
-		_this.$store.state.balance_talk = balance.toFixed(2);
+	if(this.$route.query.candy==undefined){
 
-	})
-	.catch(function(err){
-		//alert(err);
-	});
+		axios.post(_this.$store.state.url_talk+'/wallet/get-balance',qs.stringify({
+			cid:_this.$route.query.cid,
+			sessionId:localStorage.getItem('session_id')
+		}))
+		.then(function(dataJson){
+			console.log(JSON.stringify(dataJson.data))
+			let balance = dataJson.data.balance/100
+			_this.$store.state.balance_talk = balance.toFixed(2);
+
+		})
+		.catch(function(err){
+			//alert(err);
+		});
+
+	}else{
+		axios.post(_this.$store.state.url_talk+'/api/refresh-wallet',qs.stringify({
+			cid:_this.$route.query.cid,
+			sessionId:localStorage.getItem('session_id')
+		}))
+		.then(function(dataJson){
+			let balance = dataJson.data.app_dc.king_token;
+			_this.$store.state.balance_talk = balance.toFixed(2);
+
+		})
+		.catch(function(err){
+			//alert(err);
+		});
+	}
 
 	//视频
 	axios.post(_this.$store.state.url_talk+'/news/banner','')
@@ -385,19 +425,23 @@ export default {
   		*/
   		if(this.broadcastList[key].room_type==2){
   			this.$router.push({ name: 'liveBroadcast',query: {
-  				cid:this.$store.state.cid_talk,
+  				cid:this.$route.query.cid,
   				dealerid:this.broadcastList[key].dealer_id,
   				roomid:this.broadcastList[key].room_id,
-  				roomType:this.broadcastList[key].room_type
+  				roomType:this.broadcastList[key].room_type,
+  				session_id:this.$route.query.session_id
   			}})
   		}
   		//抓娃娃
   		if(this.broadcastList[key].room_type==3){
 	  		this.$router.push({ name: 'liveRoom',query: {
-				cid:this.$store.state.cid_talk,
+				cid:this.$route.query.cid,
 				dealerid:this.broadcastList[key].dealer_id,
 				roomid:this.broadcastList[key].room_id,
-				roomType:this.broadcastList[key].room_type
+				roomType:this.broadcastList[key].room_type,
+				session_id:this.$route.query.session_id,
+				candy:this.$route.query.candy,
+				product_schedule_id:this.broadcastList[key].product_id
 			}})
   		}
   	},
@@ -405,7 +449,14 @@ export default {
   		localStorage.setItem('is_follow',this.broadcastList[0].is_follow)
   		console.log(this.broadcastList[0].is_follow)
   		//localStorage.setItem('tutorials',0)
-  		this.$router.push({ name: 'liveBroadcast',query: {cid:this.$store.state.cid_talk,dealerid:this.broadcastList[0].dealer_id,roomid:this.broadcastList[0].room_id}})
+  		this.$router.push({
+  			name: 'liveBroadcast',
+  			query: {
+  				cid:this.$route.query.cid,
+  				dealerid:this.broadcastList[0].dealer_id,
+  				roomid:this.broadcastList[0].room_id,
+  				session_id:this.$route.query.session_id
+  			}})
   	},
   	video_eve(){
   		this.iframeBoll = true;
@@ -434,8 +485,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
+.btn_back{
+	height: 34px;
+	width: 34px;
+	display: block;
+}
+.dc_css{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.dc_css strong{
+	margin: 0px 5px;
+}
+.headerImg{
+	height: auto;
+}
 
 .broadcastBox{
 	padding: 0px 3px;

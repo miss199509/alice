@@ -6,10 +6,10 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					<router-link :to="{ name: 'liveList'}">
+					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
-					<router-link :to="{ name: 'Personal'}">
+					<router-link :to="{ name: 'Personal',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
 						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
@@ -17,7 +17,7 @@
 					<strong class="color_aimai">{{parseInt($store.state.language)?'Ship to':'收货人'}}</strong>
 				</li>
 				<li class="floatRight">
-					<router-link :to="{ name: 'Settlement'}">
+					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
@@ -44,7 +44,7 @@
 							</p>
 							<p class="" style="display: none;">
 								<img src=""/>
-								<router-link :to="{ name: 'modifyRess',query: {cid:$store.state.cid_talk,id:$store.state.id_talk}}">
+								<router-link :to="{ name: 'modifyRess',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 									<strong @click="this_eve(key)">></strong>
 								</router-link>
 							</p>
@@ -52,7 +52,7 @@
 						
 						<p class="icon_img">
 
-							<router-link :to="{ name: 'modifyRess',query: {cid:$store.state.cid_talk,id:$store.state.id_talk}}">
+							<router-link :to="{ name: 'modifyRess',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 								<img @click="this_eve(key)" width="20px;" src="../assets/liveBroadcast/edit_btn.png"/>
 							</router-link>
 
@@ -68,7 +68,7 @@
 
 
 
-		<router-link :to="{ name: 'newAddress'}">
+		<router-link :to="{ name: 'newAddress',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 			<p class="submit_delivery">
 				{{parseInt($store.state.language)?'ADD A NEW ADDRESS':'添加新地址'}}
 			</p>
@@ -95,7 +95,7 @@ export default {
   },
   created(){
   	var _this = this
-  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$store.state.cid_talk}))
+  	axios.post(_this.$store.state.url_talk+'/customer/get-shipping-address',qs.stringify({cid:_this.$route.query.cid}))
 	.then(function(dataJson){
 		//送礼游客名
 		console.log(JSON.stringify(dataJson.data.info))
@@ -125,7 +125,7 @@ export default {
   		this.delivery_nav[key].imgae = require('../assets/liveBroadcast/icon_checked@2x.png')
   		
   		axios.post(_this.$store.state.url_talk+'/customer/edit-shipping-address',qs.stringify({
-  			cid:_this.$store.state.cid_talk,
+  			cid:_this.$route.query.cid,
   			phone:_this.delivery_nav[key].cell_phone_number,
   			cnee:_this.delivery_nav[key].cnee,
   			street:_this.delivery_nav[key].street,
@@ -152,7 +152,7 @@ export default {
   	modify_ress(val){
   		let _this = this
   		axios.post(_this.$store.state.url_talk+'/customer/del-shipping-address',qs.stringify({
-  			cid:_this.$store.state.cid_talk,
+  			cid:_this.$route.query.cid,
   			id:val.id
   		}))
 		.then(function(dataJson){

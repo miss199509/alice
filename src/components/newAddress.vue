@@ -115,7 +115,7 @@ export default {
 			street:_this.adderss_list[1].text,
 			cnee:_this.adderss_list[0].text,
 			phone:_this.adderss_list[6].text,
-			cid:_this.$store.state.cid_talk,
+			cid:_this.$route.query.cid,
 	  	}))
 		.then(function(dataJson){
 			//console.log(dataJson.data)
@@ -124,7 +124,7 @@ export default {
 				if(parseInt(_this.$route.query.id)){
 					window.history.go(-1);
 				}else{
-					_this.$router.push({ name: 'Delivery',query: {cid:_this.$store.state.cid_talk}})
+					_this.$router.push({ name: 'Delivery',query: {cid:_this.$route.query.cid}})
 				}
 			}
 		})
@@ -141,7 +141,7 @@ export default {
 <style scoped>
 .shoppingl_global{
 	padding: 0px 7px;
-	margin-top: 50px;
+	margin-top: 5px;
 }
 .adderss{
 	background-color: #fff;

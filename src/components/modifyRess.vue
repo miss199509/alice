@@ -9,7 +9,7 @@
 					<router-link :to="{ name: 'liveList'}">
 						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
-					<router-link :to="{ name: 'Delivery',query: {cid:$store.state.cid_talk}}">
+					<router-link :to="{ name: 'Delivery',query: {cid:$store.state.cid_talk,candy:$route.query.candy}}">
 						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
@@ -83,32 +83,34 @@ export default {
   mounted(){
   	let _this = this
   	///customer/edit-shipping-address
-	axios.post(_this.$store.state.url_talk+'/customer/get-address',qs.stringify({'id':_this.$route.query.id}))
+	axios.post(_this.$store.state.url_talk+'/customer/get-address',qs.stringify({'id':_this.$route.query.cid}))
 	.then(function(dataJson){
 		console.log(JSON.stringify(dataJson.data.info))
-		for(let index in _this.adderss_list){
-			switch(_this.adderss_list[index].pla){
-				case '收货人：':
-						_this.adderss_list[index].text = dataJson.data.info[0].cnee
-				  break;
-				case '街道':
-						_this.adderss_list[index].text = dataJson.data.info[0].street
-				  break;
-				case '建筑/单位/公寓':
-						_this.adderss_list[index].text = dataJson.data.info[0].full_address
-				  break;
-				case '城市':
-						_this.adderss_list[index].text = dataJson.data.info[0].city
-				  break;
-				case '邮编':
-						_this.adderss_list[index].text = dataJson.data.info[0].postcode
-				  break;
-				case '邮箱-给你发送更新您的订单':
-						_this.adderss_list[index].text = dataJson.data.info[0].email
-				  break;
-				case '手机号码-关于你的订单':
-						_this.adderss_list[index].text = dataJson.data.info[0].cell_phone_number
-				  break;
+		if(dataJson.data.info.result){
+			for(let index in _this.adderss_list){
+				switch(_this.adderss_list[index].pla){
+					case '收货人：':
+							_this.adderss_list[index].text = dataJson.data.info[0].cnee
+					  break;
+					case '街道':
+							_this.adderss_list[index].text = dataJson.data.info[0].street
+					  break;
+					case '建筑/单位/公寓':
+							_this.adderss_list[index].text = dataJson.data.info[0].full_address
+					  break;
+					case '城市':
+							_this.adderss_list[index].text = dataJson.data.info[0].city
+					  break;
+					case '邮编':
+							_this.adderss_list[index].text = dataJson.data.info[0].postcode
+					  break;
+					case '邮箱-给你发送更新您的订单':
+							_this.adderss_list[index].text = dataJson.data.info[0].email
+					  break;
+					case '手机号码-关于你的订单':
+							_this.adderss_list[index].text = dataJson.data.info[0].cell_phone_number
+					  break;
+				}
 			}
 		}
 

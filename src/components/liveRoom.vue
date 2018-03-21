@@ -2,8 +2,9 @@
   <div class="liveRoom">
     <div style="padding:0px 11px;" :style="{height:box_heigth+'px'}">
       <header class="liveHeader">
-        <router-link :to="{ name: 'liveList'}">
-          <img width="27px;" @click="signOut()" src="../assets/icon_back@2x.png"/>
+        <router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
+          <img v-if="$route.query.candy==undefined" width="27px;" @click="signOut()" src="../assets/icon_back@2x.png"/>
+          <img v-else width="27px;" @click="signOut()" src="../assets/icon_back1@2x@2x.png"/>
         </router-link>
         <div class="liveHeader_qty">
           <label>
@@ -13,8 +14,10 @@
           <p>
             <!-- <span v-for="(val,key) in received_msg" >{{val}}</span> -->
             <img v-for="(val,key) in received_msg" width="33px;" :src="val.portrait"/>
-            <router-link :to="{ name: 'Settlement'}">
-              <img class="cart" width="27px;" src="../assets/liveBroadcast/icon_cart@2x.png"/>
+            <router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
+              <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="../assets/liveBroadcast/icon_cart@2x.png"/>
+              <img v-else class="cart" width="27px;" src="../assets/icon_cart1@2x.png"/>
+              <i>3</i>
             </router-link>
           </p>
         </div>
@@ -33,7 +36,7 @@
           <div class="">
             <img width="33px;" :src="gamePlayer.portrait"/>
             <p>
-              <label>{{gamePlayer.nickname}}</label>
+              <label>{{gamePlayer.nickname}}{{$route.query.cid}}</label>
               <strong>{{parseInt($store.state.language)?'playing':'游戏中'}}</strong>
             </p>
           </div>
@@ -44,7 +47,8 @@
         </div>
 
         <!-- 切换视频 -->
-        <img @click="switchCamera()" class="switch" width="47px;" src="../assets/btn_switch@2x.png"/>
+        <img @click="switchCamera()" v-if="$route.query.candy==undefined" class="switch cursor" width="47px;" src="../assets/btn_switch@2x.png"/>
+        <img @click="switchCamera()" v-else class="switch cursor" width="47px;" src="../assets/new_btn_switch@2x.png"/>
 
 
         <div @click="the_game_eve()" class="the_game" :style="{height:height_video+'px'}"></div>
@@ -56,30 +60,40 @@
           <ul class="livePrice">
             <li>
               <label>{{parseInt($store.state.language)?'this round':'本次'}}:</label>
-              <img width="23px;" src="../assets/icon_dc@2x.png"/>
+              <img v-if="$route.query.candy==undefined" width="23px;" height="23px;" src="../assets/icon_dc@2x.png"/>
+              <img v-else width="23px;" height="23px;" src="../assets/new_icon_bluetoken@2x.png"/>
               <label>{{received_msg_box.play_pool/100}}.00/{{parseInt($store.state.language)?'times':'次'}}</label>
             </li>
             <li>
               <label>{{parseInt($store.state.language)?'Balance':'余额'}}:</label>
-              <img width="23px;" src="../assets/icon_dc@2x.png"/>
-              <label>{{received_msg_box.balance/100}}.00</label>
+              <img  v-if="$route.query.candy==undefined" width="23px;" src="../assets/icon_dc@2x.png"/>
+              <img v-else width="23px;" src="../assets/new_icon_bluetoken@2x.png"/>
+              <label v-if="candy!=undefined">{{received_msg_box.balance}}.00</label>
+              <label v-else>{{received_msg_box.balance/100}}.00</label>
             </li>
           </ul>
           
           <div class="wait">
-            <img @click="icon_chat_click()" id="btn" width="70px;" src="../assets/icon_chat_click@2x.png"/>
-            <div @click="lineUp()" :class="{lineUpBox:lineUpBoll}">
+            <img @click="icon_chat_click()" class="cursor" id="btn" width="70px;" src="../assets/icon_chat_click@2x.png"/>
+            <div @click="lineUp()" :class="{lineUpBox:lineUpBoll}" class="cursor">
               <p v-if="lineUpBoll">
                 <strong>
                   {{parseInt($store.state.language)?'Queuing':'排队中'}}...
                 </strong>
                 <span>
-                  {{parseInt($store.state.language)?'Front':'前面'}} {{received_msg.length}} {{parseInt($store.state.language)?'people':'人'}}
+                  {{parseInt($store.state.language)?'Front':'前面'}} {{len}} {{parseInt($store.state.language)?'people':'人'}}
                 </span>
               </p>
               <strong class="lineUp" v-else>{{parseInt($store.state.language)?'Start':'开始游戏'}}</strong>
             </div>
-            <router-link :to="{ name: 'Recharge'}">
+            <router-link :to="{ name: 'liveRoom',query:{
+              cid:$route.query.cid,
+              dealerid:$route.query.dealerid,
+              roomid:$route.query.roomid,
+              roomType:$route.query.roomType,
+              session_id:$route.query.session_id,
+              candy:$route.query.candy
+            }}"><!-- Recharge -->
               <img width="70px;" src="../assets/btn_Recharge_click@2x.png"/>
             </router-link>
           </div>
@@ -87,17 +101,17 @@
 
         <div class="operation" v-show="operation">
           <div>
-            <span class="btn_up" @click="btn_downEve()" v-on:mouseup="eve()"></span>
+            <span class="btn_up cursor" @click="btn_downEve()" v-on:mouseup="eve()"></span>
             <!-- <img class="btn_up" @click="btn_upEve()" v-on:mouseup="eve()" width="60px;" src="../assets/btn_up@2x.png"/> -->
             <p>
-              <img width="60px;" @click="btn_leftEve()" src="../assets/btn_left@2x.png"/>
-              <img class="btn_right" @click="btn_rightEve()" width="60px;" src="../assets/btn_right@2x.png"/>
+              <img class="cursor" width="60px;" @click="btn_leftEve()" src="../assets/btn_left@2x.png"/>
+              <img class="btn_right cursor" @click="btn_rightEve()" width="60px;" src="../assets/btn_right@2x.png"/>
             </p>
-            <img class="btn_down" @click="btn_upEve()" width="60px;" src="../assets/btn_down@2x.png"/>
+            <img class="btn_down cursor" @click="btn_upEve()" width="60px;" src="../assets/btn_down@2x.png"/>
           </div>
 
           <p>
-            <img @click="doEve()" width="130px;" src="../assets/btn_Grab@2x.png"/>
+            <img class="cursor" @click="doEve()" width="130px;" src="../assets/btn_Grab@2x.png"/>
           </p>
         </div>
       
@@ -112,18 +126,23 @@
               </p>
             </li>
             <li>
-              <img width="230px;" height="156px;" :src="portraitImg"/>
+              <img width="230px;" height="auto" :src="portraitImg"/>
             </li>
             <li class="continueBox_tips">
               <p>
               {{parseInt($store.state.language)?'You still have':'本局你还有'}}
-              <img width="23px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
-              {{received_msg_box.balance/100}}.00{{parseInt($store.state.language)?'in this round':'个币'}}</p>
+              <img  v-if="$route.query.candy==undefined" height="23px" width="23px;" src="../assets/icon_dc@2x.png"/>
+              <img v-else width="23px;" height="23px" src="../assets/new_icon_bluetoken@2x.png"/>
+              
+              <label v-if="candy!=undefined">{{received_msg_box.balance}}.00</label>
+              <label v-else>{{received_msg_box.balance/100}}.00</label>
+
+              {{parseInt($store.state.language)?'in this round':'个币'}}</p>
               {{parseInt($store.state.language)?'want to try again':'是否再来一局'}}？
             </li>
             <li>
-              <p class="continueBox_btn_click continueBox_btn" @click="continueEnd()">{{parseInt($store.state.language)?'TRY LATER':'稍后在试'}}</p>
-              <p class="continueBox_btn_normal continueBox_btn" @click="continueEve()">{{parseInt($store.state.language)?'TRY AGAIN':'再来一局'}}({{confirm_time}})</p>
+              <p class="continueBox_btn_click continueBox_btn cursor" @click="continueEnd()">{{parseInt($store.state.language)?'TRY LATER':'稍后再试'}}</p>
+              <p class="continueBox_btn_normal continueBox_btn cursor" @click="continueEve()">{{parseInt($store.state.language)?'TRY AGAIN':'再来一局'}}({{confirm_time}})</p>
               <!-- received_msg_box.enjoy_time2 -->
             </li>
           </ul>
@@ -140,7 +159,7 @@
       </div>
     </div>
     <img class="record_tipsImg" v-show="operationBoll" src="../assets/btn_Pulldown@2x.png"/>
-    <word></word>
+    <word :logo="$route.query.product_schedule_id"></word><!-- $route.query.product_schedule_id -->
   </div>
 </template>
 
@@ -186,13 +205,22 @@ export default {
       continueBox_val:'差一点点就抓到了！',
       confirm_time:0,
       uesHideBoll:false,
-      operationBoll:true
+      operationBoll:true,
+      candy:'',
+      len:0
     }
   },
   components:{
     'word':word
   },
   mounted(){
+    this.candy = this.$route.query.candy;
+    console.log(this.$route.query.session_id);
+    console.log(this.$route.query.cid)
+    console.log(this.$route.query.roomid)
+    console.log(this.$route.query.roomType)
+    console.log(this.$route.query.candy)
+
     //this.$store.state.language = 0;
     console.log(this.$route.query.cid)
     // document.getElementById('jsmpeg-player').style.width = "100%";
@@ -237,7 +265,7 @@ export default {
         //提交
         //要做的事情
           if ("WebSocket" in window){
-               var ws = new WebSocket('ws://dev.alice.live:9001');
+               var ws = new WebSocket('ws://red.alice.live:9001');
           
                ws.onopen = function(){
                   //Web Socket 已连接上，使用 send() 方法发送数据
@@ -253,12 +281,13 @@ export default {
                };
 
                ws.onmessage = function (evt){
-                  console.log(evt.data)
+                  //console.log(evt.data+'开始')
                   let received_msg = JSON.parse(evt.data);
                   for(let i in received_msg.cmds){
                     if(received_msg.cmds[i].id==11){
                       for(let contentKey in received_msg.cmds[i].content){
-                        _this.barrage(received_msg.cmds[i].content[contentKey].name+'：'+received_msg.cmds[i].content[contentKey].content,false);
+                        //console.log(JSON.stringify(received_msg.cmds[i].content[contentKey].customerid)+'四十')
+                        _this.barrage(received_msg.cmds[i].content[contentKey].name+received_msg.cmds[i].content[contentKey].customerid+'：'+received_msg.cmds[i].content[contentKey].content,false);
                       }
                     };
                   }
@@ -284,7 +313,7 @@ export default {
        //console.log("您的浏览器支持 WebSocket!");
        
        // 打开一个 web socket
-       var ws = new WebSocket("ws://dev.alice.live:9001");
+       var ws = new WebSocket("ws://red.alice.live:9001");
        _this.ws = ws;
       
        ws.onopen = function(){
@@ -295,7 +324,7 @@ export default {
           "roomId":_this.$route.query.roomid,
           "roomType":_this.$route.query.roomType,
           "lastTick":1501501004.2753,
-          'sessionId':localStorage.getItem('session_id')
+          'sessionId':_this.$route.query.session_id
         };
 
         ws.send(JSON.stringify(json));
@@ -303,27 +332,46 @@ export default {
        };
       
        ws.onmessage = function (evt) {
-        //console.log(evt.data)
+        console.log(evt.data+'开始')
         let received_msg = JSON.parse(evt.data);
+
+        
+
+
         if(received_msg.cmd==66){
           for(let i in received_msg.cmds){
+            for(let w in received_msg.cmds[i].content){
+              if(received_msg.cmds[i].content[w].id==_this.$route.query.cid){
+                _this.len=w;
+              }
+            }
             //商品
             if(received_msg.cmds[i].id==224){
               // 获取到商品id
               _this.product_schedule_id = received_msg.cmds[i].content[0].product_schedule_id;
+              console.log(JSON.stringify(received_msg.cmds[i].content))
 
             };
             //弹幕
             if(received_msg.cmds[i].id==11){
               for(let contentKey in received_msg.cmds[i].content){
                 //console.log(JSON.stringify(received_msg.cmds[i].content[contentKey]))
-                _this.barrage(received_msg.cmds[i].content[contentKey].name+'：'+received_msg.cmds[i].content[contentKey].content,false);
+                _this.barrage(received_msg.cmds[i].content[contentKey].name+received_msg.cmds[i].content[contentKey].customerid+'：'+received_msg.cmds[i].content[contentKey].content,false);
               }
             };
 
 
             if(received_msg.cmds[i].id==66){
+              //console.log(JSON.stringify(received_msg.cmds[i].wallet.app_dc.king_token))
               _this.received_msg_box = received_msg.cmds[i];
+              //console.log(JSON.stringify(_this.received_msg_box.wallet.app_dc.king_token))
+              console.log(_this.received_msg_box.wallet.app_dc.king_token)
+              if(_this.candy!=undefined){
+                _this.received_msg_box.balance = _this.received_msg_box.wallet.app_dc.king_token;
+              }
+
+
+
               //console.log(JSON.stringify(received_msg.cmds[i].content))
               //判断是否抓到娃娃
               console.log(received_msg.cmds[i].catch_result+'----------------------')
@@ -348,8 +396,10 @@ export default {
               }
               if(received_msg.cmds[i].catch_result==1){
                 console.log('抓到了');
+                console.log(_this.product_schedule_id)
                 axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.product_schedule_id}))
                 .then(function(dataJson){
+                  console.log(JSON.stringify(dataJson.data))
                   _this.portraitImg = dataJson.data.images[0];
                   _this.continueBox_val = _this.$store.state.language?'Congratulations!You caught it！':'恭喜您！抓到了！';
                   _this.bollStart = true;
@@ -430,6 +480,10 @@ export default {
   methods:{
     // 排队
     lineUp(){
+      if(this.received_msg_box.balance<this.received_msg_box.play_pool/100){
+        alert('余额不足')
+        return false
+      }
       console.log('---------------------------------------------------')
       if(this.lineUpBoll){
         return false
@@ -441,7 +495,7 @@ export default {
          //console.log("您的浏览器支持 WebSocket!");
          
          // 打开一个 web socket
-         var ws = new WebSocket("ws://dev.alice.live:9001");
+         var ws = new WebSocket("ws://red.alice.live:9001");
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
@@ -602,7 +656,7 @@ export default {
          //console.log("您的浏览器支持 WebSocket!");
          
          // 打开一个 web socket
-         var ws = new WebSocket("ws://dev.alice.live:9001");
+         var ws = new WebSocket("ws://red.alice.live:9001");
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
@@ -639,7 +693,7 @@ export default {
          //console.log("您的浏览器支持 WebSocket!");
          
          // 打开一个 web socket
-         var ws = new WebSocket("ws://dev.alice.live:9001");
+         var ws = new WebSocket("ws://red.alice.live:9001");
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
@@ -732,8 +786,8 @@ export default {
       
       $(".the_game").append($p);
       
-      var _timer=Math.ceil(Math.random()*4000)+3000;
-      $p.stop().animate({"left":"-500px"},_timer,function(){
+      var _timer=Math.ceil(Math.random()*4000)+300;
+      $p.stop().animate({"left":"-200px"},10000,function(){
         $(this).remove();
       }); 
 
@@ -764,13 +818,11 @@ a {
   left: 50%;
   transform : translate(-50%,-50%);
   top: 50%;
+  height: 100%;
 }
 
 .liveRoom{
   background-image: url('../assets/bg_main1@2x.png');
-  background-position: center center;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
   height: 100%;
   /*padding: 0px 11px;*/
   position: relative;
@@ -783,8 +835,20 @@ a {
   align-items: center;
   padding: 7px 0px;
 }
-.liveHeader label{
+.liveHeader i{
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  background: #f65e4e;
+  border-radius: 50%;
+  height: 23px;
+  width: 23px;
+  text-align: center;
+  line-height: 23px;
   color: #fff;
+}
+.liveHeader label{
+  color: #927242;
   text-align: center;
   display: block;
   font-size: 16px;
@@ -1006,7 +1070,7 @@ a {
 .continueBox_tips{
   font-size: 18px;
   color: #aeaeae;
-  width: 80%;
+  width: 100%;
   margin: auto;
 }
 .continueBox_tips p{
@@ -1084,6 +1148,7 @@ a {
   left: 0px;
   z-index: 1;
   bottom: 0px;
+  height: 23px;
 }
 
 </style>

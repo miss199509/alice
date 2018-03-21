@@ -6,10 +6,10 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="">
-					<router-link :to="{ name: 'liveList'}">
+					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
-					<router-link :to="{ name: 'Shoppingl'}">
+					<router-link :to="{ name: 'Shoppingl'}" v-show="$route.query.candy==undefined">
 						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
@@ -102,7 +102,7 @@ export default {
   	this.height = document.documentElement.clientHeight-143;
 
   	var _this = this;
- 	axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$store.state.cid_talk}))
+ 	axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$route.query.cid}))
 	.then(function(dataJson){
 		_this.shoppingCart = dataJson.data
 		
@@ -132,6 +132,7 @@ export default {
   },
   methods: {
   	register(){
+  		let _this = this;
   		if(this.shoppingCart.length<=0){
   			return false;
   		};
@@ -142,7 +143,7 @@ export default {
 	  				attr.push(this.shoppingCart[i].id)
 	  			}
 	  		}
-  			this.$router.push({ name: 'newSettlement',query:{product_id:attr}})
+  			this.$router.push({ name: 'newSettlement',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy,product_id:attr}})
 	  	}
   	},
   	shoppingCart_eve(key){
@@ -159,7 +160,7 @@ export default {
   		this.priceVal = 0;
   		for(let i in this.shoppingCart){
   			if(this.shoppingCart[i].boll){
-  				this.priceVal+=this.shoppingCart[i].origin_price*this.shoppingCart[i].product_amount
+  				this.priceVal+=this.shoppingCart[i].product_price*this.shoppingCart[i].product_amount;
   			}
   		}
   		//循环所有数据判断是否全选
@@ -184,7 +185,7 @@ export default {
   			this.globalImg_tips_boll = true;
   			for(let i in this.shoppingCart){
   				this.shoppingCart[i].boll = true;
-  				this.priceVal+=parseInt(this.shoppingCart[i].origin_price) 
+  				this.priceVal+=parseInt(this.shoppingCart[i].product_price) 
   			}
   		}
   	}
@@ -202,7 +203,7 @@ export default {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	margin: 50px 0px 11px 0px;
+	margin: 11px 0px 11px 0px;
 }
 .settlement_global span{
 	margin-left: 9px;

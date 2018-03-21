@@ -2,7 +2,7 @@
   <div class="liveBroadcast">
 	<header class="headerName">
 		<b class="floatLeft" @click="liveListReturn()">
-			<router-link :to="{ name: 'liveList'}">
+			<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id}}">
 				<img width="23px" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 			</router-link>
 		</b>
@@ -674,7 +674,6 @@ export default {
     }
   },
   mounted(){
-  	
 
   	//弹幕
   	this.height_img = document.documentElement.clientHeight-393;
@@ -755,7 +754,7 @@ export default {
 
   	this.betVal = parseFloat(this.betVal/100).toFixed(2)
 
-  	this.HAND_SHAKE = JSON.stringify({"cmd":2,"cid":this.$route.query.cid,"roomId":this.$route.query.roomid,"roomType":2,'sessionId':localStorage.getItem('session_id')})
+  	this.HAND_SHAKE = JSON.stringify({"cmd":2,"cid":this.$route.query.cid,"roomId":this.$route.query.roomid,"roomType":2,'sessionId':_this.$route.query.session_id})
   	//var _this = this
   	//礼物
  	 axios.post(_this.$store.state.url_talk+'/gift/fetch-gifts',qs.stringify({cid:_this.$route.query.cid}))
@@ -785,7 +784,7 @@ export default {
 				number_money = dataJson.data.info[key].value
 			}
 			//console.log(JSON.stringify(dataJson.data.info[key].id))
-			_this.listGifts.push({'gifts_value':number_money,'gifts_image':dataJson.data.info[key].image,'giftsBull':false,'id':dataJson.data.info[key].id,'sessionId':localStorage.getItem('session_id')})
+			_this.listGifts.push({'gifts_value':number_money,'gifts_image':dataJson.data.info[key].image,'giftsBull':false,'id':dataJson.data.info[key].id,'sessionId':_this.$route.query.session_id})
 
 		}
 	})
@@ -812,7 +811,7 @@ export default {
 	axios.post(_this.$store.state.url_talk+'/lobby/get-room-list',qs.stringify({
   		room_type:2,
   		cid:_this.$store.state.cid_talk,
-  		sessionId:localStorage.getItem('session_id')
+  		sessionId:_this.$route.query.session_id
   	}))
 	.then(function(dataJson){
 		for(let key in dataJson.data.info){
@@ -835,7 +834,7 @@ export default {
 	       _this.ws = ws;
 	       ws.onopen = function(){
 	          // Web Socket 已连接上，使用 send() 方法发送数据
-	          var json = {"cmd":2,"cid":_this.$route.query.cid,"roomId":_this.$route.query.roomid,"roomType":2,"lastTick":1501501004.2753,'sessionId':localStorage.getItem('session_id')};
+	          var json = {"cmd":2,"cid":_this.$route.query.cid,"roomId":_this.$route.query.roomid,"roomType":2,"lastTick":1501501004.2753,'sessionId':_this.$route.query.session_id};
 	          console.log(JSON.stringify(json))
 	          //console.log(JSON.stringify(json))
               ws.send(JSON.stringify(json));
@@ -1242,7 +1241,7 @@ export default {
 	  			amount:_this.number_int,
 	  			price:_this.give.price,
 	  			size:'',
-	  			sessionid:localStorage.getItem('session_id')
+	  			sessionid:_this.$route.query.session_id
 	  		}))
 			.then(function(dataJson){
 				console.log(JSON.stringify(dataJson.data))
@@ -1269,7 +1268,7 @@ export default {
   			gid:_this.give.id,
   			type:'gift',
   			quantity:_this.number_int,
-  			sessionid:localStorage.getItem('session_id')
+  			sessionid:_this.$route.query.session_id
   		}))
 		.then(function(dataJson){
 			console.log(JSON.stringify(dataJson.data))
@@ -1336,7 +1335,7 @@ export default {
   			cid:_this.$route.query.cid,
   			roomid:_this.$route.query.roomid,
   			productid:_this.commodity_data_img.commodity_id,
-  			sessionid:localStorage.getItem('session_id')
+  			sessionid:_this.$route.query.session_id
   		}))
 		.then(function(dataJson){
 			if(dataJson.data.result){
@@ -1454,7 +1453,7 @@ export default {
   		axios.post(_this.$store.state.url_talk+'/pokerrb/cash-out',qs.stringify({
 	  		cid:_this.$route.query.cid,
 	  		roomid:_this.$route.query.roomid,
-	  		sessionId:localStorage.getItem('session_id')
+	  		sessionId:_this.$route.query.session_id
 	  	}))
 		.then(function(dataJson){
 			console.log(JSON.stringify(dataJson.data))
