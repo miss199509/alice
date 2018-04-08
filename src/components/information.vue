@@ -6,7 +6,7 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					<router-link :to="{ name: 'liveList'}">
+					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
 				</li>
@@ -15,7 +15,7 @@
 					<strong class="color_aimai" v-else>新闻</strong>
 				</li>
 				<li class="floatRight">
-					<router-link :to="{ name: 'Settlement'}">
+					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>

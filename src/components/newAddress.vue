@@ -6,10 +6,10 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					<router-link :to="{ name: 'liveList'}">
+					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
 						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
-					<router-link :to="{ name: 'Delivery',query: {cid:$store.state.cid_talk}}">
+					<router-link :to="{ name: 'Delivery',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
 						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>

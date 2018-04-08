@@ -17,7 +17,7 @@
             <router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
               <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="../assets/liveBroadcast/icon_cart@2x.png"/>
               <img v-else class="cart" width="27px;" src="../assets/icon_cart1@2x.png"/>
-              <i>3</i>
+              <!-- <i>3</i> -->
             </router-link>
           </p>
         </div>
@@ -36,7 +36,7 @@
           <div class="">
             <img width="33px;" :src="gamePlayer.portrait"/>
             <p>
-              <label>{{gamePlayer.nickname}}{{$route.query.cid}}</label>
+              <label>{{nickname}}</label>
               <strong>{{parseInt($store.state.language)?'playing':'游戏中'}}</strong>
             </p>
           </div>
@@ -126,7 +126,7 @@
               </p>
             </li>
             <li>
-              <img width="230px;" height="auto" :src="portraitImg"/>
+              <img width="170px;" height="110px" :src="portraitImg"/>
             </li>
             <li class="continueBox_tips">
               <p>
@@ -185,6 +185,7 @@ export default {
       received_msg:[],
       //当前玩家
       gamePlayer:{'nickname':'二狗子','portrait':require('../assets/avatar@2x.png')},
+      nickname:'',
       //计时
       time_config:{},
       //层
@@ -514,6 +515,16 @@ export default {
             //当前玩家
             if(received_msg.current_user!={}){
               _this.gamePlayer = received_msg.current_user;
+
+              //_this.nickname = _this.gamePlayer.nickname+_this.$route.query.cid;
+              let str = _this.gamePlayer.nickname+_this.$route.query.cid;
+              if(str.length>10){
+                let strVal = str.substring(0,10);
+                _this.nickname = strVal+'...';
+              }
+
+
+
             }
             //倒计时
             _this.time_config = received_msg.time_config;
@@ -645,6 +656,10 @@ export default {
     },
     //继续玩
     continueEve(){
+      if(this.received_msg_box.balance<this.received_msg_box.play_pool/100){
+        alert('余额不足')
+        return false
+      }
       this.continueBoll = false;
       this.operation = false;
       this.wait = true;
@@ -739,7 +754,12 @@ export default {
 
     },
     icon_chat_click(){
-      this.chatPopup = true;
+      let _this = this;
+      var j = setInterval(function(){
+        _this.chatPopup = true;
+        clearInterval(j);
+      },1000);
+
       this.$nextTick(function(){
         if(this.chatPopup){
           let icon_chat = document.getElementById('icon_chat');

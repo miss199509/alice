@@ -12,7 +12,7 @@
 			<!-- <span style="display: block;" class="color_aimai" v-if="$store.state.language">VLEWERS</span>
 			<span style="display: block;" class="color_aimai" v-else>观众</span> -->
 		</p>
-		<router-link :to="{ name: 'Settlement'}">
+		<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 			<span class="floatRight" id="shopping">
 				<img width="30px" src="../assets/liveBroadcast/btn_cart@2x.png"/>
 				<i class="tips" style="display: none;">
@@ -401,7 +401,7 @@
 				</p>
 			</li>
 			<li class="operation">
-				<router-link :to="{ name: 'Recharge'}">
+				<router-link :to="{ name: 'Recharge',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 					<p @click="cartSubmit()" class="productBet">
 						<span>{{parseInt($store.state.language)?'Confirm':'充值'}}</span>
 					</p>

@@ -3,6 +3,19 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+//lert(window.location.href)
+var lan = 0;
+let url = window.location.href;
+if(url.indexOf('candy')>0){
+  if(url.indexOf('language')>0){
+    let valUrl = url.substring(url.indexOf('language')+9)
+    parseInt(valUrl)?lan = 0:lan = 1;
+  }else{
+    lan = 1;
+  }
+}else{
+  lan = parseInt(localStorage.getItem('language'));
+}
 
 const state = {
   count: 0,
@@ -17,7 +30,7 @@ const state = {
   //获取头像链接
   portrait:localStorage.getItem('portrait'),
   //语言
-  language:parseInt(localStorage.getItem('language'))
+  language:lan
 }
 
 const mutations = {

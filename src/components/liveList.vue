@@ -11,7 +11,7 @@
 						<span v-else class="btn_back"></span>
 					<!-- </router-link> -->
 
-					<router-link :to="{ name: 'Shoppingl'}" v-show="$route.query.candy==undefined">
+					<router-link :to="{ name: 'Shoppingl',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
 						<img class="headerClass" width="20px;" src="../assets/liveBroadcast/icon_shop@2x.png"/>
 					</router-link>
 				</li>
@@ -29,7 +29,7 @@
 	    </header>
 	    <div class="shoppingl_global" @click="video_eve()">
 			<img v-show="loginBoll" style="width: 45px;display: block;margin: auto;" src="../assets/liveBroadcast/loading.png"/>
-			<img class="headerImg" id="img" width="100%" src='../assets/banner _1.jpg'/><!-- image -->
+			<img class="headerImg" id="img" width="100%" src='../assets/banner.png'/><!-- image -->
 	    </div>
 	    	
 	    <!-- 视频 -->
@@ -355,16 +355,19 @@ export default {
 			if(dataJson.data.info[i].dealer_name==undefined){
 				dataJson.data.info[i]['dealer_name'] = '游客';
 			};
-			//console.log(JSON.stringify(dataJson.data.info[i].product_schedule_id))
+			console.log(JSON.stringify(dataJson.data.info[i]))
 		};
 		if(_this.$route.query.candy!=undefined){
 			for(let i in dataJson.data.info){
-				if(dataJson.data.info[i].room_type!=3){
-					dataJson.data.info.splice(i,1);
+				if(dataJson.data.info[i].room_type==3){
+					_this.broadcastList.push(dataJson.data.info[i])
 				}
 			}
+		}else{
+			for(let i in dataJson.data.info){
+				_this.broadcastList.push(dataJson.data.info[i])
+			}
 		}
-		_this.broadcastList = dataJson.data.info;
 	})
 	.catch(function(err){
 		alert(err);

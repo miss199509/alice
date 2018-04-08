@@ -50,7 +50,7 @@
 					
 					</li>
 
-					<router-link :to="{ name: 'Record'}">
+					<router-link :to="{ name: 'Record',query:{cid:$route.query.cid,session_id:$route.query.session_id}}">
 						<li>
 							<span>{{parseInt($store.state.language)?'Reload History':'充值记录'}}</span>
 							<strong>
@@ -388,8 +388,9 @@ export default {
 		});
   	},
   	personal_eve(){
+  		let _this = this;
   		if(this.$route.query.app==undefined||this.$route.query.app==0){
-			this.$router.push({ name: 'Personal'})
+			this.$router.push({ name: 'Personal',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id}})
   		}
   	}
   }
@@ -403,7 +404,7 @@ export default {
 	height: 90px;
 	text-align:center;
 	padding: 45px 0px;
-	margin: 45px 7px 0px 7px;
+	margin: 7px 7px 0px 7px;
 	background-color: #EFEFEF;
 	border-radius: 3px;
 }
@@ -500,7 +501,7 @@ export default {
 .email input{
 	border: none;
 	font-size: 15px;
-	width: 130px;
+	min-width: 130px;
 }
 .productBet{
 	background:url('../assets/loading/btn_GetCod@2x.png');

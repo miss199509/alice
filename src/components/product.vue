@@ -6,7 +6,7 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					<router-link :to="{ name: 'Shoppingl'}">
+					<router-link :to="{ name: 'Shoppingl',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
@@ -14,7 +14,7 @@
 					<strong class="color_aimai">{{parseInt($store.state.language)?'Shop':'商店'}}</strong>
 				</li>
 				<li class="floatRight">
-					<router-link :to="{ name: 'Settlement'}">
+					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>

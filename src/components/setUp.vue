@@ -6,10 +6,10 @@
 	    <header>
 		    <ul class="headerNav">
 				<li class="floatLeft">
-					<router-link :to="{ name: 'Personal'}">
+					<router-link :to="{ name: 'Personal',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="12px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
-					<router-link :to="{ name: 'liveList'}">
+					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/btnhomei6.png"/>
 					</router-link>
 				</li>
@@ -18,7 +18,7 @@
 					<strong class="color_aimai" v-else>设置</strong>
 				</li>
 				<li class="floatRight">
-					<router-link :to="{ name: 'Settlement'}">
+					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
@@ -30,10 +30,10 @@
 		<div class="shoppingl_global setUp">
 			<p v-if="$store.state.language">ALNGUAGE</p>
 			<p v-else>语言</p>
-			<router-link :to="{ name: 'Help'}" v-if="$store.state.language">
+			<router-link :to="{ name: 'Help',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-if="$store.state.language">
 				<p>FAQ</p>
 			</router-link>
-			<router-link :to="{ name: 'Help'}" v-else>
+			<router-link :to="{ name: 'Help',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-else>
 				<p>帮助</p>
 			</router-link>
 			<p @click="sign_out()" v-if="$store.state.language">LOGOUT</p>
