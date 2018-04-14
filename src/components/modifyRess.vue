@@ -30,7 +30,8 @@
 		<div class="shoppingl_global">
 			<ul class="adderss">
 				<li v-for="(val,key) in adderss_list">
-					<input v-model="val.text" :placeholder="val.pla" />
+					<input v-if="parseInt($store.state.language)" v-model="val.text" :placeholder="val.newPla"/>
+					<input v-else v-model="val.text" :placeholder="val.pla"/>
 				</li>
 			</ul>
 		</div>
@@ -68,13 +69,13 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
        adderss_list:[
-      	{'text':'','pla':'收货人：','event':''},
-      	{'text':'','pla':'街道','event':''},
-      	{'text':'','pla':'建筑/单位/公寓','event':''},
-      	{'text':'','pla':'城市','event':''},
-      	{'text':'','pla':'邮编','event':''},
-      	{'text':'','pla':'邮箱-给你发送更新您的订单','event':''},
-      	{'text':'','pla':'手机号码-关于你的订单','event':''}
+      	{'text':'','pla':'收货人：','newPla':'Consignee','event':''},
+      	{'text':'','pla':'街道','newPla':'Street','event':''},
+      	{'text':'','pla':'建筑/单位/公寓','newPla':'Building / unit / apartment','event':''},
+      	{'text':'','pla':'城市','newPla':'City','event':''},
+      	{'text':'','pla':'邮编','newPla':'Zip code','event':''},
+      	{'text':'','pla':'邮箱-给你发送更新您的订单','newPla':'mailbox','event':''},
+      	{'text':'','pla':'手机号码-关于你的订单','newPla':'Phone number','event':''}
       ],
       tips_val:'',
       tipsBoll:false

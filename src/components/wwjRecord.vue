@@ -10,6 +10,7 @@
     <div class="" v-show="record_navList[0].boll">
       <div class="products">
         <img width="100%" :src="productsImg"/>
+        <p>{{description}}</p>
       </div>
     </div>
 
@@ -98,7 +99,8 @@ export default {
       rankingBack_two:{},
       rankingBack_three:{},
       recordList:0,
-      productsImg:''
+      productsImg:'',
+      description:''
     }
   },
   props:['logo'],
@@ -146,11 +148,21 @@ export default {
       //alert(err);
     });
     //娃娃详情
+    var newLen = 0;
+    if(this.$store.state.language==0){
+      newLen = 1;
+    }else{
+      newLen = 2
+    };
     axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({
       id:_this.logo,
+      lang:newLen
     }))
     .then(function(dataJson){
-      _this.productsImg = dataJson.data.images[0]
+      console.log(JSON.stringify(dataJson.data))
+      console.log(JSON.stringify(dataJson.data.ch_description))
+      _this.description = dataJson.data.description;
+      _this.productsImg = dataJson.data.images[0];
 
     })
     .catch(function(err){
@@ -357,5 +369,17 @@ a {
   left: 50%;
   transform: translate(-50%,-50%);
   width: 80%;
+  text-align: center;
+}
+.products img{
+  width: 170px;
+  height: 170px;
+  margin: 33px 0px;
+}
+.products p{
+  height: 130px;
+  overflow: auto;
+  color: #444;
+  font-size: 13px;
 }
 </style>

@@ -100,7 +100,12 @@ export default {
   mounted(){//mounted
   	
   	this.height = document.documentElement.clientHeight-143;
-
+  	var len = 0;
+    if(this.$store.state.language==0){
+      len = 1;
+    }else{
+      len = 2
+    };
   	var _this = this;
  	axios.post(_this.$store.state.url_talk+'/cart/get-cart',qs.stringify({cid:_this.$route.query.cid}))
 	.then(function(dataJson){
@@ -113,11 +118,11 @@ export default {
 			//     return new Date(parseInt(nS) * 1000).toLocaleString().substr(0,17)
 			// }     
 			// console.log(getLocalTime(dataJson.data[id].result_time));
-			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:dataJson.data[id].product_id}))
+			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:dataJson.data[id].product_id,lang:len}))
 			.then(function(dataJson){
-				_this.$set(_this.shoppingCart[id],'ch_name',dataJson.data.ch_name)
+				_this.$set(_this.shoppingCart[id],'ch_name',dataJson.data.name)
 				_this.$set(_this.shoppingCart[id],'images',dataJson.data.images[0])
-				//console.log(JSON.stringify(dataJson.data))
+				console.log(JSON.stringify(dataJson.data))
 				_this.$set(_this.shoppingCart[id],'boll',true);
 			})
 			.catch(function(err){

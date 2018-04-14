@@ -1,58 +1,60 @@
 <template>
   <div class="liveRoom">
     <div style="padding:0px 11px;" :style="{height:box_heigth+'px'}">
-      <header class="liveHeader">
-        <router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-          <img v-if="$route.query.candy==undefined" width="27px;" @click="signOut()" src="../assets/icon_back@2x.png"/>
-          <img v-else width="27px;" @click="signOut()" src="../assets/icon_back1@2x@2x.png"/>
-        </router-link>
-        <div class="liveHeader_qty">
-          <label>
-           {{received_msg_box.online}}人
-           <br/>{{parseInt($store.state.language)?'online':'在线'}}
-          </label>
-          <p>
-            <!-- <span v-for="(val,key) in received_msg" >{{val}}</span> -->
-            <img v-for="(val,key) in received_msg" width="33px;" :src="val.portrait"/>
-            <router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-              <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="../assets/liveBroadcast/icon_cart@2x.png"/>
-              <img v-else class="cart" width="27px;" src="../assets/icon_cart1@2x.png"/>
-              <!-- <i>3</i> -->
-            </router-link>
-          </p>
-        </div>
-      </header>
-      
-      <div class="video_box">
-        <canvas id="jsmpeg-player"></canvas>
-        <canvas id="jsmpeg-player2"></canvas>
-        
-        <p class="canvasVideo" :style="{height:height_video+'px'}">
-          <span class="borderLeft"></span>
-          <span class="borderRight"></span>
-        </p>
-
-        <div class="videoSet_up" v-show="uesHideBoll">
-          <div class="">
-            <img width="33px;" :src="gamePlayer.portrait"/>
+      <div class="">
+        <header class="liveHeader">
+          <router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
+            <img v-if="$route.query.candy==undefined" width="27px;" @click="signOut()" src="../assets/icon_back@2x.png"/>
+            <img v-else width="27px;" @click="signOut()" src="../assets/icon_back1@2x@2x.png"/>
+          </router-link>
+          <div class="liveHeader_qty">
+            <label>
+             {{received_msg_box.online}}人
+             <br/>{{parseInt($store.state.language)?'online':'在线'}}
+            </label>
             <p>
-              <label>{{nickname}}</label>
-              <strong>{{parseInt($store.state.language)?'playing':'游戏中'}}</strong>
+              <!-- <span v-for="(val,key) in received_msg" >{{val}}</span> -->
+              <img v-for="(val,key) in received_msg" width="33px;" :src="val.portrait"/>
+              <router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
+                <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="../assets/liveBroadcast/icon_cart@2x.png"/>
+                <img v-else class="cart" width="27px;" src="../assets/icon_cart1@2x.png"/>
+                <!-- <i>3</i> -->
+              </router-link>
             </p>
           </div>
-          <!-- <img src="../assets/liveBroadcast/icon_countdown@2x.png"/> -->
-          <p class="countdown">
-            <span>{{received_msg_box.enjoy_time2}}</span>
+        </header>
+        
+        <div class="video_box">
+          <canvas id="jsmpeg-player"></canvas>
+          <canvas id="jsmpeg-player2"></canvas>
+          
+          <p class="canvasVideo" :style="{height:height_video+'px'}">
+            <span class="borderLeft"></span>
+            <span class="borderRight"></span>
           </p>
+
+          <div class="videoSet_up" v-show="uesHideBoll">
+            <div class="">
+              <img width="33px;" :src="gamePlayer.portrait"/>
+              <p>
+                <label>{{nickname}}</label>
+                <strong>{{parseInt($store.state.language)?'playing':'游戏中'}}</strong>
+              </p>
+            </div>
+            <!-- <img src="../assets/liveBroadcast/icon_countdown@2x.png"/> -->
+            <p class="countdown">
+              <span>{{received_msg_box.enjoy_time2}}</span>
+            </p>
+          </div>
+
+          <!-- 切换视频 -->
+          <img @click="switchCamera()" v-if="$route.query.candy==undefined" class="switch cursor" width="47px;" src="../assets/btn_switch@2x.png"/>
+          <img @click="switchCamera()" v-else class="switch cursor" width="47px;" src="../assets/new_btn_switch@2x.png"/>
+
+
+          <div @click="the_game_eve()" class="the_game" :style="{height:height_video+'px'}"></div>
+
         </div>
-
-        <!-- 切换视频 -->
-        <img @click="switchCamera()" v-if="$route.query.candy==undefined" class="switch cursor" width="47px;" src="../assets/btn_switch@2x.png"/>
-        <img @click="switchCamera()" v-else class="switch cursor" width="47px;" src="../assets/new_btn_switch@2x.png"/>
-
-
-        <div @click="the_game_eve()" class="the_game" :style="{height:height_video+'px'}"></div>
-
       </div>
     
       <div class="operation_box" v-show="operationBoll">
@@ -62,7 +64,7 @@
               <label>{{parseInt($store.state.language)?'this round':'本次'}}:</label>
               <img v-if="$route.query.candy==undefined" width="23px;" height="23px;" src="../assets/icon_dc@2x.png"/>
               <img v-else width="23px;" height="23px;" src="../assets/new_icon_bluetoken@2x.png"/>
-              <label>{{received_msg_box.play_pool/100}}.00/{{parseInt($store.state.language)?'times':'次'}}</label>
+              <label>{{received_msg_box.play_pool}}.00/{{parseInt($store.state.language)?'time':'次'}}</label>
             </li>
             <li>
               <label>{{parseInt($store.state.language)?'Balance':'余额'}}:</label>
@@ -78,11 +80,11 @@
             <div @click="lineUp()" :class="{lineUpBox:lineUpBoll}" class="cursor">
               <p v-if="lineUpBoll">
                 <strong>
-                  {{parseInt($store.state.language)?'Queuing':'排队中'}}...
+                  {{len}}{{parseInt($store.state.language)?'waiting':'排队中'}}...
                 </strong>
-                <span>
+                <!-- <span>
                   {{parseInt($store.state.language)?'Front':'前面'}} {{len}} {{parseInt($store.state.language)?'people':'人'}}
-                </span>
+                </span> -->
               </p>
               <strong class="lineUp" v-else>{{parseInt($store.state.language)?'Start':'开始游戏'}}</strong>
             </div>
@@ -126,7 +128,7 @@
               </p>
             </li>
             <li>
-              <img width="170px;" height="110px" :src="portraitImg"/>
+              <img width="170px;" height="170px" :src="portraitImg"/>
             </li>
             <li class="continueBox_tips">
               <p>
@@ -148,18 +150,22 @@
           </ul>
         </div>
       </div>
-
+      
+      <audio id="music_mp3_0" src="static/dj.mp3" controls="controls" autoplay="autoplay" loop="loop" style="display: none;">
+        Your browser does not support the audio element.
+      </audio>
 
       <!-- 聊天框 -->
       <div class="chatBox boxGifts" v-show="chatPopup">
         <p>
-          <input id="icon_chat" type="search" value="发送" placeholder="点击输入弹幕" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
+          <input id="icon_chat" type="search" value="发送" placeholder="" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
           <!-- <label @click="chatBoxSubmit()">SEND</label> -->
         </p>
       </div>
     </div>
     <img class="record_tipsImg" v-show="operationBoll" src="../assets/btn_Pulldown@2x.png"/>
-    <word :logo="$route.query.product_schedule_id"></word><!-- $route.query.product_schedule_id -->
+    <word :logo="$route.query.product_id"></word><!-- $route.query.product_schedule_id -->
+    <img v-show="readyBoll" class="readyStart" src="../assets/ready.png"/>
   </div>
 </template>
 
@@ -208,13 +214,27 @@ export default {
       uesHideBoll:false,
       operationBoll:true,
       candy:'',
-      len:0
+      len:0,
+      readyBoll:false
     }
   },
   components:{
     'word':word
   },
   mounted(){
+    /*
+    document.addEventListener('DOMContentLoaded', function () {
+        function audioAutoPlay() {
+            var musicEle0 = document.getElementById('music_mp3_0');
+            musicEle0.play();
+        }
+        audioAutoPlay();
+    });
+    */
+
+
+
+    let _this = this;
     this.candy = this.$route.query.candy;
     console.log(this.$route.query.session_id);
     console.log(this.$route.query.cid)
@@ -234,13 +254,13 @@ export default {
 
     var client = AgoraCMH5SDK.createClient();
     this.client = client;
-    client.init('fa715ad316694ac8a88cbb05a878fb15', 'alice', {
+    client.init('fa715ad316694ac8a88cbb05a878fb15',_this.$route.query.streaming, {
       //对应的动态key，如果没有请不需要传null，直接不带这个参数即可，可选 alicerm1 AliceRm1
       //key: key,
       //主摄像头uid，默认为1，可选
-      uid1: 2587758,
+      uid1: _this.$route.query.uid1,
       //副摄像头uid，默认为2，可选
-      uid2: 2587759
+      uid2: _this.$route.query.uid2
     }, function(){
       //初始化成功
       client.play({
@@ -251,14 +271,11 @@ export default {
       }, function(){
         //视频开始播放的回调
         console.log("started playing..");
-        // document.getElementById('jsmpeg-player').style.width = "100%";
-        let height_ = document.documentElement.clientHeight-207;
-        // document.getElementById('jsmpeg-player').style.height = height_+"px";
-        // document.getElementById('jsmpeg-player2').style.height = height_+"px";
+        document.getElementById('jsmpeg-player').style.height = _this.height_video+80+'px';
+        document.getElementById('jsmpeg-player2').style.height = _this.height_video+80+'px';
 
       });
     });
-    let _this = this;
 
     document.onkeydown=function(event){
       var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -272,7 +289,7 @@ export default {
                   //Web Socket 已连接上，使用 send() 方法发送数据
                   if(_this.chatVal!==''){
                     var json = {"cmd":4,"cid":_this.$route.query.cid,"roomid":_this.$route.query.roomid,"type":1,"content":_this.chatVal}
-                    console.log(JSON.stringify(json))
+                    //console.log(JSON.stringify(json))
                     ws.send(JSON.stringify(json));
                     //弹幕发言调用函数
                     //_this.barrage(_this.chatVal,false);
@@ -333,7 +350,7 @@ export default {
        };
       
        ws.onmessage = function (evt) {
-        console.log(evt.data+'开始')
+        //console.log(evt.data+'开始')
         let received_msg = JSON.parse(evt.data);
 
         
@@ -341,14 +358,10 @@ export default {
 
         if(received_msg.cmd==66){
           for(let i in received_msg.cmds){
-            for(let w in received_msg.cmds[i].content){
-              if(received_msg.cmds[i].content[w].id==_this.$route.query.cid){
-                _this.len=w;
-              }
-            }
             //商品
             if(received_msg.cmds[i].id==224){
               // 获取到商品id
+              //alert(received_msg.cmds[i].content[0].product_schedule_id)
               _this.product_schedule_id = received_msg.cmds[i].content[0].product_schedule_id;
               console.log(JSON.stringify(received_msg.cmds[i].content))
 
@@ -363,12 +376,19 @@ export default {
 
 
             if(received_msg.cmds[i].id==66){
+              //房间人数
+              for(let w in received_msg.cmds[i].content){
+                if(received_msg.cmds[i].content[w].id==_this.$route.query.cid){
+                  _this.len=w;
+                }
+              }
+
               //console.log(JSON.stringify(received_msg.cmds[i].wallet.app_dc.king_token))
               _this.received_msg_box = received_msg.cmds[i];
               //console.log(JSON.stringify(_this.received_msg_box.wallet.app_dc.king_token))
               console.log(_this.received_msg_box.wallet.app_dc.king_token)
               if(_this.candy!=undefined){
-                _this.received_msg_box.balance = _this.received_msg_box.wallet.app_dc.king_token;
+                _this.received_msg_box.balance = _this.received_msg_box.wallet_candy;
               }
 
 
@@ -428,9 +448,13 @@ export default {
                 _this.wait = true;
                 if(_this.uesBoll){
                   _this.lineUpBoll = true;
+                  console.log(0+'*********')
                 }else{
                   _this.lineUpBoll = false;
                 }
+              }
+              if(received_msg.cmds[i].content.length==0){
+                _this.lineUpBoll = false;
               }
 
 
@@ -439,7 +463,7 @@ export default {
                 _this.gamePlayer = received_msg.cmds[i].content[0];
                 console.log(JSON.stringify(_this.gamePlayer.id));
                 console.log(_this.$route.query.cid);
-                console.log(received_msg.cmds[i].enjoy_time2+'=====');
+                console.log(received_msg.cmds[i].enjoy_time2+'===================');
                 //判断是否到当前玩家抓取的时间
                 if(_this.gamePlayer.id==_this.$route.query.cid){
                   _this.uesHideBoll = true;
@@ -447,7 +471,7 @@ export default {
                   _this.uesHideBoll = false;
                 }
                 if(_this.gamePlayer.id==_this.$route.query.cid && _this.bollStart && received_msg.cmds[i].enjoy_time2>0){
-                  _this.start()
+                  _this.start();
                 }
                 //console.log(JSON.stringify(JSON.stringify(received_msg.cmds[i].content)+'************'))
                 _this.received_msg = received_msg.cmds[i].content;
@@ -481,9 +505,9 @@ export default {
   methods:{
     // 排队
     lineUp(){
-      if(this.received_msg_box.balance<this.received_msg_box.play_pool/100){
-        alert('余额不足')
-        return false
+      if(this.received_msg_box.balance<this.received_msg_box.play_pool){
+        alert(this.$store.state.language?'Sorry, your credit is running low！':'余额不足！');
+        return false;
       }
       console.log('---------------------------------------------------')
       if(this.lineUpBoll){
@@ -549,33 +573,38 @@ export default {
       }
 
       this.lineUpBoll = true;
+      //console.log(1+'*********')
 
     },
     //获取code
     start(){
       this.operation = true;
       this.wait = false;
+      this.readyBoll = true;
       let _this = this;
-      axios.post(_this.$store.state.url_talk+'/wawa/catch-start',qs.stringify({cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
-      .then(function(dataJson){
-        
-        console.log(JSON.stringify(dataJson.data+'++++++'))//{"result":1,"code":-1,"mess":"上次抓取未结束","data":""}
-        var j = setInterval(function(){  
-          if(dataJson.data.result){
-              if(dataJson.data.data!=''){
-                _this.wawaCode = dataJson.data.data;
-                _this.bollStart = false;
-                _this.continueBoll = false;
-                clearInterval(j);
-                return false;
-              }
-          };
-        },1000);
+      var j = setInterval(function(){  
+        axios.post(_this.$store.state.url_talk+'/wawa/catch-start',qs.stringify({cid:_this.$route.query.cid,room_id:_this.$route.query.roomid}))
+        .then(function(dataJson){
+          
+          console.log(JSON.stringify(dataJson.data+'++++++'))//{"result":1,"code":-1,"mess":"上次抓取未结束","data":""}
+          
+            if(dataJson.data.result){
+                if(dataJson.data.data!=''){
+                  _this.wawaCode = dataJson.data.data;
+                  _this.bollStart = false;
+                  _this.continueBoll = false;
+                  _this.readyBoll = false;
+                  clearInterval(j);
+                  return false;
+                }
+            };
+          
 
-      })
-      .catch(function(err){
-        alert(err);
-      });
+        })
+        .catch(function(err){
+          alert(err);
+        });
+      },2000);
     },
     //切换视频
     switchCamera(){
@@ -656,8 +685,8 @@ export default {
     },
     //继续玩
     continueEve(){
-      if(this.received_msg_box.balance<this.received_msg_box.play_pool/100){
-        alert('余额不足')
+      if(this.received_msg_box.balance<this.received_msg_box.play_pool){
+        alert(this.$store.state.language?'Sorry, your credit is running low！':'余额不足！')
         return false
       }
       this.continueBoll = false;
@@ -703,6 +732,7 @@ export default {
       this.operation = false;
       this.wait = true;
       this.lineUpBoll = false;
+      /*
       let _this = this;
       if ("WebSocket" in window){
          //console.log("您的浏览器支持 WebSocket!");
@@ -712,6 +742,7 @@ export default {
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
+          console.log(_this.$route.query.cid+"用户")
           var json = {"cmd":66,"cid":_this.$route.query.cid,"roomid":_this.$route.query.roomid,"join":0,'flag':0};
 
           ws.send(JSON.stringify(json));
@@ -731,6 +762,7 @@ export default {
          // 浏览器不支持 WebSocket
          alert("您的浏览器不支持 WebSocket!");
       }
+      */
 
 
     },
@@ -838,7 +870,7 @@ a {
   left: 50%;
   transform : translate(-50%,-50%);
   top: 50%;
-  height: 100%;
+  /*height: 100%;*/
 }
 
 .liveRoom{
@@ -996,7 +1028,7 @@ a {
   display: block;
   font-size: 20px;
   color: #F63630;
-  margin-top: 17px;
+  margin-top: 27px;
 }
 .wait span{
   color: #939292;
@@ -1171,4 +1203,13 @@ a {
   height: 23px;
 }
 
+
+
+.readyStart{
+  position: absolute;
+  left: 50%;
+  transform : translate(-50%,-50%);
+  top: 50%;
+  width: 100%;
+}
 </style>

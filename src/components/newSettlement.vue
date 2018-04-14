@@ -346,12 +346,17 @@ export default {
 
 
 
-
-			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.shoppingCart[id].product_id}))
+			var len = 0;
+		    if(_this.$store.state.language==0){
+		      len = 1;
+		    }else{
+		      len = 2;
+		    };
+			axios.post(_this.$store.state.url_talk+'/products/get-product',qs.stringify({id:_this.shoppingCart[id].product_id,lang:len}))
 			.then(function(dataJson){
 				// /console.log(JSON.stringify(dataJson.data))
 				//console.log(JSON.stringify(_this.shoppingCart[id]))
-				_this.$set(_this.shoppingCart[id],'ch_name',dataJson.data.ch_name)
+				_this.$set(_this.shoppingCart[id],'ch_name',dataJson.data.name)
 				_this.$set(_this.shoppingCart[id],'images',dataJson.data.images[0])
 				_this.cart_list.push(_this.shoppingCart[id].id);
 

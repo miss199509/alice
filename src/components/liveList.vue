@@ -353,7 +353,7 @@ export default {
 				dataJson.data.info[i]['dealer_portrait'] = require('../assets/avatar@2x.png');
 			};
 			if(dataJson.data.info[i].dealer_name==undefined){
-				dataJson.data.info[i]['dealer_name'] = '游客';
+				dataJson.data.info[i]['dealer_name'] = _this.$store.state.language?'Tourist':'游客';
 			};
 			console.log(JSON.stringify(dataJson.data.info[i]))
 		};
@@ -444,7 +444,10 @@ export default {
 				roomType:this.broadcastList[key].room_type,
 				session_id:this.$route.query.session_id,
 				candy:this.$route.query.candy,
-				product_schedule_id:this.broadcastList[key].product_id
+				uid1:this.broadcastList[key].uid1,
+				uid2:this.broadcastList[key].uid2,
+				streaming:this.broadcastList[key].streaming,
+				product_id:this.broadcastList[key].product_id
 			}})
   		}
   	},
