@@ -20,7 +20,7 @@ if(url.indexOf('candy')>0){
 const state = {
   count: 0,
   cid_talk:localStorage.getItem('cid'),
-  url_talk:'http://red.alice.live',
+  url_talk:'https://red.alice.live',
   id_talk:0,
   //获取到当前商品的id
   personal_url:0,

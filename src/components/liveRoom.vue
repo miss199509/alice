@@ -4,8 +4,8 @@
       <div class="">
         <header class="liveHeader">
           <router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-            <img v-if="$route.query.candy==undefined" width="27px;" @click="signOut()" src="../assets/icon_back@2x.png"/>
-            <img v-else width="27px;" @click="signOut()" src="../assets/icon_back1@2x@2x.png"/>
+            <img v-if="$route.query.candy==undefined" width="27px;" @click="signOut()" src="https://original-resource.bluecandy.io/wawaImg/icon_back@2x.png"/>
+            <img v-else width="27px;" @click="signOut()" src="https://original-resource.bluecandy.io/wawaImg/icon_back1@2x@2x.png"/>
           </router-link>
           <div class="liveHeader_qty">
             <label>
@@ -16,8 +16,8 @@
               <!-- <span v-for="(val,key) in received_msg" >{{val}}</span> -->
               <img v-for="(val,key) in received_msg" width="33px;" :src="val.portrait"/>
               <router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-                <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="../assets/liveBroadcast/icon_cart@2x.png"/>
-                <img v-else class="cart" width="27px;" src="../assets/icon_cart1@2x.png"/>
+                <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_cart@2x.png"/>
+                <img v-else class="cart" width="27px;" src="https://original-resource.bluecandy.io/wawaImg/icon_cart1@2x.png"/>
                 <!-- <i>3</i> -->
               </router-link>
             </p>
@@ -41,15 +41,15 @@
                 <strong>{{parseInt($store.state.language)?'playing':'游戏中'}}</strong>
               </p>
             </div>
-            <!-- <img src="../assets/liveBroadcast/icon_countdown@2x.png"/> -->
+            <!-- <img src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_countdown@2x.png"/> -->
             <p class="countdown">
               <span>{{received_msg_box.enjoy_time2}}</span>
             </p>
           </div>
 
           <!-- 切换视频 -->
-          <img @click="switchCamera()" v-if="$route.query.candy==undefined" class="switch cursor" width="47px;" src="../assets/btn_switch@2x.png"/>
-          <img @click="switchCamera()" v-else class="switch cursor" width="47px;" src="../assets/new_btn_switch@2x.png"/>
+          <img @click="switchCamera()" v-if="$route.query.candy==undefined" class="switch cursor" width="47px;" src="https://original-resource.bluecandy.io/wawaImg/btn_switch@2x.png"/>
+          <img @click="switchCamera()" v-else class="switch cursor" width="47px;" src="https://original-resource.bluecandy.io/wawaImg/new_btn_switch@2x.png"/>
 
 
           <div @click="the_game_eve()" class="the_game" :style="{height:height_video+'px'}"></div>
@@ -62,21 +62,21 @@
           <ul class="livePrice">
             <li>
               <label>{{parseInt($store.state.language)?'this round':'本次'}}:</label>
-              <img v-if="$route.query.candy==undefined" width="23px;" height="23px;" src="../assets/icon_dc@2x.png"/>
-              <img v-else width="23px;" height="23px;" src="../assets/new_icon_bluetoken@2x.png"/>
+              <img v-if="$route.query.candy==undefined" width="23px;" height="23px;" src="https://original-resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
+              <img v-else width="23px;" height="23px;" src="https://original-resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
               <label>{{received_msg_box.play_pool}}.00/{{parseInt($store.state.language)?'time':'次'}}</label>
             </li>
             <li>
               <label>{{parseInt($store.state.language)?'Balance':'余额'}}:</label>
-              <img  v-if="$route.query.candy==undefined" width="23px;" src="../assets/icon_dc@2x.png"/>
-              <img v-else width="23px;" src="../assets/new_icon_bluetoken@2x.png"/>
+              <img  v-if="$route.query.candy==undefined" width="23px;" src="https://original-resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
+              <img v-else width="23px;" src="https://original-resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
               <label v-if="candy!=undefined">{{received_msg_box.balance}}.00</label>
               <label v-else>{{received_msg_box.balance/100}}.00</label>
             </li>
           </ul>
           
           <div class="wait">
-            <img @click="icon_chat_click()" class="cursor" id="btn" width="70px;" src="../assets/icon_chat_click@2x.png"/>
+            <img @click="icon_chat_click()" class="cursor" id="btn" width="70px;" src="https://original-resource.bluecandy.io/wawaImg/icon_chat_click@2x.png"/>
             <div @click="lineUp()" :class="{lineUpBox:lineUpBoll}" class="cursor">
               <p v-if="lineUpBoll">
                 <strong>
@@ -96,7 +96,7 @@
               session_id:$route.query.session_id,
               candy:$route.query.candy
             }}"><!-- Recharge -->
-              <img width="70px;" src="../assets/btn_Recharge_click@2x.png"/>
+              <img width="70px;" src="https://original-resource.bluecandy.io/wawaImg/btn_Recharge_click@2x.png"/>
             </router-link>
           </div>
         </div>
@@ -104,16 +104,16 @@
         <div class="operation" v-show="operation">
           <div>
             <span class="btn_up cursor" @click="btn_downEve()" v-on:mouseup="eve()"></span>
-            <!-- <img class="btn_up" @click="btn_upEve()" v-on:mouseup="eve()" width="60px;" src="../assets/btn_up@2x.png"/> -->
+            <!-- <img class="btn_up" @click="btn_upEve()" v-on:mouseup="eve()" width="60px;" src="https://original-resource.bluecandy.io/wawaImg/btn_up@2x.png"/> -->
             <p>
-              <img class="cursor" width="60px;" @click="btn_leftEve()" src="../assets/btn_left@2x.png"/>
-              <img class="btn_right cursor" @click="btn_rightEve()" width="60px;" src="../assets/btn_right@2x.png"/>
+              <img class="cursor" width="60px;" @click="btn_leftEve()" src="https://original-resource.bluecandy.io/wawaImg/btn_left@2x.png"/>
+              <img class="btn_right cursor" @click="btn_rightEve()" width="60px;" src="https://original-resource.bluecandy.io/wawaImg/btn_right@2x.png"/>
             </p>
-            <img class="btn_down cursor" @click="btn_upEve()" width="60px;" src="../assets/btn_down@2x.png"/>
+            <img class="btn_down cursor" @click="btn_upEve()" width="60px;" src="https://original-resource.bluecandy.io/wawaImg/btn_down@2x.png"/>
           </div>
 
           <p>
-            <img class="cursor" @click="doEve()" width="130px;" src="../assets/btn_Grab@2x.png"/>
+            <img class="cursor" @click="doEve()" width="130px;" src="https://original-resource.bluecandy.io/wawaImg/btn_Grab@2x.png"/>
           </p>
         </div>
       
@@ -133,8 +133,8 @@
             <li class="continueBox_tips">
               <p>
               {{parseInt($store.state.language)?'You still have':'本局你还有'}}
-              <img  v-if="$route.query.candy==undefined" height="23px" width="23px;" src="../assets/icon_dc@2x.png"/>
-              <img v-else width="23px;" height="23px" src="../assets/new_icon_bluetoken@2x.png"/>
+              <img  v-if="$route.query.candy==undefined" height="23px" width="23px;" src="https://original-resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
+              <img v-else width="23px;" height="23px" src="https://original-resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
               
               <label v-if="candy!=undefined">{{received_msg_box.balance}}.00</label>
               <label v-else>{{received_msg_box.balance/100}}.00</label>
@@ -163,9 +163,9 @@
         </p>
       </div>
     </div>
-    <img class="record_tipsImg" v-show="operationBoll" src="../assets/btn_Pulldown@2x.png"/>
+    <img class="record_tipsImg" v-show="operationBoll" src="https://original-resource.bluecandy.io/wawaImg/btn_Pulldown@2x.png"/>
     <word :logo="$route.query.product_id"></word><!-- $route.query.product_schedule_id -->
-    <img v-show="readyBoll" class="readyStart" src="../assets/ready.png"/>
+    <img v-show="readyBoll" class="readyStart" src="https://original-resource.bluecandy.io/wawaImg/ready.png"/>
   </div>
 </template>
 
@@ -190,7 +190,7 @@ export default {
       //用户数据
       received_msg:[],
       //当前玩家
-      gamePlayer:{'nickname':'二狗子','portrait':require('../assets/avatar@2x.png')},
+      gamePlayer:{'nickname':'二狗子','portrait':'https://original-resource.bluecandy.io/wawaImg/avatar@2x.png'},
       nickname:'',
       //计时
       time_config:{},
@@ -203,7 +203,7 @@ export default {
       continueBoll:false,
       ws:'',
       uesBoll:false,
-      portraitImg:require('../assets/icon@2x.png'),
+      portraitImg:'https://original-resource.bluecandy.io/wawaImg/icon@2x.png',
       chatVal:'',
       chatPopup:false,
       box_heigth:0,
@@ -283,7 +283,7 @@ export default {
         //提交
         //要做的事情
           if ("WebSocket" in window){
-               var ws = new WebSocket('ws://red.alice.live:9001');
+               var ws = new WebSocket('wss://red.alice.live:10001');
           
                ws.onopen = function(){
                   //Web Socket 已连接上，使用 send() 方法发送数据
@@ -331,7 +331,7 @@ export default {
        //console.log("您的浏览器支持 WebSocket!");
        
        // 打开一个 web socket
-       var ws = new WebSocket("ws://red.alice.live:9001");
+       var ws = new WebSocket("wss://red.alice.live:10001");
        _this.ws = ws;
       
        ws.onopen = function(){
@@ -397,7 +397,7 @@ export default {
               //判断是否抓到娃娃
               console.log(received_msg.cmds[i].catch_result+'----------------------')
               if(received_msg.cmds[i].catch_result==0){
-                _this.portraitImg = require('../assets/icon@2x.png');
+                _this.portraitImg = 'https://original-resource.bluecandy.io/wawaImg/icon@2x.png';
                 console.log('没抓到');
                 _this.continueBox_val = _this.$store.state.language?'Almost succeed!':'差一点点就抓到了！';
                 _this.bollStart = true;
@@ -476,7 +476,7 @@ export default {
                 //console.log(JSON.stringify(JSON.stringify(received_msg.cmds[i].content)+'************'))
                 _this.received_msg = received_msg.cmds[i].content;
               }else{
-                _this.gamePlayer = {'nickname':'二狗子','portrait':require('../assets/avatar@2x.png')};
+                _this.gamePlayer = {'nickname':'二狗子','portrait':'https://original-resource.bluecandy.io/wawaImg/avatar@2x.png'};
                 _this.received_msg = [];
                 _this.uesHideBoll = false;
               }
@@ -520,7 +520,7 @@ export default {
          //console.log("您的浏览器支持 WebSocket!");
          
          // 打开一个 web socket
-         var ws = new WebSocket("ws://red.alice.live:9001");
+         var ws = new WebSocket("wss://red.alice.live:10001");
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
@@ -700,7 +700,7 @@ export default {
          //console.log("您的浏览器支持 WebSocket!");
          
          // 打开一个 web socket
-         var ws = new WebSocket("ws://red.alice.live:9001");
+         var ws = new WebSocket("wss://red.alice.live:10001");
         
          ws.onopen = function(){
           // Web Socket 已连接上，使用 send() 方法发送数据
@@ -874,7 +874,7 @@ a {
 }
 
 .liveRoom{
-  background-image: url('../assets/bg_main1@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/bg_main1@2x.png');
   height: 100%;
   /*padding: 0px 11px;*/
   position: relative;
@@ -934,7 +934,7 @@ a {
   border-radius: 50%;
 }
 .videoSet_up div{
-  background-image: url('../assets/bg_avatar@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/bg_avatar@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -962,7 +962,7 @@ a {
 
 
 .countdown{
-  background-image: url('../assets/liveBroadcast/icon_countdown@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_countdown@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1013,7 +1013,7 @@ a {
 }
 
 .wait div{
-  background-image: url('../assets/btn_lineup@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_lineup@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1022,7 +1022,7 @@ a {
   text-align: center;
 }
 .wait .lineUpBox{
-  background-image: url('../assets/btn_lineup_click@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_lineup_click@2x.png');
 }
 .wait strong{
   display: block;
@@ -1060,7 +1060,7 @@ a {
 }
 .operation .btn_up{
   margin-bottom: -33px;
-  background-image: url('../assets/btn_up@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_up@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1091,7 +1091,7 @@ a {
 
 /*提示是否继续*/
 .continueBox{
-  background-image: url('../assets/bg_popup@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/bg_popup@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1151,10 +1151,10 @@ a {
   margin: 9px auto;
 }
 .continueBox_btn_click{
-  background-image: url('../assets/btn_click@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_click@2x.png');
 }
 .continueBox_btn_normal{
-  background-image: url('../assets/btn_normal@2x.png');
+  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_normal@2x.png');
 }
 
 

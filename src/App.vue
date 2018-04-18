@@ -160,7 +160,7 @@ ul,li{
 
 
 .liveList{
-  background-image: url('assets/liveBroadcast/bg@2x.png');
+  background-image: url('http://original-resource.bluecandy.io/wawaImg/loading/bg@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;

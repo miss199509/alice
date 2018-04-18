@@ -148,7 +148,11 @@ export default {
 	  				attr.push(this.shoppingCart[i].id)
 	  			}
 	  		}
-  			this.$router.push({ name: 'newSettlement',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy,product_id:attr}})
+	  		if(_this.$route.query.candy!=undefined){
+	  			this.$router.push({ name: 'checkout',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy,product_id:attr}});
+	  		}else{
+  				this.$router.push({ name: 'newSettlement',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy,product_id:attr}});
+  			}
 	  	}
   	},
   	shoppingCart_eve(key){

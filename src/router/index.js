@@ -11,6 +11,8 @@ import information from '@/components/information'
 import news from '@/components/news'
 
 import newSettlement from '@/components/newSettlement'
+//candy
+import checkout from '@/components/checkout'
 import order from '@/components/order'
 
 import Settlement from '@/components/Settlement'
@@ -92,6 +94,11 @@ export default new Router({
       path: '/newSettlement',
       name: 'newSettlement',
       component: newSettlement
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: checkout
     },
     {
       path: '/order',
