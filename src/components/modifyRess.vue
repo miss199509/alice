@@ -7,10 +7,10 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
 					<router-link :to="{ name: 'Delivery',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img class="headerClass" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -19,7 +19,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -213,7 +213,7 @@ export default {
 	right: 0;
 	bottom: 7px;
 	margin: auto;
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -229,7 +229,7 @@ export default {
 	right: 0;
 	bottom: 47px;
 	margin: auto;
-	background:url('../assets/loading/btn_exchange_click@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_exchange_click@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

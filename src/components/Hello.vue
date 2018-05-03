@@ -2,7 +2,7 @@
   <div class="hello" id="loading">
     <!--<h1>{{ msg }}</h1>-->
     <p class="loading_log">
-      <img src="../assets/loading/logo_luckyLive@2x.png" width="175px;"/>
+      <img src="https://resource.bluecandy.io/wawaImg/loading/logo_luckyLive@2x.png" width="175px;"/>
     </P>
 	<ul class="land_input" style="display: none;">
 		<li>
@@ -14,7 +14,7 @@
 
 		<li @click="land()" style="display: none;">
 			<a href="javascript:;">
-				<img src="../assets/loading/btn_phone@2x.png" width="200px;" height="47px;"/>
+				<img src="https://resource.bluecandy.io/wawaImg/loading/btn_phone@2x.png" width="200px;" height="47px;"/>
 			</a>
 		</li>
 	
@@ -31,9 +31,9 @@
 	<div class="loadingExplain">
 		<div class="">
 			<p class="playing">Start playing with</p>
-			<img v-show="language" @click="loginFacebook()" width="27px;" src="../assets/loading/btn_Lfacebook@2x.png"/>
-			<img @click="wechat()" width="27px;" src="../assets/loading/btn_weixin1@2x.png" style="display: none;"/>
-			<img @click="land()" width="27px;" src="../assets/loading/btn_phone.png"/>
+			<img v-show="language" @click="loginFacebook()" width="27px;" src="https://resource.bluecandy.io/wawaImg/loading/btn_Lfacebook@2x.png"/>
+			<img @click="wechat()" width="27px;" src="https://resource.bluecandy.io/wawaImg/loading/btn_weixin1@2x.png" style="display: none;"/>
+			<img @click="land()" width="27px;" src="https://resource.bluecandy.io/wawaImg/loading/btn_phone.png"/>
 		</div>
 		<div class="loading_tips">
 			<p>login means you agree</p>
@@ -48,7 +48,7 @@
 			<h4>
 				<span></span>
 				<span>注册</span>
-				<img width="27px;" @click="mailbox_boll = !mailbox_boll" src="../assets/loading/btn_close@2x.png"/>
+				<img width="27px;" @click="mailbox_boll = !mailbox_boll" src="https://resource.bluecandy.io/wawaImg/loading/btn_close@2x.png"/>
 			</h4>
 			<ul class="register_list">
 				<li>
@@ -78,7 +78,7 @@
 	<!-- 显示定位图片 -->
 	<div class="explainPopup" v-show="explainPopup">
 		<h3>隐私协议</h3>
-		<img @click="explainPopup = !explainPopup" id="removePopup" src="../assets/loading/btn_close@2x.png"/>
+		<img @click="explainPopup = !explainPopup" id="removePopup" src="https://resource.bluecandy.io/wawaImg/loading/btn_close@2x.png"/>
 		<div class="explainPopup_text">
 			<p>Released on May 22, 2017.</p>
 			<p>At Lucky Live we recognize that privacy is significant. This Privacy Policy ("Policy") applies to your use of the Lucky Live application and its services on all platforms (the "Product").</p>
@@ -319,7 +319,7 @@ export default {
 <style scoped>
 #loading{
 	background-color: #464646;
-	background:url('../assets/loading/bg@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/bg@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -417,7 +417,7 @@ export default {
 	padding: 0px 13px;
 	height: 86%;
     overflow: auto;
-    background:url('../assets/loading/bg_Lpopup@2x.png');
+    background:url('https://resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -439,7 +439,7 @@ export default {
 
 /*邮箱注册*/
 .mailbox_register{
-	background:url('../assets/loading/bg_Lpopup@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -493,7 +493,7 @@ export default {
 	width: 76%;
 }
 .mailbox_register_login{
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

@@ -74,6 +74,9 @@ ul,li{
 .cursor{
   cursor: pointer;
 }
+img{
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -7,10 +7,10 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'Personal',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img class="headerClass" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -18,7 +18,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -45,7 +45,7 @@
 						<p v-else>连胜</p>
 					</li>
 					<li>
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<strong>0.00</strong>
 						<p v-if="$store.state.language">Highest<br/>Winning</p>
 						<p v-else>最高连胜</p>

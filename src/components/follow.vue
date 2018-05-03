@@ -7,10 +7,10 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
 					<router-link :to="{ name: 'Personal',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img class="headerClass" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -18,7 +18,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -36,7 +36,7 @@
 					<div class="operation">
 						<img style="display: block;" width="100%;" :src="val.image"/>
 						<div class="operation_layer">
-							<img v-show="val.is_line" width="50px;" style="margin-top: 5px;" src="../assets/liveBroadcast/live.png"/>
+							<img v-show="val.is_line" width="50px;" style="margin-top: 5px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/live.png"/>
 							<h4>{{val.nickname}}</h4>
 							<hr/>
 							<p>{{val.description}}</p>
@@ -44,7 +44,7 @@
 								<span class="video_buttom" @click="video_href(val,key)">
 									{{parseInt($store.state.language)?'VIEW STREAM':'视屏'}}
 								</span>
-								<img @click="followEve(val,key)" width="37px;" height="30px" src="../assets/liveBroadcast/btn_follow@2x.png"/>
+								<img @click="followEve(val,key)" width="37px;" height="30px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_follow@2x.png"/>
 							</div>
 						</div>
 					</div>
@@ -175,7 +175,7 @@ export default {
 	margin-top: 12px;
 }
 .video_buttom{
-	background: url('../assets/loading/btn_GetCod@2x.png');
+	background: url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;

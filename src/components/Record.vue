@@ -7,7 +7,7 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'Recharge',query:{cid:$route.query.cid,session_id:$route.query.session_id}}">
-						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -15,7 +15,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -27,14 +27,14 @@
 			<ul :style="{ height: height_img + 'px' }">
 				<li class="record" v-for="(val,key) in recordList">
 					<p class="record_title">
-						<img width="70px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="70px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<strong>+￥{{val.deposit_amount/100}}.00</strong>
 					</p>
 					<div class="record_list">
 						
 						<!-- <p class="color_aimai">
 							+
-							<img width="13px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+							<img width="13px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 							{{val.deposit_amount}}
 						</p> -->
 
@@ -126,7 +126,7 @@ export default {
 .record_title strong{
 	font-size: 21px;
     padding: 8px 27px;
-	background-image: url('../assets/loading/bg_reloadPrice@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/bg_reloadPrice@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;

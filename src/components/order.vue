@@ -8,7 +8,7 @@
 
 				<div class="order_content_box">
 					<h3 class="order_content_title">
-						<img width="130px;" src="../assets/liveBroadcast/icon_succeed@2x.png"/>
+						<img width="130px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_succeed@2x.png"/>
 						<span class="color_aimai">{{parseInt($store.state.language)?'ORDERSUCCESS':'订单成功'}}</span>
 					</h3>
 
@@ -62,7 +62,7 @@
 		</nav>
 		<p class="checkout" @click="register()">{{parseInt($store.state.language)?'BACK TO GAME':'回到游戏'}}</p>
 		<div class="boxPopup" style="z-index: 1111" v-show="recharge_login_boll">
-			<img class="img_login" width="70px" src="../assets/liveBroadcast/loading.png"/>
+			<img class="img_login" width="70px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/loading.png"/>
 		</div>
 
 	</div>
@@ -186,7 +186,7 @@ export default {
 
 
 .checkout{
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

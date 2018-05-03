@@ -7,7 +7,7 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -33,7 +33,7 @@
 
 						<router-link :to="{ name: 'Delivery',query:{cid:$route.query.cid,candy:$route.query.candy,session_id:$route.query.session_id}}">
 							<p class="floatRight">
-								<img width="23px;" src="../assets/liveBroadcast/proceed_button.png"/>
+								<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/proceed_button.png"/>
 							</p>
 						</router-link>
 					</div>
@@ -48,12 +48,12 @@
 				<p class="payment_select" @click="payment_select_eve()">
 					{{parseInt($store.state.language)?'Use balance payment':'使用余额支付'}}:
 					<span>{{$store.state.balance_talk}}</span>
-					<img v-if="payment_boll" width="23px;" src="../assets/liveBroadcast/icon_checked@2x.png"/>
-					<img v-else width="23px;" src="../assets/liveBroadcast/icon_unchecked@2x.png"/>
+					<img v-if="payment_boll" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_checked@2x.png"/>
+					<img v-else width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_unchecked@2x.png"/>
 				</p>
 				<p class="payment_tips">
-					<img width="20px;" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
-					<img style="margin-left: 17px;" width="45px;" src="../assets/liveBroadcast/logo_paypal@2x.png"/>
+					<img width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_choose_click@2x.png"/>
+					<img style="margin-left: 17px;" width="45px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/logo_paypal@2x.png"/>
 				</p>
 			</div>
 
@@ -61,8 +61,8 @@
 				<div class="commodity_box">
 					<h3 class="overflowRemove title_class">
 						<span class="floatLeft">{{shoppingCart.length}} {{parseInt($store.state.language)?'item':'项'}}</span>
-						<img  v-if="commodity_boll" @click="commodity_eve()" class="floatRight" width="20px;" src="../assets/liveBroadcast/btn_collapse.png"/>
-						<img v-else="commodity_boll" @click="commodity_eve()" class="floatRight" width="20px;" src="../assets/liveBroadcast/btn_addWallet@2x.png"/>
+						<img  v-if="commodity_boll" @click="commodity_eve()" class="floatRight" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_collapse.png"/>
+						<img v-else="commodity_boll" @click="commodity_eve()" class="floatRight" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_addWallet@2x.png"/>
 					</h3>
 					
 					<div class="" style="display: none;">
@@ -444,9 +444,9 @@ export default {
   	},
   	payment_select_eve(){
   		// if(boll){
-  		// 	this.img_unchecked = require('../assets/liveBroadcast/icon_unchecked@2x.png')
+  		// 	this.img_unchecked = require('https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_unchecked@2x.png')
   		// }else{
-  		// 	this.img_unchecked = require('../assets/liveBroadcast/icon_checked@2x.png')
+  		// 	this.img_unchecked = require('https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_checked@2x.png')
   		// }
   		this.payment_boll?this.payment_boll = false:this.payment_boll = true;
   	}
@@ -513,7 +513,7 @@ export default {
 	height: 33px;
 	line-height: 33px;
 	text-align: center;
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

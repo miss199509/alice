@@ -7,29 +7,29 @@
 				<li class="floatLeft">
 					
 					<!-- <router-link :to="{ name: 'Personal'}">list_popup() -->
-						<img v-if="$route.query.candy==undefined" @click="popup_box_boll = !popup_box_boll" width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
+						<img v-if="$route.query.candy==undefined" @click="popup_box_boll = !popup_box_boll" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 						<span v-else class="btn_back"></span>
 					<!-- </router-link> -->
 
 					<router-link :to="{ name: 'Shoppingl',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
-						<img class="headerClass" width="20px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_shop@2x.png"/>
+						<img class="headerClass" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_shop@2x.png"/>
 					</router-link>
 				</li>
 				<li class="dc_css">
-					<img v-if="$route.query.candy==undefined" width="15px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
-					<img v-else width="20px;" src="https://original-resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
+					<img v-if="$route.query.candy==undefined" width="15px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
+					<img v-else width="20px;" src="https://resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
 					<strong class="color_aimai">{{$store.state.balance_talk}}</strong>
 				</li>
 				<li class="floatRight information_box">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
 	    </header>
-	    <div class="shoppingl_global" @click="video_eve()">
-			<img v-show="loginBoll" style="width: 45px;display: block;margin: auto;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/loading.png"/>
-			<img class="headerImg" id="img" width="100%" src='https://original-resource.bluecandy.io/wawaImg/banner.png'/><!-- image -->
+	    <div class="shoppingl_global"><!--  @click="video_eve()" -->
+			<img v-show="loginBoll" style="width: 45px;display: block;margin: auto;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/loading.png"/>
+			<img class="headerImg" id="img" width="100%" src='https://resource.bluecandy.io/wawaImg/banner.png'/><!-- image -->
 	    </div>
 	    	
 	    <!-- 视频 -->
@@ -37,12 +37,12 @@
 		    <div class="boxPopup"></div>
 		    
 		    <div class="explainPopup_iframe">
-		    	<iframe id="my-video" width="100%" height="220px;" :src='iframeSrc' frameborder="0" allowfullscreen></iframe>
+		    	<!-- <iframe id="my-video" width="100%" height="220px;" :src='iframeSrc' frameborder="0" allowfullscreen></iframe> -->
 
 		    </div>
 
 	    	<div class="tipsRemove" @click="removeIframe()">
-				<img width="23px" src="https://original-resource.bluecandy.io/wawaImg/loading/btn_close@2x.png"/>
+				<img width="23px" src="https://resource.bluecandy.io/wawaImg/loading/btn_close@2x.png"/>
 	    	</div>
 
 	    </div>
@@ -63,7 +63,7 @@
 					</div>
 					<p style="position: relative;">
 						<img width="100%" style="min-height: 170px;" :src='val.r_image'/>
-						<img style="position: absolute;top: 7px;right: 7px;" width="43px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/live.png"/>
+						<img style="position: absolute;top: 7px;right: 7px;" width="43px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/live.png"/>
 					</p>
 				</li>
 			</ul>
@@ -108,32 +108,32 @@
 						<ul>
 							<router-link :to="{ name: 'Personal',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 								<li>
-									<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/btn_profile@2x.png"/>
+									<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_profile@2x.png"/>
 									<span class="color_aimai">{{parseInt($store.state.language)?'Profile':'个人信息'}}</span>
 								</li>
 							</router-link>
 							<li @click="popup_box_boll = !popup_box_boll">
-								<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/btnhomei6.png"/>
+								<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btnhomei6.png"/>
 								<span class="color_aimai">{{parseInt($store.state.language)?'Home':'大厅'}}</span>
 							</li>
 							
 							<router-link :to="{ name: 'information',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 								<li>
-									<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/btn_event@2x.png"/>
+									<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_event@2x.png"/>
 									<span class="color_aimai">{{parseInt($store.state.language)?'News':'新闻'}}</span>
 								</li>
 							</router-link>
 
-							<li @click="video_eve()">
-								<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_tutorial@2x.png"/>
+							<li><!--  @click="video_eve()" -->
+								<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_tutorial@2x.png"/>
 								<span class="color_aimai">{{parseInt($store.state.language)?'Tutorial':'新手引导'}}</span>
 							</li>
 							<li @click="popup_tipsPlay = !popup_tipsPlay">
-								<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_gameplay@2x.png"/>
+								<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_gameplay@2x.png"/>
 								<span class="color_aimai">{{parseInt($store.state.language)?'GamePlay':'游戏玩法'}}</span>
 							</li>
 							<li @click="questions_boll = !questions_boll">
-								<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_faq@2x.png"/>
+								<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_faq@2x.png"/>
 								<span class="color_aimai">
 									{{parseInt($store.state.language)?'FAQ':'帮助'}}
 								</span>
@@ -148,7 +148,7 @@
 							<span :class="{ hove:!language_boll}">CN</span>
 						</p>
 						<p class="sign_out_click">
-							<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_logout@2x.png"/>
+							<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_logout@2x.png"/>
 							<span class="color_aimai" @click="sign_out()">
 								{{parseInt($store.state.language)?'Logout':'退出'}}
 							</span>
@@ -166,7 +166,7 @@
 		<!-- 弹窗popup_boll remove_popup_tipsPlay-->
 		<div class="gamePlay" v-show="popup_tipsPlay" style="z-index: 13">
 			<h3>
-				<img @click="popup_tipsPlay = !popup_tipsPlay" width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
+				<img @click="popup_tipsPlay = !popup_tipsPlay" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 				<span class="color_aimai">游戏玩法</span>
 				<i></i>
 			</h3>
@@ -217,7 +217,7 @@
 
 		<div class="gamePlay" v-show="questions_boll" style="z-index: 13">
 			<h3>
-				<img @click="questions_boll = !questions_boll" width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
+				<img @click="questions_boll = !questions_boll" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 				<span class="color_aimai">帮助</span>
 				<i></i>
 			</h3>
@@ -310,26 +310,44 @@ export default {
       questions_boll:false,
       popup_box_boll:false,
       show: true,
-      loginBoll:true,
+      loginBoll:false,
       language_boll:0,
       height_room:300,
+      wawaHeight:''
     }
   },
   updated(){
-  	let _this = this;
-  	_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
-  	if(_this.height_room==0){
-		let showTimeInterval = setInterval(function(){
-			_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
-			if(_this.height_room>200){
-				clearInterval(showTimeInterval);
-			}
-		},1000);
-  	}
+  // 	let _this = this;
+  // 	_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
+  // 	if(_this.height_room==0){
+		// let showTimeInterval = setInterval(function(){
+		// 	_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
+		// 	if(_this.height_room>200){
+		// 		clearInterval(showTimeInterval);
+		// 	}
+		// },1000);
+  // 	}
 
   },
   mounted(){
+
+
+
   	var _this = this;
+  	console.log(_this.$route.query.cid,localStorage.getItem('session_id'))
+  	axios.post(_this.$store.state.url_talk+'/customer/finish-novice-guide',qs.stringify({
+		cid:_this.$route.query.cid,
+		sessionId:localStorage.getItem('session_id')
+	}))
+	.then(function(dataJson){
+		console.log(dataJson.data)
+
+	})
+	.catch(function(err){
+		alert(err);
+	});
+
+
   	//中英文状态初始化
   	this.language_boll = parseInt(localStorage.getItem('language'));
   	//判断当前用户是否是新手
@@ -341,7 +359,6 @@ export default {
   	//_this.$store.state.portrait = 'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/12552952_1531894053774497_102523970575294215_n.jpg?oh=5c8cbd96fef4e8c75cb10bd51cdf874c&oe=5ADCA0F4';
   	//_this.$store.state.portrait = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1161209730,2018761545&fm=27&gp=0.jpg';
   	//http://red.aimai.live/lobby/get-room-list?room_type=2
-  	console.log(this.$store.state.cid_talk)
   	axios.post(_this.$store.state.url_talk+'/lobby/get-room-list',qs.stringify({
   		cid:_this.$route.query.cid,
   		sessionid:localStorage.getItem('session_id')
@@ -349,12 +366,13 @@ export default {
 	.then(function(dataJson){
 		for(let i in dataJson.data.info){
 			if(dataJson.data.info[i].dealer_portrait==undefined){
-				dataJson.data.info[i]['dealer_portrait'] = 'https://original-resource.bluecandy.io/wawaImg/avatar@2x.png';
+				dataJson.data.info[i]['dealer_portrait'] = 'https://resource.bluecandy.io/wawaImg/avatar@2x.png';
 			};
+			console.log(dataJson.data.info[i].dealer_name)
+			console.log(JSON.stringify(dataJson.data.info[i]))
 			if(dataJson.data.info[i].dealer_name==undefined){
 				dataJson.data.info[i]['dealer_name'] = _this.$store.state.language?'Tourist':'游客';
 			};
-			console.log(JSON.stringify(dataJson.data.info[i]))
 		};
 		if(_this.$route.query.candy!=undefined){
 			for(let i in dataJson.data.info){
@@ -407,11 +425,37 @@ export default {
 	.then(function(dataJson){
 		_this.image = dataJson.data.picture;
 		_this.iframeSrc = dataJson.data.url;
-		_this.loginBoll = false;
+		//_this.loginBoll = false;
 	})
 	.catch(function(err){
 		//alert(err);
 	});
+
+	console.log(this.$route.query.height)
+	// alert($(window).height())
+	// var h = document.documentElement.clientHeight || document.body.clientHeight;
+	// alert(h);
+	if(this.$route.query.height==undefined){
+
+		_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
+		_this.wawaHeight = document.documentElement.clientHeight;
+	  	if(_this.height_room<300){
+	  		_this.loginBoll = true;
+			let showTimeInterval = setInterval(function(){
+				_this.height_room = document.documentElement.clientHeight-45-$('#img').height();
+				_this.wawaHeight = document.documentElement.clientHeight;
+				if(_this.height_room>300){
+					clearInterval(showTimeInterval);
+					_this.loginBoll = false;
+				}
+			},1000);
+	  	};
+
+	}else{
+		_this.height_room = _this.$route.query.height-45-$('#img').height();
+		_this.wawaHeight = _this.$route.query.height;
+	}
+
 
 
 
@@ -446,7 +490,8 @@ export default {
 				uid1:this.broadcastList[key].uid1,
 				uid2:this.broadcastList[key].uid2,
 				streaming:this.broadcastList[key].streaming,
-				product_id:this.broadcastList[key].product_id
+				product_id:this.broadcastList[key].product_id,
+				height:this.wawaHeight
 			}})
   		}
   	},
@@ -591,7 +636,7 @@ export default {
 .operation p{
 	width: 88%;
 	margin: 13px auto;
-	background:url('https://original-resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -623,7 +668,7 @@ export default {
 	width: 95%;
     height: auto;
     border-radius: 5px;
-    background:url('https://original-resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
+    background:url('https://resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -717,7 +762,7 @@ export default {
 	padding: 0px 13px;
     height: 86%;
     overflow: auto;
-    background: url('https://original-resource.bluecandy.io/wawaImg/loading/bg@2x.png');
+    background: url('https://resource.bluecandy.io/wawaImg/loading/bg@2x.png');
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -766,7 +811,7 @@ export default {
 	color: #444;
 }
 .language_css{
-	background: url('https://original-resource.bluecandy.io/wawaImg/liveBroadcast/btn_Bullet-Screen@2x.png');
+	background: url('https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_Bullet-Screen@2x.png');
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;

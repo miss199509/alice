@@ -7,10 +7,10 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'setUp',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="12px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img width="12px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/btnhomei6.png"/>
+						<img class="headerClass" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btnhomei6.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -18,7 +18,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -74,7 +74,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      portrait_nav:[{'navName':'RELOAD','imgae':require('../assets/personal/iconreloadi6.png')},{'navName':'RELOAD','imgae':require('../assets/personal/iconfollowingi6.png')},{'navName':'RELOAD','imgae':require('../assets/personal/iconaddressbooki6.png')},{'navName':'RELOAD','imgae':require('../assets/personal/iconhistoryi6.png')},{'navName':'RELOAD','imgae':require('../assets/personal/iconsettingsi6.png')}]
+      portrait_nav:[{'navName':'RELOAD','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconreloadi6.png'},{'navName':'RELOAD','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconfollowingi6.png'},{'navName':'RELOAD','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconaddressbooki6.png'},{'navName':'RELOAD','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconhistoryi6.png'},{'navName':'RELOAD','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconsettingsi6.png'}]
     }
   },
   methods: {

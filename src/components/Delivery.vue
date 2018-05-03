@@ -7,10 +7,10 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
 					<router-link :to="{ name: 'Personal',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
-						<img class="headerClass" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img class="headerClass" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -18,7 +18,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -32,7 +32,7 @@
 						
 						<div class="delivery">
 							<div class="delivery_head">
-								<p><img width="43px;" src="../assets/liveBroadcast/icon_address1@2x.png"/></p>
+								<p><img width="43px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_address1@2x.png"/></p>
 								<div>
 									<p>{{val.cnee}}</p>
 									<p>{{val.street}}</p>
@@ -53,10 +53,10 @@
 						<p class="icon_img">
 
 							<router-link :to="{ name: 'modifyRess',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-								<img @click="this_eve(key)" width="20px;" src="../assets/liveBroadcast/edit_btn.png"/>
+								<img @click="this_eve(key)" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/edit_btn.png"/>
 							</router-link>
 
-							<img @click="modify_ress(val)" width="20px;" src="../assets/liveBroadcast/btn_delete@2x.png"/>
+							<img @click="modify_ress(val)" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_delete@2x.png"/>
 
 						</p>
 						
@@ -102,9 +102,9 @@ export default {
 
 		for(let key in dataJson.data.info){
 			if(dataJson.data.info[key].is_default==1){
-				dataJson.data.info[key]['imgae'] = require('../assets/liveBroadcast/icon_checked@2x.png')
+				dataJson.data.info[key]['imgae'] = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_checked@2x.png'
 			}else{
-				dataJson.data.info[key]['imgae'] = require('../assets/liveBroadcast/icon_unchecked@2x.png')
+				dataJson.data.info[key]['imgae'] = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_unchecked@2x.png'
 			}
 		}
 		_this.delivery_nav = dataJson.data.info;
@@ -120,9 +120,9 @@ export default {
   	choice(key){
   		let _this = this;
   		for(let index in this.delivery_nav){
-  			this.delivery_nav[index].imgae = require('../assets/liveBroadcast/icon_unchecked@2x.png')
+  			this.delivery_nav[index].imgae = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_unchecked@2x.png'
   		}
-  		this.delivery_nav[key].imgae = require('../assets/liveBroadcast/icon_checked@2x.png')
+  		this.delivery_nav[key].imgae = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_checked@2x.png'
   		
   		axios.post(_this.$store.state.url_talk+'/customer/edit-shipping-address',qs.stringify({
   			cid:_this.$route.query.cid,
@@ -182,7 +182,7 @@ export default {
 	left: 0;
 	right: 0;
 	bottom: 7px;
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

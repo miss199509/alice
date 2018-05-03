@@ -7,7 +7,7 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -15,7 +15,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -23,7 +23,7 @@
 
 		<div class="shoppingl_list shoppingl_global" :style="{ height: _height + 'px' }">
 			<p style="text-align: center;" v-show="loadingBoll">
-				<img width="60px;" src="../assets/liveBroadcast/loading.png"/>
+				<img width="60px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/loading.png"/>
 			</p>
 		    <ul>
 				<li class="listGoods overflowRemove" v-for="(val,key) in shopping_list" @click="shopping_eve(key)">
@@ -33,7 +33,7 @@
 						<div class="">
 							<h3 class="color_aimai">{{val.en_name}}</h3>
 							<p>
-								<img width="15px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+								<img width="15px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 								<strong class="color_aimai">{{val.price}}.00</strong>
 							</p>
 						</div>

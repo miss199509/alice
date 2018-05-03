@@ -8,7 +8,7 @@
 				<li class="floatLeft">
 					
 					<!-- <router-link :to="{ name: 'Personal'}"> -->
-						<img @click="personal_eve()" width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img @click="personal_eve()" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					<!-- </router-link> -->
 				</li>
 				<li style="display: inline-block;">
@@ -25,17 +25,17 @@
 
 			<div class="rechargeText">
 				<p>
-					<img width="20px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>&nbsp;
+					<img width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>&nbsp;
 					<strong class="color_aimai">{{balance}}.00</strong>
 				</p>
 				<p>
 					<span>{{parseInt($store.state.language)?'as of 0 days':'距上次充值0天'}}</span>
 					&nbsp;
-					<img width="20px;" src="../assets/liveBroadcast/btnreload1i6.png"/>
+					<img width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btnreload1i6.png"/>
 				</p>
 				<p class="">
 					1&nbsp;
-					<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>&nbsp;
+					<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>&nbsp;
 					<strong>=￥1.00</strong>
 				</p>
 			</div>
@@ -54,7 +54,7 @@
 						<li>
 							<span>{{parseInt($store.state.language)?'Reload History':'充值记录'}}</span>
 							<strong>
-								<img width="23px" src="../assets/liveBroadcast/proceed_button.png"/>
+								<img width="23px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/proceed_button.png"/>
 							</strong>
 						</li>
 					</router-link>
@@ -66,10 +66,10 @@
 					</p>
 					<div>
 						<span>
-							<img width="20px" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
-							<img style="margin-left: 17px" width="45px" src="../assets/liveBroadcast/logo_paypal@2x.png"/>
+							<img width="20px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_choose_click@2x.png"/>
+							<img style="margin-left: 17px" width="45px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/logo_paypal@2x.png"/>
 						</span>
-						<img width="23px" src="../assets/liveBroadcast/icon_arrow1.png"/>
+						<img width="23px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow1.png"/>
 					</div>
 
 					
@@ -84,7 +84,7 @@
 									<input type="url" placeholder="Please enter your email address" v-model="email_val" v-if="$store.state.language"/>
 									<input type="url" placeholder="请输入邮箱地址" v-model="email_val" v-else/>
 								</span>
-								<img @click="show_emailboll" width="23px;" src="../assets/liveBroadcast/btn_info@2x.png"/>
+								<img @click="show_emailboll" width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_info@2x.png"/>
 							</p>
 							<!-- paypal沙盒支付测试地址 -->
 							<form id="pay_form" name="pay_form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
@@ -123,7 +123,7 @@
 			  	<h3 class="tips_title color_aimai">
 			  		<span></span>
 			  		<strong>{{parseInt($store.state.language)?'Email':'邮箱'}}</strong>
-			  		<img @click="hide_emailboll()" width="17px;" src="../assets/liveBroadcast/btn_close.png"/>
+			  		<img @click="hide_emailboll()" width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_close.png"/>
 			  	</h3>
 			  	<ul class="transaction">
 					<li>
@@ -137,7 +137,7 @@
 
 
 			<div class="boxPopup" style="z-index: 1111" v-show="recharge_login_boll">
-				<img class="img_login" width="70px" src="../assets/liveBroadcast/loading.png"/>
+				<img class="img_login" width="70px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/loading.png"/>
 			</div>
 			
 
@@ -146,7 +146,7 @@
 			  	<h3 class="tips_title color_aimai">
 			  		<span></span>
 			  		<strong>{{parseInt($store.state.language)?'tips':'提示'}}</strong>
-			  		<img @click="emailTips = !emailTips" width="17px;" src="../assets/liveBroadcast/btn_close.png"/>
+			  		<img @click="emailTips = !emailTips" width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_close.png"/>
 			  	</h3>
 			  	<ul class="transaction">
 					<li>
@@ -185,7 +185,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      payment_list:[{'img':require('../assets/liveBroadcast/checkedi6.png'),'imgae':require('../assets/liveBroadcast/logopaypali6.png'),'bull':true}],
+      payment_list:[{'img':'https://resource.bluecandy.io/wawaImg/liveBroadcast/checkedi6.png','imgae':'https://resource.bluecandy.io/wawaImg/liveBroadcast/logopaypali6.png','bull':true}],
       num:10,
       idOrder:0,
       email_val:'',
@@ -504,7 +504,7 @@ export default {
 	min-width: 130px;
 }
 .productBet{
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -522,7 +522,7 @@ export default {
     width: 85%;
     border-radius: 3px;
     padding: 10px 13px;
-    background:url('../assets/liveBroadcast/bg_Spopup@2x@2x.png');
+    background:url('https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_Spopup@2x@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

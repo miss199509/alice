@@ -1,16 +1,16 @@
 <template>
 	<div>
 
-	  <div class="liveList">
+	  <div class="liveList" :style="{height:$route.query.height+ 'px'}">
 
 	    <header>
 		    <ul class="headerNav">
 				<li class="">
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/btn_back@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 					</router-link>
 					<router-link :to="{ name: 'Shoppingl',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
-						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -23,8 +23,8 @@
 		
 		<nav class="shoppingl_global settlement">
 			<p class="settlement_global">
-				<img v-if="globalImg_tips_boll" @click="global_product()" width="20px;" src="../assets/liveBroadcast/btn_choose_click@2x.png"/>
-				<img v-else @click="global_product()" width="20px;" src="../assets/liveBroadcast/btn_choose@2x.png"/>
+				<img v-if="globalImg_tips_boll" @click="global_product()" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_choose_click@2x.png"/>
+				<img v-else @click="global_product()" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_choose@2x.png"/>
 				<span>{{parseInt($store.state.language)?'Check All':'全选'}}</span>
 			</p>
 			<ul class="product_list" :style="{ height: height + 'px' }">
@@ -53,8 +53,8 @@
 
 					</div>
 
-					<img v-if="val.boll" @click="img_selectEve(val,key)" class="product_log" width="30px;" src="../assets/liveBroadcast/icon_checked@2x.png"/>
-					<img v-else @click="img_selectEve(val,key)" class="product_log" width="30px;" src="../assets/liveBroadcast/icon_unchecked@2x.png"/>
+					<img v-if="val.boll" @click="img_selectEve(val,key)" class="product_log" width="30px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_checked@2x.png"/>
+					<img v-else @click="img_selectEve(val,key)" class="product_log" width="30px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_unchecked@2x.png"/>
 
 				</li>
 			</ul>
@@ -98,8 +98,12 @@ export default {
     }
   },
   mounted(){//mounted
-  	
-  	this.height = document.documentElement.clientHeight-143;
+  	//alert(this.$route.query.height);
+  	if(this.$route.query.height==undefined){
+  		this.height = document.documentElement.clientHeight-143;
+  	}else{
+  		this.height = this.$route.query.height-143;
+  	}
   	var len = 0;
     if(this.$store.state.language==0){
       len = 1;
@@ -122,8 +126,8 @@ export default {
 			.then(function(dataJson){
 				_this.$set(_this.shoppingCart[id],'ch_name',dataJson.data.name)
 				_this.$set(_this.shoppingCart[id],'images',dataJson.data.images[0])
-				console.log(JSON.stringify(dataJson.data))
-				_this.$set(_this.shoppingCart[id],'boll',true);
+				_this.$set(_this.shoppingCart[id],'boll',false);
+				_this.$set(_this.shoppingCart[0],'boll',true);
 			})
 			.catch(function(err){
 				alert(err);
@@ -141,15 +145,26 @@ export default {
   		if(this.shoppingCart.length<=0){
   			return false;
   		};
-  		let attr = []
+  		let attr = [];
+  		let ch_name = '';
   		if(this.shoppingCart.length>0){
 	  		for(let i in this.shoppingCart){
 	  			if(this.shoppingCart[i].boll){
 	  				attr.push(this.shoppingCart[i].id)
+	  				ch_name = this.shoppingCart[i].ch_name;
 	  			}
-	  		}
+	  		};
 	  		if(_this.$route.query.candy!=undefined){
-	  			this.$router.push({ name: 'checkout',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy,product_id:attr}});
+	  			console.log(JSON.stringify(this.shoppingCart))
+	  			//return false;
+	  			this.$router.push({ name: 'checkout',query:{
+	  				cid:_this.$route.query.cid,
+	  				session_id:_this.$route.query.session_id,
+	  				candy:_this.$route.query.candy,
+	  				product_id:attr,
+	  				name:ch_name,
+	  				height:_this.$route.query.height
+	  			}});
 	  		}else{
   				this.$router.push({ name: 'newSettlement',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy,product_id:attr}});
   			}
@@ -159,11 +174,19 @@ export default {
   		 //console.log(key)
   	},
   	img_selectEve(val,key){
+  		if(this.$route.query.candy!=undefined){
+  			console.log(val.boll)
+  			for(let i in this.shoppingCart){
+  				this.shoppingCart[i].boll = false;
+  			};
+  			val.boll = true;
+  			return false;
+  		};
   		if(val.boll){
   			val.boll = false;
   		}else{
   			val.boll = true;
-  		}
+  		};
 
   		//price
   		this.priceVal = 0;
@@ -183,6 +206,9 @@ export default {
 
   	},
   	global_product(){
+  		if(this.$route.query.candy!=undefined){
+  			return false;
+  		};
   		this.priceVal = 0;
   		if(this.globalImg_tips_boll){
   			this.globalImg_tips_boll = false;
@@ -204,6 +230,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.liveList{
+	min-height: auto;
+}
 .settlement{
 	padding: 0px 7px;
 }
@@ -285,7 +314,7 @@ export default {
 	padding: 11px 0px;
 }
 .checkout{
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

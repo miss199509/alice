@@ -3,7 +3,7 @@
 	<header class="headerName">
 		<b class="floatLeft" @click="liveListReturn()">
 			<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id}}">
-				<img width="23px" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+				<img width="23px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 			</router-link>
 		</b>
 
@@ -14,7 +14,7 @@
 		</p>
 		<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
 			<span class="floatRight" id="shopping">
-				<img width="30px" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+				<img width="30px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 				<i class="tips" style="display: none;">
 					2
 				</i>
@@ -34,7 +34,7 @@
 	        </p>
 	      </video> -->
 	      <div :style="{ height: height_img + 'px' }" class="videoBox" width="100%" id="example_video_1">
-			<img width="60px;" src="../assets/liveBroadcast/movie_star.png"/>
+			<img width="60px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/movie_star.png"/>
 	      </div>
 	    </div>
 		<!-- <router-link :to="{ name: 'video'}"> -->
@@ -64,7 +64,7 @@
 					<p>
 						<label class="color_aimai" v-if="$store.state.language">Bullet<br/>Screen</label>
 						<label class="color_aimai" v-else>弹幕</label>
-						<img width="33px;" src="../assets/liveBroadcast/btn_Bullet-Screen@2x.png"/>
+						<img width="33px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_Bullet-Screen@2x.png"/>
 					</p>
 				</li>
 
@@ -74,8 +74,8 @@
 
 			<div class="publish overflowRemove" style="padding:0px 7px;">
 				<p class="">
-					<img @click="giftPopup()" src="../assets/liveBroadcast/icon_gift@2x.png" width="33px" />
-					<img @click="chatPopup()" src="../assets/liveBroadcast/icon_chat@2x.png" width="33px" />
+					<img @click="giftPopup()" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_gift@2x.png" width="33px" />
+					<img @click="chatPopup()" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_chat@2x.png" width="33px" />
 				</p>
 				<div>
 					<h3 class="bet_tips">{{result}}</h3>
@@ -93,10 +93,10 @@
 							<p class="moneyImg" @click="information()">
 								
 								<img class="this_money" :src='default_goods' width="80px" />
-								<!-- <img class="this_money" src="../assets/liveBroadcast/iPhone-6+@2x.png" width="40px"/> -->
+								<!-- <img class="this_money" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/iPhone-6+@2x.png" width="40px"/> -->
 
 								<i>
-									<img width="20px" src="../assets/liveBroadcast/btn_info@2x.png"/>
+									<img width="20px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_info@2x.png"/>
 								</i>
 							</p>
 
@@ -116,19 +116,19 @@
 						<div class="addMoney">
 							<div>
 								<p>
-									<img @click="plus_money()" width="60px" src="../assets/liveBroadcast/icon_addbet.png" />
+									<img @click="plus_money()" width="60px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_addbet.png" />
 								</p>
 								<input class="color_aimai" type='text' v-model="betVal"/>
 								
 								<h4>
-									<span><img width="13px" src="../assets/liveBroadcast/dc_icons@2x.png"/>{{parseFloat(min_bet/100).toFixed(2)}}</span>
+									<span><img width="13px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>{{parseFloat(min_bet/100).toFixed(2)}}</span>
 									<p>
 										<span>{{parseInt($store.state.language)?'Min':'最低'}}</span>
 									</p>
 								</h4>
 
 								<p>
-									<img @click="reduce_money()" width="60px" src="../assets/liveBroadcast/icon_minusbet.png" />
+									<img @click="reduce_money()" width="60px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_minusbet.png" />
 								</p>
 							</div>
 						</div>
@@ -142,16 +142,16 @@
 							</strong>
 						</p>
 						<p class="thisMoney_val" @click="pushMoney()">
-							<img width="13px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+							<img width="13px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 							<strong>:{{parseFloat(bet/100).toFixed(2)}}</strong>
 						</p>
 						<p class="border"></p>
 						<div class="recharge">
 							<span class="color_aimai">{{parseInt($store.state.language)?'WALLET':'钱包'}}</span>
 							<p class="">
-								<img width="15px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+								<img width="15px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 								<strong>{{balance}}</strong><!-- {{parseFloat(balance/100).toFixed(2)}} -->
-								<img @click="lade()" width="15px" src="../assets/liveBroadcast/icon_money@2x.png"/>
+								<img @click="lade()" width="15px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_money@2x.png"/>
 							</p>
 						</div>
 					</div>
@@ -173,13 +173,13 @@
 						<strong>{{dealer_id}}</strong>
 					</p>
 					<span class="floatLeft">
-						<img src="../assets/liveBroadcast/unknown_Card@2x.png" width="21px;" />
+						<img src="https://resource.bluecandy.io/wawaImg/liveBroadcast/unknown_Card@2x.png" width="21px;" />
 					</span>
 					<div class="containerBox">
 					    <div style="width:9999px;">
 							<p class="floatLeft brandImage" v-for="(key,val) in brandData" :style="{backgroundImage: 'url(' + key.imgae + ')'}">
 								<img :src='key.brandId' width="17px;"/>
-								<img class="invalid" src="../assets/cards/missmask.png" width="20px;" v-show="key.boll"/>
+								<img class="invalid" src="https://resource.bluecandy.io/wawaImg/cards/missmask.png" width="20px;" v-show="key.boll"/>
 							</p>
 					    </div>
 					</div>
@@ -195,21 +195,21 @@
 					<span v-if="bet_red_values">
 						<strong>{{parseInt($store.state.language)?'RED':'红'}}</strong>
 					</span>
-					<img v-else width="30px;" src="../assets/liveBroadcast/icon_confirmedcheckmark.png"/>
+					<img v-else width="30px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_confirmedcheckmark.png"/>
 				</li>
 				<li class="floatLeft bet_state">
-					<img width="30px;" src="../assets/liveBroadcast/bg_red-loading@2x.png"/>
+					<img width="30px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_red-loading@2x.png"/>
 					<span :style="{backgroundImage: 'url(' + brandData_img.imgae + ')'}">
 						<img width="50px;" :src="brandData_img.brandId"/>
 					</span>
-					<img width="33px;" src="../assets/liveBroadcast/bg_black-loading@2x.png"/>
+					<img width="33px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_black-loading@2x.png"/>
 
 				</li>
 				<li class="this_stateB floatLeft" @click="bet_black()" :style="{backgroundImage: 'url(' + bet_black_type + ')'}">
 					<span v-if="bet_black_values">
 						<strong>{{parseInt($store.state.language)?'BLACK':'黑'}}</strong>
 					</span>
-					<img v-else width="30px;" src="../assets/liveBroadcast/icon_confirmedcheckmark.png"/>
+					<img v-else width="30px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_confirmedcheckmark.png"/>
 				</li>
 			</ul>
 			
@@ -233,13 +233,13 @@
 			<ul class="">
 				<li class="floatLeft" v-for="(val,key) in listGifts" @click="giftAdd(val,key)">
 					<img :src="val.gifts_image" width="35px;" class="gifts_select_gift"/>
-					<p>{{parseFloat(val.gifts_value/100).toFixed(2)}}<img width="15px;" src="../assets/liveBroadcast/dc_icons@2x.png"/></p>
+					<p>{{parseFloat(val.gifts_value/100).toFixed(2)}}<img width="15px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/></p>
 				</li>
 			</ul>
 		</div>
 		<p class="send_out overflowRemove">
 			<span class="floatLeft">
-				<img width="15px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>{{balance}}
+				<img width="15px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>{{balance}}
 			</span>
 			<span class="floatRight" @click="giftSend()">SEND</span>
 		</p> 
@@ -278,7 +278,7 @@
 								<img width="45px;" height="45px;" :src="val.image" :class="{ giftsCss:val.boll}"/>
 							</p>
 							<p>
-								<img width="13px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+								<img width="13px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 								<span>{{parseFloat(val.price/100).toFixed(2)}}</span>
 							</p>
 						</li>
@@ -305,7 +305,7 @@
 	<div class="explainPopup gift_presentation" v-show="gift_presentation">
 		<h3>
 			<strong class="color_aimai">{{parseInt($store.state.language)?'PRODUCT':'商品'}}</strong>
-			<img width="20px" class="floatRight" @click="choice_class()" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
+			<img width="20px" class="floatRight" @click="choice_class()" id="removePopup" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_close.png"/>
 		</h3>
 		<ul>
 			<li class="text_align product_purchase">
@@ -314,9 +314,9 @@
 					<h4>{{give.en_name}}</h4>
 				</div>
 				<p>
-					<img @click="addNumber()" width="55px" src="../assets/liveBroadcast/icon_addbet.png"/>
+					<img @click="addNumber()" width="55px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_addbet.png"/>
 					<span class="color_aimai">{{number_int}}</span>
-					<img @click="removeNumber()" width="55px" src="../assets/liveBroadcast/icon_minusbet.png"/>
+					<img @click="removeNumber()" width="55px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_minusbet.png"/>
 				</p>
 			</li>
 			<li class="productNumber" v-show="gift_if_presentation">
@@ -347,7 +347,7 @@
 		  	<ul class="transaction">
 				<li>
 					<p class="productPopup_tips">
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<strong class="color_aimai">{{parseFloat(give.price/100).toFixed(2)}}</strong>
 						<span class="color_aimai">
 							{{parseInt($store.state.language)?'will be deducted from your wallet right away. Please complete the process in the cart.':'将会在你的钱包中扣除。请完成购物车中的过程'}}
@@ -357,21 +357,21 @@
 				<li class="productPopup_list">
 					<strong>{{parseInt($store.state.language)?'Wallet':'钱包'}}</strong>
 					<p>
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(gift_presentationJson.balance/100).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="productPopup_list">
 					<strong>{{parseInt($store.state.language)?'Exchange':'交还'}}</strong>
 					<p>
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(gift_presentationJson.commodity_price/100).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="productPopup_list">
 					<strong>{{parseInt($store.state.language)?'Wallet Balance':'钱包余额'}}</strong>
 					<p>
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(gift_presentationJson.surplus_price/100).toFixed(2)}}</span>
 					</p>
 				</li>
@@ -391,7 +391,7 @@
 	<div class="explainPopup productPopup" v-show="recharge_boll">
 	  	<h3 class="tips_title">
 	  		<span>{{parseInt($store.state.language)?'Prompt':'提示'}}</span>
-	  		<img width="20px" @click="recharge_eve()" class="floatRight" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
+	  		<img width="20px" @click="recharge_eve()" class="floatRight" id="removePopup" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_close.png"/>
 	  	</h3>
 	  	<ul class="transaction">
 			<li>
@@ -417,9 +417,9 @@
 			<strong class="color_aimai">
 				{{parseInt($store.state.language)?'Streak winning 3 innings':'连胜3局'}}！
 			</strong>
-			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="../assets/liveBroadcast/btn_close.png" @click="remove_commodity_boll()"/>
+			<img style="position: absolute;right: 7px;" class="floatRight" width="20px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_close.png" @click="remove_commodity_boll()"/>
 			<p class="time_tips_img">
-				<img width="20px;" src="../assets/liveBroadcast/icon_time@2x.png"/>
+				<img width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_time@2x.png"/>
 				<span>{{timer}}</span>
 			</p>
 		</h3>
@@ -454,7 +454,7 @@
 	<div class="explainPopup product_back" v-show="commodity_data_img.commodity_bull">
 		<h3 class="color_aimai">
 			{{parseInt($store.state.language)?'PRODUCT INFO':'商品信息'}}
-			<img width="20px" class="floatRight" @click="removePopup()" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
+			<img width="20px" class="floatRight" @click="removePopup()" id="removePopup" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_close.png"/>
 		</h3>
 		<ul>
 			<li class="commodityCarousel">
@@ -482,7 +482,7 @@
 	<div class="explainPopup collect" v-show="commodity_data_img.collect_splist">
 		<h3>
 			<strong class="color_aimai">{{parseInt($store.state.language)?'COLLECT':'收集'}}</strong>
-			<img width="20px" class="floatRight" @click="collect_splist_eve()" id="removePopup" src="../assets/liveBroadcast/btn_close.png"/>
+			<img width="20px" class="floatRight" @click="collect_splist_eve()" id="removePopup" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_close.png"/>
 		</h3>
 		
 		<div class="">
@@ -501,9 +501,9 @@
 
 	<!-- 提示部分 -->
 	<div class="training_room" v-show="training_boll">
-		<img @click="tutorial_1()" v-show="training_list.tutorial_1" width="100%" src="../assets/liveBroadcast/tutorial_1.png"/>
-		<img @click="tutorial_2()" v-show="training_list.tutorial_2" width="100%" src="../assets/liveBroadcast/tutorial_2.png"/>
-		<img @click="tutorial_3()" v-show="training_list.tutorial_3" width="100%" src="../assets/liveBroadcast/tutorial_3.png"/>
+		<img @click="tutorial_1()" v-show="training_list.tutorial_1" width="100%" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/tutorial_1.png"/>
+		<img @click="tutorial_2()" v-show="training_list.tutorial_2" width="100%" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/tutorial_2.png"/>
+		<img @click="tutorial_3()" v-show="training_list.tutorial_3" width="100%" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/tutorial_3.png"/>
 	</div>
 
 	
@@ -547,7 +547,7 @@ export default {
       //主播名称
       dealer_name:'',
       //主播头像
-      dealer_portrait:require('../assets/liveBroadcast/avatar@2x.png'),
+      dealer_portrait:'https://resource.bluecandy.io/wawaImg/liveBroadcast/avatar@2x.png',
 	  CMD_POKER_RB:22,//Poker Red & Black
 	  CMD_POKER_RB_CARD:221,//Poker Red & Black CARDS
 	  CMD_POKER_RB_PRODUCT:222,//Poker Red & Black PRODUCT
@@ -559,7 +559,7 @@ export default {
       //礼物列表
       listGifts:[],
       //默认商品图片路径
-      default_goods:require('../assets/liveBroadcast/iPhone-6+@2x.png'),
+      default_goods:'https://resource.bluecandy.io/wawaImg/liveBroadcast/iPhone-6+@2x.png',
       //当前商品图片和文字信息
       commodity_data_img:{
       	commodity_id:'',
@@ -594,9 +594,9 @@ export default {
       CMD_ACTION_CMDS:3,
       //倒计时时间
       timer:0,
-      bet_red_type:require('../assets/liveBroadcast/btn_red@2x.png'),
+      bet_red_type:'https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_red@2x.png',
       bet_red_values:true,
-      bet_black_type:require('../assets/liveBroadcast/btn_black@2x.png'),
+      bet_black_type:'https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_black@2x.png',
       bet_black_values:true,
       giftsData:{
       	//房间id:
@@ -662,7 +662,7 @@ export default {
       height_img:0,
       product_text_height:0,
       //修改连胜提示
-      gameStraight_img:require('../assets/liveBroadcast/bg_win@2x.png'),
+      gameStraight_img:'https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_win@2x.png',
       productNumber_list:[
       	{text:66,boll:false},
       	{text:188,boll:false},
@@ -929,8 +929,8 @@ export default {
 							}
 							//console.log(value)
 							_this.brandAttr.unshift({
-								'brandId':require('../assets/cards/cardfont_'+value+'_'+cardColor+'.png'),
-								'imgae':require('../assets/cards/cardground_'+type+'.png'),'boll':mask
+								'brandId':'https://resource.bluecandy.io/wawaImg/cards/cardfont_'+value+'_'+cardColor+'.png',
+								'imgae':'https://resource.bluecandy.io/wawaImg/cards/cardground_'+type+'.png','boll':mask
 							})
 	          			}
 
@@ -958,9 +958,9 @@ export default {
       							let tipsText = _this.$store.state.language?'Lost':'输了';
       							_this.result = tipsText+parseFloat(received_msg.cmds[key].content[content_id].lose/100).toFixed(2);
       							//如果牌局输了就恢复选项
-      							_this.bet_red_type = require('../assets/liveBroadcast/btn_red@2x.png');
+      							_this.bet_red_type = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_red@2x.png';
       							_this.bet_red_values = true;
-      							_this.bet_red_type = require('../assets/liveBroadcast/btn_black@2x.png');
+      							_this.bet_red_type = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_black@2x.png';
       							_this.bet_black_values = true;
       						}
 
@@ -977,24 +977,24 @@ export default {
       					if(received_msg.cmds[key].content.win!==0){
 	      					switch(received_msg.cmds[key].content.win%3){
 	      						case 1:
-	      							_this.gameStraight_img = require('../assets/liveBroadcast/bg_1win@2x.png');
+	      							_this.gameStraight_img = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_1win@2x.png';
 	      							console.log(received_msg.cmds[key].content.win)
 
 								  break;
 								case 2:
 									console.log(received_msg.cmds[key].content.win)
-									_this.gameStraight_img = require('../assets/liveBroadcast/bg_2win@2x.png')
+									_this.gameStraight_img = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_2win@2x.png';
 								  break;
 								  //等于0就是三胜
 								case 0:
 									console.log(received_msg.cmds[key].content.win)
 									_this.straight_commodity_boll = true;
-									_this.gameStraight_img = require('../assets/liveBroadcast/bg_3win@2x.png')
+									_this.gameStraight_img = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_3win@2x.png';
 									//alert('三胜了')
 								  break;
 	      					}
       					}else{
-      						_this.gameStraight_img = require('../assets/liveBroadcast/bg_win@2x.png')
+      						_this.gameStraight_img = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_win@2x.png';
       					}
       				}
 
@@ -1323,7 +1323,7 @@ export default {
   	},
   	remove_commodity_boll(){
   		this.straight_commodity_boll = false;
-  		this.gameStraight_img = require('../assets/liveBroadcast/bg_win@2x.png');
+  		this.gameStraight_img = 'https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_win@2x.png';
   		this.bet_red_values = true;
   		this.bet_black_values = true;
   		this.result = '';
@@ -1698,7 +1698,7 @@ export default {
 
 
 .liveBroadcast{
-    background-image: url('../assets/liveBroadcast/bg@2x.png');
+    background-image: url('https://resource.bluecandy.io/wawaImg/liveBroadcast/bg@2x.png');
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -1750,7 +1750,7 @@ export default {
 	display: flex;
     justify-content: space-between;
     align-items: center;
-    background:url('../assets/liveBroadcast/bg_SeekBar_grayline@2x.png');
+    background:url('https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_SeekBar_grayline@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -1765,7 +1765,7 @@ export default {
 	font-size: 12px;
 }
 .ues_portrait span{
-	background-image: url('../assets/loading/btn_GetCod@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -1784,7 +1784,7 @@ export default {
 	position: relative;
 }
 #example_video_1{
-	background-image: url('../assets/liveBroadcast/movie.jpg');
+	background-image: url('https://resource.bluecandy.io/wawaImg/liveBroadcast/movie.jpg');
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -1940,7 +1940,7 @@ export default {
 }
 
 /*.plus_moneyA{
-	background-image: url('../assets/liveBroadcast/btnbetn.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/liveBroadcast/btnbetn.png');
     background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -1990,7 +1990,7 @@ export default {
     font-size: 12px;
  }
  .thisMoney_val{
-	background-image: url('../assets/loading/btn_GetCod@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2062,7 +2062,7 @@ export default {
     padding: 0px 9px;
 }
 .this_stateA{
-	/*background-image: url('../assets/liveBroadcast/btn_red@2x.png');*/
+	/*background-image: url('https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_red@2x.png');*/
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2070,7 +2070,7 @@ export default {
     width: 60px;
 }
 .this_stateB{
-	/*background-image: url('../assets/liveBroadcast/btn_black@2x.png');*/
+	/*background-image: url('https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_black@2x.png');*/
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2185,7 +2185,7 @@ export default {
 
 .collect{
 	height: auto;
-	background-image: url('../assets/loading/bg_Lpopup@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2306,7 +2306,7 @@ export default {
 /*送礼*/
 .gifts_box{
 	
-	background-image: url('../assets/loading/bg@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/bg@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2350,7 +2350,7 @@ export default {
 	font-size: 12px;
 	font-weight: 100;
 	border-radius: 3px;
-	background-image: url('../assets/loading/btn_GetCod@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2380,7 +2380,7 @@ export default {
 /*购买礼物*/
 .gift_presentation{
 	height: auto;
-	background-image: url('../assets/loading/bg_Lpopup@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2412,7 +2412,7 @@ export default {
     justify-content: center;
     align-items: center;
     box-shadow: 0px 5px 3px #0270C7;*/
-    background-image: url('../assets/loading/btn_GetCod@2x.png');
+    background-image: url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2422,7 +2422,7 @@ export default {
 /*购买付钱*/
 .productPopup{
 	height: auto;
-	background-image: url('../assets/loading/bg_Lpopup@2x.png');
+	background-image: url('https://resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
 	background-position: center center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -2562,14 +2562,14 @@ export default {
 
 /**/
 .product_back{
-	background:url('../assets/loading/bg_Lpopup@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/bg_Lpopup@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 }
 /*修改连胜提示*/
 .the_gameStraight{
-	background:url('../assets/liveBroadcast/bg_win@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_win@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -2578,7 +2578,7 @@ export default {
 }
 .the_gameStraight li{
 	
-	background:url('../assets/liveBroadcast/bg_win@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_win@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -2673,7 +2673,7 @@ export default {
     opacity: 0.3;
     color: #fff;
 
-	background:url('../assets/liveBroadcast/bg_SeekBar_grayline@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/liveBroadcast/bg_SeekBar_grayline@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -2688,7 +2688,7 @@ export default {
 }
 
 .timerSetup span{
-	background:url('../assets/liveBroadcast/icon_countdown@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_countdown@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

@@ -1,18 +1,18 @@
 <template>
 	<div>
-		<div class="liveList">
+		<div class="liveList" :style="{height:$route.query.height+ 'px'}">
 			<header>
 			    <ul class="headerNav">
 					<li class="">
 						<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-							<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
+							<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_back@2x.png"/>
 						</router-link>
 						<router-link :to="{ name: 'Shoppingl',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}" v-show="$route.query.candy==undefined">
-							<img width="23px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
+							<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 						</router-link>
 					</li>
 					<li style="display: inline-block;">
-						<strong class="color_aimai">{{parseInt($store.state.language)?'电子钱包':'电子钱包'}}</strong>
+						<strong class="color_aimai">{{parseInt($store.state.language)?'checkout':'checkout'}}</strong>
 					</li>
 					<li class="floatRight">
 					</li>
@@ -22,25 +22,28 @@
 			<div class="checkoutBox">
 				<ul>
 					<li>
+						<h3>Currency：<span>{{$route.query.name}}</span></h3>
+					</li>
+					<li>
 						<h3>Account</h3>
-						<input type="" placeholder="点击输入"/>
+						<input v-model="account" type="" placeholder="Electronic wallet"/>
 					</li>
 					<li>
-						<h3>E-Mail</h3>
-						<input type="" placeholder="点击输入"/>
+						<h3>E-Mail<span class="optional">（Optional）</span></h3>
+						<input v-model="email" type="" placeholder="E-Mail"/>
 					</li>
-					<li>
+					<!-- <li>
 						<h3>Select Payment</h3>
 						<div class="payment">
 							<div v-for="(val,key) in checkout" @click="paymentEve(val)">
 								<p>
-									<img v-if="val.boll" width="27px;" src="https://original-resource.bluecandy.io/wawaImg/loading/btn_choose_click@2x.png"/>
-									<img v-else width="27px;" src="https://original-resource.bluecandy.io/wawaImg/loading/btn_choose@2x.png"/>
+									<img v-if="val.boll" width="27px;" src="https://resource.bluecandy.io/wawaImg/loading/btn_choose_click@2x.png"/>
+									<img v-else width="27px;" src="https://resource.bluecandy.io/wawaImg/loading/btn_choose@2x.png"/>
 									<span>{{val.title}}</span>
 								</p>
 							</div>
 						</div>
-					</li>
+					</li> -->
 				</ul>
 				<p class="tipsNote">
 					<strong>
@@ -53,10 +56,14 @@
 
 			<div class="orderBox">
 				<p>
-					<strong>TOTAL：$30.00</strong>
-					<span>CONFIRM ORDER</span>
+					<strong>TOTAL:0.00({{$route.query.name}})</strong>
+					<span @click="order()">CONFIRM</span>
 				</p>
 			</div>
+
+			<p class="tipsBox" v-show="tipsBoll">
+				{{tipsText}}
+			</p>
 
 	    </div>
 	</div>
@@ -78,7 +85,12 @@ export default {
     		{title:'BTC',boll:true},
     		{title:'ETH',boll:false},
     		{title:'ETH',boll:false}
-    	]
+    	],
+    	account:'',
+    	email:'',
+    	tipsText:'',
+    	tipsBoll:false,
+    	thisBoll:false
     }
   },
   mounted(){//mounted
@@ -92,6 +104,55 @@ export default {
   			this.checkout[i].boll = false;
   		};
   		val.boll = true;
+  	},
+  	order(){
+  		let _this = this;
+  		let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+  		if(_this.thisBoll){
+  			return false;
+  		};
+  		if(!reg.test(_this.email)){
+			_this.tipsBoll = true;
+	  		_this.tipsText = '请输入正确的邮箱！';
+	  		_this.thisBoll = true;
+	  		window.setTimeout(function(){
+	  			_this.tipsBoll = false;
+	  			_this.thisBoll = false;
+			},3000);
+  			return false;
+  		};
+
+
+  		axios.post(_this.$store.state.url_talk+'/api/exchange',qs.stringify({
+  			cid:_this.$route.query.cid,
+  			product_id:_this.$route.query.product_id[0],
+  			account:_this.account,
+  			email:_this.email,
+  			type:_this.$route.query.name
+  		}))
+		.then(function(dataJson){
+			console.log(dataJson.data);
+			_this.tipsBoll = true;
+	  		_this.tipsText = '兑换成功！稍后工作人员将会联系您！';
+	  		_this.thisBoll = true;
+			window.setTimeout(function(){
+	  			_this.tipsBoll = false;
+	  			_this.thisBoll = false;
+	  			
+	  			_this.$router.push({ name: 'liveList',query: {
+	  				cid:_this.$route.query.cid,
+	  				candy:_this.$route.query.candy,
+	  				session_id:_this.$route.query.session_id,
+	  				height:_this.$route.query.height
+	  			}});
+
+
+			},5000);
+
+		})
+		.catch(function(err){
+			alert(err);
+		});
   	}
   }
 }
@@ -107,9 +168,15 @@ export default {
 	font-size: 20px;
 	border-bottom: 1px solid #ddd;
 	padding: 3px 0px;
+	font-weight: 100;
+}
+.checkoutBox h3 span{
+	font-size: 18px;
+	color: #ccc;
+	font-weight: 100;
 }
 .checkoutBox li{
-	background:url('https://original-resource.bluecandy.io/wawaImg/loading/bg_account@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/bg_account@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -121,6 +188,10 @@ export default {
 	height: 32px;
 	font-size: 15px;
 	line-height: 32px;
+	color: #777;
+}
+.checkoutBox .optional{
+	color: #E0B553;
 }
 .payment p{
 	display: flex;
@@ -169,7 +240,7 @@ export default {
 
 }
 .orderBox span{
-	background:url('https://original-resource.bluecandy.io/wawaImg/loading/btn_Lfull@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_Lfull@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -178,5 +249,21 @@ export default {
     width: 163px;
     text-align: center;
     color: #222;
+}
+
+
+
+.tipsBox{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #000;
+    color: #fff;
+    opacity: 0.7;
+	padding: 7px 15px;
+    border-radius: 9px;
+    text-align: center;
+    font-size: 13px;
 }
 </style>

@@ -8,7 +8,7 @@
 				<li class="floatLeft">
 					
 					<router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -16,7 +16,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -36,10 +36,10 @@
 				<div class="uesNav_box">
 					<p class="uesName_box">
 						<strong class="color_aimai">{{$store.state.nickname}}</strong>
-						<img width="20px" src="../assets/liveBroadcast/edit_btn.png"/>
+						<img width="20px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/edit_btn.png"/>
 					</p>
 					<p class="ues_price">
-						<img width="23px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="23px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<strong>{{$store.state.balance_talk}}</strong>
 					</p>
 					<p class="thisId">id:{{$route.query.cid}}</p>
@@ -87,11 +87,11 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       portrait_nav:[
-      	{'navName':'RELOAD','navName_new':'充值','imgae':require('../assets/personal/iconreloadi6.png'),'url':'Recharge'},
-      	{'navName':'FOLLOWLNG','navName_new':'关注','imgae':require('../assets/personal/iconfollowingi6.png'),'url':'follow'},
-      	{'navName':'ADDRESS BOOK','navName_new':'地址簿','imgae':require('../assets/personal/iconaddressbooki6.png'),'url':'Delivery'},
-      	{'navName':'HLSTORY','navName_new':'购买记录','imgae':require('../assets/personal/iconhistoryi6.png'),'url':'History'},
-      	//{'navName':'SETTLNG','navName_new':'设置','imgae':require('../assets/personal/iconsettingsi6.png'),'url':'setUp'}
+      	{'navName':'RELOAD','navName_new':'充值','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconreloadi6.png','url':'Recharge'},
+      	{'navName':'FOLLOWLNG','navName_new':'关注','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconfollowingi6.png','url':'follow'},
+      	{'navName':'ADDRESS BOOK','navName_new':'地址簿','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconaddressbooki6.png','url':'Delivery'},
+      	{'navName':'HLSTORY','navName_new':'购买记录','imgae':'https://resource.bluecandy.io/wawaImg/personal/iconhistoryi6.png','url':'History'},
+      	//{'navName':'SETTLNG','navName_new':'设置','imgae':require('https://resource.bluecandy.io/wawaImg/personal/iconsettingsi6.png'),'url':'setUp'}
       ],
       popup:false,
     }

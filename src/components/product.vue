@@ -7,7 +7,7 @@
 		    <ul class="headerNav">
 				<li class="floatLeft">
 					<router-link :to="{ name: 'Shoppingl',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="23px;" src="../assets/liveBroadcast/icon_arrow@2x.png"/>
+						<img width="23px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_arrow@2x.png"/>
 					</router-link>
 				</li>
 				<li style="display: inline-block;">
@@ -15,7 +15,7 @@
 				</li>
 				<li class="floatRight">
 					<router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-						<img width="27px;" src="../assets/liveBroadcast/btn_cart@2x.png"/>
+						<img width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_cart@2x.png"/>
 					</router-link>
 				</li>
 		    </ul>
@@ -60,9 +60,9 @@
 							<span>{{parseInt($store.state.language)?'Choose Qty':'选择数量'}}</span>
 							
 							<p class="addPrice">
-								<img @click="removeNumber()" width="22px" src="../assets/liveBroadcast/btn_-qty@2x.png"/>
+								<img @click="removeNumber()" width="22px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_-qty@2x.png"/>
 								<strong class="color_aimai">{{number_int}}</strong>
-								<img @click="addNumber()" width="22px" src="../assets/liveBroadcast/btn_+qty@2x.png"/>
+								<img @click="addNumber()" width="22px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_+qty@2x.png"/>
 							</p>
 
 						</li>
@@ -76,7 +76,7 @@
 
 	    <p class="product_bottom" @click="productBet()">
 			<span>{{parseInt($store.state.language)?'EXCHANGE FOR':'购买'}}</span>
-			<img width="22px" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+			<img width="22px" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 			<strong>{{parseFloat(price).toFixed(2)}}</strong>
 	    </p>
 
@@ -90,7 +90,7 @@
 		  	<ul class="transaction">
 				<li>
 					<p class="productPopup_tips">
-						<img class="floatRigth" width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img class="floatRigth" width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<strong style="margin-right: 10px;">{{parseFloat(price).toFixed(2)}}</strong>
 						<strong>
 							{{parseInt($store.state.language)?'will be deducted from your wallet right away. Please complete the process in the cart.':'将会在你的钱包中扣除。请完成购物车中的过程'}}
@@ -101,21 +101,21 @@
 				<li class="overflowRemove productPopup_nve">
 					<strong class="floatLeft">{{parseInt($store.state.language)?'Wallet':'钱包'}}</strong>
 					<p class="floatRight">
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat($store.state.balance_talk).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="overflowRemove productPopup_nve">
 					<strong class="floatLeft">{{parseInt($store.state.language)?'Exchange':'交还'}}</strong>
 					<p class="floatRight">
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat(price).toFixed(2)}}</span>
 					</p>
 				</li>
 				<li class="overflowRemove">
 					<strong class="floatLeft">{{parseInt($store.state.language)?'Wallet Balance':'钱包余额'}}</strong>
 					<p class="floatRight">
-						<img width="17px;" src="../assets/liveBroadcast/dc_icons@2x.png"/>
+						<img width="17px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/dc_icons@2x.png"/>
 						<span>{{parseFloat($store.state.balance_talk-price).toFixed(2)}}</span>
 					</p>
 				</li>
@@ -130,7 +130,7 @@
 		<div class="explainPopup productPopup" v-show="recharge_popup">
 		  	<h3 class="tips_title">
 		  		<strong class="color_aimai">{{parseInt($store.state.language)?'Prompt':'提示'}}</strong>
-		  		<img @click="balance_eve()" class="floatRight" width="21px;" src="../assets/loading/btn_close@2x.png"/>
+		  		<img @click="balance_eve()" class="floatRight" width="21px;" src="https://resource.bluecandy.io/wawaImg/loading/btn_close@2x.png"/>
 		  	</h3>
 		  	<ul class="transaction transaction_box">
 				<li>
@@ -145,7 +145,7 @@
 		</div>
 
 		<div class="loading" v-show="loading">
-			<img width="50px;" src="../assets/liveBroadcast/loading.png"/>
+			<img width="50px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/loading.png"/>
 		</div>
 
 
@@ -410,7 +410,7 @@ export default {
 	transform : translate(-50%,0%);
 
 	background-color: #464646;
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -444,7 +444,7 @@ export default {
 }
 .transaction{
 	padding: 13px;
-	background:url('../assets/liveBroadcast/bgw_avatar@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/liveBroadcast/bgw_avatar@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -473,7 +473,7 @@ export default {
 }
 
 .productBet:active{
-	background:url('../assets/loading/btn_exchange_click@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_exchange_click@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -485,7 +485,7 @@ export default {
 	margin: 5px auto;
 }
 .productBet{
-	background:url('../assets/loading/btn_GetCod@2x.png');
+	background:url('https://resource.bluecandy.io/wawaImg/loading/btn_GetCod@2x.png');
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

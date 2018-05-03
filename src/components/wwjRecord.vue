@@ -9,17 +9,18 @@
 
     <div class="" v-show="record_navList[0].boll">
       <div class="products">
+        <h3>{{en_name}}</h3>
         <img width="100%" :src="productsImg"/>
         <p>{{description}}</p>
       </div>
     </div>
 
     <div class="record_ranking" v-show="record_navList[1].boll">
-      <ul class="recordList recordListRecord" :style="{height:height_box+'px'}">
+      <ul class="recordList recordListRecord"><!--  :style="{height:height_box+'px'}" -->
           <li v-for="(val,key) in recordListRecord">
             <p>
               <img width="37px" :src="val.picture"/>
-              <strong>{{val.nickname}}{{val.customer_id}}</strong>
+              <strong>user{{val.customer_id}}</strong>
             </p>
             <p>
               <span>{{val.create_time}}</span>
@@ -29,8 +30,8 @@
     </div>
 
 
-    <div v-show="record_navList[2].boll">
-      <div class="record_ranking">
+    <div v-show="record_navList[2].boll" style="height: 80%;">
+      <div class="record_ranking" style="height: 100%;">
         <p class="record_ranking_title">
           <span class="icon_two">
             <img :src="rankingBack_two.picture"/>
@@ -45,9 +46,9 @@
         
         <div class="rankingBack">
           <p class="name">
-            <span>{{rankingBack_two.nickname}}{{rankingBack_two.customer_id}}</span>
-            <span class="one">{{rankingBack_one.nickname}}{{rankingBack_one.customer_id}}</span>
-            <span class="three">{{rankingBack_three.nickname}}{{rankingBack_three.customer_id}}</span>
+            <span>{{rankingBack_two.customer_id}}</span>
+            <span class="one">{{rankingBack_one.customer_id}}</span>
+            <span class="three">{{rankingBack_three.customer_id}}</span>
           </p>
           <p class="num">
             <span>{{parseInt($store.state.language)?'Tried':'抓取'}}<i>{{rankingBack_two.number}}</i>{{parseInt($store.state.language)?'times':'次'}}</span>
@@ -60,7 +61,7 @@
           <li v-for="(val,key) in rankingBack">
             <p>
               <label>{{val.location}}</label>
-              <img width="37px" src="../assets/avatar@2x.png"/>
+              <img width="37px" src="https://resource.bluecandy.io/wawaImg/avatar@2x.png"/>
               <strong>{{val.nickname}}{{val.customer_id}}</strong>
             </p>
             <p>
@@ -88,7 +89,7 @@ export default {
   data () {
     return {
       record_navList:[
-        {text:'娃娃详情',textNew:'Dolls Detail',boll:true},
+        {text:'娃娃详情',textNew:'Product Info',boll:true},
         {text:'抓中记录',textNew:'Records',boll:false},
         {text:'抓取达人',textNew:'Best Catchers',boll:false}
       ],
@@ -100,14 +101,15 @@ export default {
       rankingBack_three:{},
       recordList:0,
       productsImg:'',
-      description:''
+      description:'',
+      en_name:''
     }
   },
   props:['logo'],
   mounted(){
     let _this = this;
     _this.height_box = document.documentElement.clientHeight-150;
-    _this.recordList = document.documentElement.clientHeight-345;
+    _this.recordList = document.documentElement.clientHeight-400;
     
     axios.post(_this.$store.state.url_talk+'/wawa/record',qs.stringify({
       room_id:_this.$route.query.roomid,
@@ -160,7 +162,8 @@ export default {
     }))
     .then(function(dataJson){
       console.log(JSON.stringify(dataJson.data))
-      console.log(JSON.stringify(dataJson.data.ch_description))
+      console.log(JSON.stringify(dataJson.data.en_name))
+      _this.en_name = dataJson.data.en_name;
       _this.description = dataJson.data.description;
       _this.productsImg = dataJson.data.images[0];
 
@@ -197,7 +200,7 @@ a {
 
 
 .record{
-  background-image: url('../assets/bg_info@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/bg_info@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -227,7 +230,7 @@ a {
 }
 
 .rankingBack{
-  background-image: url('../assets/bg_1-3Rank@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/bg_1-3Rank@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -279,8 +282,9 @@ a {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 23px;
-  margin-bottom: -23px;
+ /* margin-top: 23px;
+  margin-bottom: -23px;*/
+  margin-top: 10%;
 }
 .record_ranking_title span{
   display: inline-block;
@@ -292,7 +296,7 @@ a {
 }
 .record_ranking_title .icon_one{
   margin-bottom: 70px;
-  background-image: url('../assets/icon_one@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/icon_one@2x.png');
 }
 .record_ranking_title img{
   width: 56px;
@@ -301,10 +305,10 @@ a {
   border-radius: 50%;
 }
 .record_ranking_title .icon_two{
-  background-image: url('../assets/icon_two@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/icon_two@2x.png');
 }
 .record_ranking_title .icon_three{
-  background-image: url('../assets/icon_three@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/icon_three@2x.png');
 }
 
 .recordList{
@@ -355,6 +359,7 @@ a {
   left: 50%;
   transform: translate(-50%,-50%);
   width: 80%;
+  height: 75%;
   margin-top: 10px;
 }
 .recordListRecord li{
@@ -381,5 +386,8 @@ a {
   overflow: auto;
   color: #444;
   font-size: 13px;
+}
+.products h3{
+  color: #E3B249;
 }
 </style>

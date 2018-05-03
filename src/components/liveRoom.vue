@@ -3,10 +3,10 @@
     <div style="padding:0px 11px;" :style="{height:box_heigth+'px'}">
       <div class="">
         <header class="liveHeader">
-          <router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-            <img v-if="$route.query.candy==undefined" width="27px;" @click="signOut()" src="https://original-resource.bluecandy.io/wawaImg/icon_back@2x.png"/>
-            <img v-else width="27px;" @click="signOut()" src="https://original-resource.bluecandy.io/wawaImg/icon_back1@2x@2x.png"/>
-          </router-link>
+          <!-- <router-link :to="{ name: 'liveList',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}"> -->
+            <img v-if="$route.query.candy==undefined" width="27px;" @click="signOut()" src="https://resource.bluecandy.io/wawaImg/icon_back@2x.png"/>
+            <img v-else width="27px;" @click="signOut()" src="https://resource.bluecandy.io/wawaImg/icon_back1@2x@2x.png"/>
+          <!-- </router-link> -->
           <div class="liveHeader_qty">
             <label>
              {{received_msg_box.online}}人
@@ -15,9 +15,9 @@
             <p>
               <!-- <span v-for="(val,key) in received_msg" >{{val}}</span> -->
               <img v-for="(val,key) in received_msg" width="33px;" :src="val.portrait"/>
-              <router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy}}">
-                <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_cart@2x.png"/>
-                <img v-else class="cart" width="27px;" src="https://original-resource.bluecandy.io/wawaImg/icon_cart1@2x.png"/>
+              <router-link :to="{ name: 'Settlement',query:{cid:$route.query.cid,session_id:$route.query.session_id,candy:$route.query.candy,height:$route.query.height}}">
+                <img v-if="$route.query.candy==undefined" class="cart" width="27px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_cart@2x.png"/>
+                <img v-else class="cart" width="27px;" src="https://resource.bluecandy.io/wawaImg/icon_cart1@2x.png"/>
                 <!-- <i>3</i> -->
               </router-link>
             </p>
@@ -41,15 +41,15 @@
                 <strong>{{parseInt($store.state.language)?'playing':'游戏中'}}</strong>
               </p>
             </div>
-            <!-- <img src="https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_countdown@2x.png"/> -->
+            <!-- <img src="https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_countdown@2x.png"/> -->
             <p class="countdown">
               <span>{{received_msg_box.enjoy_time2}}</span>
             </p>
           </div>
 
           <!-- 切换视频 -->
-          <img @click="switchCamera()" v-if="$route.query.candy==undefined" class="switch cursor" width="47px;" src="https://original-resource.bluecandy.io/wawaImg/btn_switch@2x.png"/>
-          <img @click="switchCamera()" v-else class="switch cursor" width="47px;" src="https://original-resource.bluecandy.io/wawaImg/new_btn_switch@2x.png"/>
+          <img @click="switchCamera()" v-if="$route.query.candy==undefined" class="switch cursor" width="47px;" src="https://resource.bluecandy.io/wawaImg/btn_switch@2x.png"/>
+          <img @click="switchCamera()" v-else class="switch cursor" width="47px;" src="https://resource.bluecandy.io/wawaImg/new_btn_switch@2x.png"/>
 
 
           <div @click="the_game_eve()" class="the_game" :style="{height:height_video+'px'}"></div>
@@ -61,22 +61,22 @@
         <div class="operation_padding" v-show="wait">
           <ul class="livePrice">
             <li>
-              <label>{{parseInt($store.state.language)?'this round':'本次'}}:</label>
-              <img v-if="$route.query.candy==undefined" width="23px;" height="23px;" src="https://original-resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
-              <img v-else width="23px;" height="23px;" src="https://original-resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
-              <label>{{received_msg_box.play_pool}}.00/{{parseInt($store.state.language)?'time':'次'}}</label>
+              <label>{{parseInt($store.state.language)?'Cost':'本次'}}:</label>
+              <img v-if="$route.query.candy==undefined" width="23px;" height="23px;" src="https://resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
+              <img v-else width="23px;" height="23px;" src="https://resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
+              <label>{{received_msg_box.play_pool}}.00/{{parseInt($store.state.language)?'Play':'次'}}</label>
             </li>
             <li>
               <label>{{parseInt($store.state.language)?'Balance':'余额'}}:</label>
-              <img  v-if="$route.query.candy==undefined" width="23px;" src="https://original-resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
-              <img v-else width="23px;" src="https://original-resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
+              <img  v-if="$route.query.candy==undefined" width="23px;" src="https://resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
+              <img v-else width="23px;" src="https://resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
               <label v-if="candy!=undefined">{{received_msg_box.balance}}.00</label>
               <label v-else>{{received_msg_box.balance/100}}.00</label>
             </li>
           </ul>
           
           <div class="wait">
-            <img @click="icon_chat_click()" class="cursor" id="btn" width="70px;" src="https://original-resource.bluecandy.io/wawaImg/icon_chat_click@2x.png"/>
+            <img @click="icon_chat_click()" class="cursor" id="btn" width="70px;" src="https://resource.bluecandy.io/wawaImg/icon_chat_click@2x.png"/>
             <div @click="lineUp()" :class="{lineUpBox:lineUpBoll}" class="cursor">
               <p v-if="lineUpBoll">
                 <strong>
@@ -88,32 +88,39 @@
               </p>
               <strong class="lineUp" v-else>{{parseInt($store.state.language)?'Start':'开始游戏'}}</strong>
             </div>
-            <router-link :to="{ name: 'liveRoom',query:{
+            <!-- <router-link :to="{ name: 'liveRoom',query:{
               cid:$route.query.cid,
               dealerid:$route.query.dealerid,
               roomid:$route.query.roomid,
               roomType:$route.query.roomType,
               session_id:$route.query.session_id,
               candy:$route.query.candy
-            }}"><!-- Recharge -->
-              <img width="70px;" src="https://original-resource.bluecandy.io/wawaImg/btn_Recharge_click@2x.png"/>
-            </router-link>
+            }}">
+              <img width="70px;" src="https://resource.bluecandy.io/wawaImg/btn_Recharge_click@2x.png"/>
+            </router-link> -->
+            <a href="https://bluetoken.io/member/index">
+              <img width="70px;" src="https://resource.bluecandy.io/wawaImg/btn_Recharge_click@2x.png"/>
+            </a>
           </div>
         </div>
 
         <div class="operation" v-show="operation">
           <div>
             <span class="btn_up cursor" @click="btn_downEve()" v-on:mouseup="eve()"></span>
-            <!-- <img class="btn_up" @click="btn_upEve()" v-on:mouseup="eve()" width="60px;" src="https://original-resource.bluecandy.io/wawaImg/btn_up@2x.png"/> -->
+            <!-- <img class="btn_up" @click="btn_upEve()" v-on:mouseup="eve()" width="60px;" src="https://resource.bluecandy.io/wawaImg/btn_up@2x.png"/> -->
             <p>
-              <img class="cursor" width="60px;" @click="btn_leftEve()" src="https://original-resource.bluecandy.io/wawaImg/btn_left@2x.png"/>
-              <img class="btn_right cursor" @click="btn_rightEve()" width="60px;" src="https://original-resource.bluecandy.io/wawaImg/btn_right@2x.png"/>
+              <!-- <img class="cursor" width="60px;" @click="btn_leftEve()" src="https://resource.bluecandy.io/wawaImg/btn_left@2x.png"/> -->
+              <span class="cursor btn_left" @click="btn_leftEve()"></span>
+              <!-- <img class="btn_right cursor" @click="btn_rightEve()" width="60px;" src="https://resource.bluecandy.io/wawaImg/btn_right@2x.png"/> -->
+              <span class="cursor btn_right" @click="btn_rightEve()"></span>
             </p>
-            <img class="btn_down cursor" @click="btn_upEve()" width="60px;" src="https://original-resource.bluecandy.io/wawaImg/btn_down@2x.png"/>
+            <!-- <img class="btn_down cursor" @click="btn_upEve()" width="60px;" src="https://resource.bluecandy.io/wawaImg/btn_down@2x.png"/> -->
+            <span class="cursor btn_down" @click="btn_upEve()"></span>
           </div>
 
           <p>
-            <img class="cursor" @click="doEve()" width="130px;" src="https://original-resource.bluecandy.io/wawaImg/btn_Grab@2x.png"/>
+            <!-- <img class="cursor" @click="doEve()" width="130px;" src="https://resource.bluecandy.io/wawaImg/btn_Grab@2x.png"/> -->
+            <span class="btn_Grab" @click="doEve()"></span>
           </p>
         </div>
       
@@ -133,8 +140,8 @@
             <li class="continueBox_tips">
               <p>
               {{parseInt($store.state.language)?'You still have':'本局你还有'}}
-              <img  v-if="$route.query.candy==undefined" height="23px" width="23px;" src="https://original-resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
-              <img v-else width="23px;" height="23px" src="https://original-resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
+              <img  v-if="$route.query.candy==undefined" height="23px" width="23px;" src="https://resource.bluecandy.io/wawaImg/icon_dc@2x.png"/>
+              <img v-else width="23px;" height="23px" src="https://resource.bluecandy.io/wawaImg/new_icon_bluetoken@2x.png"/>
               
               <label v-if="candy!=undefined">{{received_msg_box.balance}}.00</label>
               <label v-else>{{received_msg_box.balance/100}}.00</label>
@@ -151,21 +158,21 @@
         </div>
       </div>
       
-      <audio id="music_mp3_0" src="static/dj.mp3" controls="controls" autoplay="autoplay" loop="loop" style="display: none;">
+      <audio id="music_mp3_0" src="https://resource.bluecandy.io/wawaImg/dj.mp3" controls="controls" autoplay="autoplay" loop="loop" style="display: none;">
         Your browser does not support the audio element.
       </audio>
 
       <!-- 聊天框 -->
-      <div class="chatBox boxGifts" v-show="chatPopup">
+      <div class="chatBox boxGifts" v-show="chatPopup"><!-- chatPopup -->
         <p>
           <input id="icon_chat" type="search" value="发送" placeholder="" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
           <!-- <label @click="chatBoxSubmit()">SEND</label> -->
         </p>
       </div>
     </div>
-    <img class="record_tipsImg" v-show="operationBoll" src="https://original-resource.bluecandy.io/wawaImg/btn_Pulldown@2x.png"/>
+    <img class="record_tipsImg" v-show="operationBoll" src="https://resource.bluecandy.io/wawaImg/btn_Pulldown@2x.png"/>
     <word :logo="$route.query.product_id"></word><!-- $route.query.product_schedule_id -->
-    <img v-show="readyBoll" class="readyStart" src="https://original-resource.bluecandy.io/wawaImg/ready.png"/>
+    <img v-show="readyBoll" class="readyStart" src="https://resource.bluecandy.io/wawaImg/ready.png"/>
   </div>
 </template>
 
@@ -190,7 +197,7 @@ export default {
       //用户数据
       received_msg:[],
       //当前玩家
-      gamePlayer:{'nickname':'二狗子','portrait':'https://original-resource.bluecandy.io/wawaImg/avatar@2x.png'},
+      gamePlayer:{'nickname':'二狗子','portrait':'https://resource.bluecandy.io/wawaImg/avatar@2x.png'},
       nickname:'',
       //计时
       time_config:{},
@@ -203,7 +210,7 @@ export default {
       continueBoll:false,
       ws:'',
       uesBoll:false,
-      portraitImg:'https://original-resource.bluecandy.io/wawaImg/icon@2x.png',
+      portraitImg:'https://resource.bluecandy.io/wawaImg/icon@2x.png',
       chatVal:'',
       chatPopup:false,
       box_heigth:0,
@@ -215,13 +222,15 @@ export default {
       operationBoll:true,
       candy:'',
       len:0,
-      readyBoll:false
+      readyBoll:false,
+      wawaHeight:0
     }
   },
   components:{
     'word':word
   },
   mounted(){
+
     /*
     document.addEventListener('DOMContentLoaded', function () {
         function audioAutoPlay() {
@@ -246,8 +255,14 @@ export default {
     console.log(this.$route.query.cid)
     // document.getElementById('jsmpeg-player').style.width = "100%";
     let height_ = document.documentElement.clientHeight-220;
-    this.box_heigth = document.documentElement.clientHeight;
-    this.height_video = height_
+    if(this.$route.query.height==undefined){
+
+      this.height_video = height_;
+      this.box_heigth = document.documentElement.clientHeight;
+    }else{
+      this.height_video = this.$route.query.height-220;
+      this.box_heigth = this.$route.query.height;
+    }
     //console.log(height_)
     // document.getElementById('jsmpeg-player').style.height = height_+"px";
     // document.getElementById('jsmpeg-player2').style.height = height_+"px";
@@ -397,7 +412,7 @@ export default {
               //判断是否抓到娃娃
               console.log(received_msg.cmds[i].catch_result+'----------------------')
               if(received_msg.cmds[i].catch_result==0){
-                _this.portraitImg = 'https://original-resource.bluecandy.io/wawaImg/icon@2x.png';
+                _this.portraitImg = 'https://resource.bluecandy.io/wawaImg/icon@2x.png';
                 console.log('没抓到');
                 _this.continueBox_val = _this.$store.state.language?'Almost succeed!':'差一点点就抓到了！';
                 _this.bollStart = true;
@@ -476,7 +491,7 @@ export default {
                 //console.log(JSON.stringify(JSON.stringify(received_msg.cmds[i].content)+'************'))
                 _this.received_msg = received_msg.cmds[i].content;
               }else{
-                _this.gamePlayer = {'nickname':'二狗子','portrait':'https://original-resource.bluecandy.io/wawaImg/avatar@2x.png'};
+                _this.gamePlayer = {'nickname':'二狗子','portrait':'https://resource.bluecandy.io/wawaImg/avatar@2x.png'};
                 _this.received_msg = [];
                 _this.uesHideBoll = false;
               }
@@ -505,10 +520,10 @@ export default {
   methods:{
     // 排队
     lineUp(){
-      if(this.received_msg_box.balance<this.received_msg_box.play_pool){
+      if(this.received_msg_box.balance<this.received_msg_box.play_pool || this.received_msg_box.balance==NaN || this.received_msg_box.balance==''){
         alert(this.$store.state.language?'Sorry, your credit is running low！':'余额不足！');
         return false;
-      }
+      };
       console.log('---------------------------------------------------')
       if(this.lineUpBoll){
         return false
@@ -772,21 +787,26 @@ export default {
       // input.blur();
       console.log(0)
       let icon_chat = document.getElementById('icon_chat');
+      //icon_chat.removeAttribute("autofocus");
+      icon_chat.setAttribute("autofocus", "autofocus");
+
       icon_chat.select();
       icon_chat.focus();
-      this.operationBoll = false;
+      //this.operationBoll = false;
     },
     eve(){
       this.chatPopup = false;
       let _this = this;
-      var j = setInterval(function(){
-        _this.operationBoll = true;
-        clearInterval(j);
-      },200);
+      // var j = setInterval(function(){
+      //   _this.operationBoll = true;
+      //   clearInterval(j);
+      // },200);
+      _this.operationBoll = true;
 
     },
     icon_chat_click(){
       let _this = this;
+      /*
       var j = setInterval(function(){
         _this.chatPopup = true;
         clearInterval(j);
@@ -799,11 +819,30 @@ export default {
           icon_chat.focus();
 
         }
-      })
+      });
+      */
+      this.chatPopup = true;
+      //this.operationBoll = false;
+      var j = setInterval(function(){
+        let icon_chat = document.getElementById('icon_chat');
+        icon_chat.setAttribute("autofocus", "autofocus");
+        icon_chat.select();
+        icon_chat.focus();
+        clearInterval(j);
+      },300);
 
     },
     signOut(){
       this.ws.close();
+      this.$router.push({ name: 'liveList',query: {
+        cid:this.$route.query.cid,
+        session_id:this.$route.query.session_id,
+        candy:this.$route.query.candy,
+        height:document.documentElement.clientHeight
+      }})
+
+
+
     },
     //jquery
     barrage(text,boll,image,image_num){
@@ -874,7 +913,7 @@ a {
 }
 
 .liveRoom{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/bg_main1@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/bg_main1@2x.png');
   height: 100%;
   /*padding: 0px 11px;*/
   position: relative;
@@ -934,7 +973,7 @@ a {
   border-radius: 50%;
 }
 .videoSet_up div{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/bg_avatar@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/bg_avatar@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -943,6 +982,7 @@ a {
   justify-content: space-between;
   align-items: center;
   padding: 4px 11px;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .videoSet_up p{
   margin: 0px 17px;
@@ -962,13 +1002,14 @@ a {
 
 
 .countdown{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/liveBroadcast/icon_countdown@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/liveBroadcast/icon_countdown@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   width: 43px;
   height: 43px;
   line-height: 43px;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .countdown span{
   color: #2EE63A;
@@ -1013,16 +1054,18 @@ a {
 }
 
 .wait div{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_lineup@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_lineup@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   width: 160px;
   height: 90px;
   text-align: center;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .wait .lineUpBox{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_lineup_click@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_lineup_click@2x.png');
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .wait strong{
   display: block;
@@ -1057,19 +1100,57 @@ a {
 }
 .operation .btn_right{
   margin-left: 50px;
-}
-.operation .btn_up{
-  margin-bottom: -33px;
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_up@2x.png');
+  
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_right@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   display: inline-block;
   width: 60px;
   height: 60px;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+.operation .btn_left{
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_left@2x.png');
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+.operation .btn_up{
+  margin-bottom: -33px;
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_up@2x.png');
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .operation .btn_down{
   margin-top: -33px;
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_down@2x.png');
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+.operation .btn_Grab{
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_Grab@2x.png');
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 130px;
+  height: 130px;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .canvasVideo{
   position: relative;
@@ -1091,7 +1172,7 @@ a {
 
 /*提示是否继续*/
 .continueBox{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/bg_popup@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/bg_popup@2x.png');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1101,6 +1182,7 @@ a {
   height: 100%;
   width: 100%;
   z-index: 111;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .continueBox div{
   position: absolute;
@@ -1151,20 +1233,22 @@ a {
   margin: 9px auto;
 }
 .continueBox_btn_click{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_click@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_click@2x.png');
 }
 .continueBox_btn_normal{
-  background-image: url('https://original-resource.bluecandy.io/wawaImg/btn_normal@2x.png');
+  background-image: url('https://resource.bluecandy.io/wawaImg/btn_normal@2x.png');
 }
 
 
 /*聊天*/
 .chatBox{
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    left: 0px;
-    z-index: 2;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%,0%);
+  max-width: 700px;
 }
 
 .chatBox input{
