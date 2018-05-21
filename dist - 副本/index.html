@@ -1,0 +1,41 @@
+<!DOCTYPE html><html><head><meta http-equiv=Content-Type content="text/html; charset=utf-8"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta http-equiv=Access-Control-Allow-Origin content=*><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Blue Candy</title><link href=static/css/app.102e905bab84951c805f42ef5d37aa62.css rel=stylesheet></head><body><div id=app></div><script src=https://bluecandy.io/agoracmh5sdk.min.js></script><script type=text/javascript>window.onload = function () {
+      document.addEventListener('gesturestart',
+      function (e)
+       {
+      e.preventDefault();
+      });
+      document.addEventListener('dblclick',
+      function (e)
+       {
+      e.preventDefault();
+      });
+      document.addEventListener('touchstart',
+      function (event)
+       {
+      if
+       (event.touches.length
+       > 1) {
+      event.preventDefault();
+      }
+      });
+      var
+       lastTouchEnd = 0;
+      document.addEventListener('touchend',
+      function (event)
+       {
+      var
+       now = (new Date()).getTime();
+      if
+       (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+      }
+      lastTouchEnd = now;
+      },
+      false);
+      };
+
+      let id = localStorage.getItem('cid');
+      if(id==null){
+        let host = window.location.host;
+        //window.location.href = 'http://www.baidu.com/';
+      }</script><script type=text/javascript src=static/js/manifest.19d0f2c6d0fe54a84df1.js></script><script type=text/javascript src=static/js/vendor.84af230505f4eca3dd6e.js></script><script type=text/javascript src=static/js/app.30fc018e961667e4e252.js></script></body></html>

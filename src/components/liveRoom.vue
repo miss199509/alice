@@ -165,7 +165,8 @@
       <!-- 聊天框 -->
       <div class="chatBox boxGifts" v-show="chatPopup"><!-- chatPopup -->
         <p>
-          <input id="icon_chat" type="search" value="发送" placeholder="" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
+          <input v-if="$store.state.language" id="icon_chat" type="search" value="发送" placeholder="click here to type in" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
+          <input v-else id="icon_chat" type="search" value="发送" placeholder="点击输入弹幕" v-model="chatVal" @focus="chatBoxSubmit()" @blur="eve()"/>
           <!-- <label @click="chatBoxSubmit()">SEND</label> -->
         </p>
       </div>
@@ -242,7 +243,6 @@ export default {
     */
 
 
-
     let _this = this;
     this.candy = this.$route.query.candy;
     console.log(this.$route.query.session_id);
@@ -254,9 +254,8 @@ export default {
     //this.$store.state.language = 0;
     console.log(this.$route.query.cid)
     // document.getElementById('jsmpeg-player').style.width = "100%";
-    let height_ = document.documentElement.clientHeight-220;
+    var height_ = document.documentElement.clientHeight-220;
     if(this.$route.query.height==undefined){
-
       this.height_video = height_;
       this.box_heigth = document.documentElement.clientHeight;
     }else{
@@ -266,10 +265,9 @@ export default {
     //console.log(height_)
     // document.getElementById('jsmpeg-player').style.height = height_+"px";
     // document.getElementById('jsmpeg-player2').style.height = height_+"px";
-
     var client = AgoraCMH5SDK.createClient();
     this.client = client;
-    client.init('fa715ad316694ac8a88cbb05a878fb15',_this.$route.query.streaming, {
+    client.init(_this.$route.query.appid,_this.$route.query.streaming, {
       //对应的动态key，如果没有请不需要传null，直接不带这个参数即可，可选 alicerm1 AliceRm1
       //key: key,
       //主摄像头uid，默认为1，可选
@@ -286,6 +284,7 @@ export default {
       }, function(){
         //视频开始播放的回调
         console.log("started playing..");
+        //alert('播放成功')
         document.getElementById('jsmpeg-player').style.height = _this.height_video+80+'px';
         document.getElementById('jsmpeg-player2').style.height = _this.height_video+80+'px';
 
@@ -320,7 +319,7 @@ export default {
                     if(received_msg.cmds[i].id==11){
                       for(let contentKey in received_msg.cmds[i].content){
                         //console.log(JSON.stringify(received_msg.cmds[i].content[contentKey].customerid)+'四十')
-                        _this.barrage(received_msg.cmds[i].content[contentKey].name+received_msg.cmds[i].content[contentKey].customerid+'：'+received_msg.cmds[i].content[contentKey].content,false);
+                        _this.barrage('user'+received_msg.cmds[i].content[contentKey].customerid+'：'+received_msg.cmds[i].content[contentKey].content,false);
                       }
                     };
                   }
@@ -385,7 +384,7 @@ export default {
             if(received_msg.cmds[i].id==11){
               for(let contentKey in received_msg.cmds[i].content){
                 //console.log(JSON.stringify(received_msg.cmds[i].content[contentKey]))
-                _this.barrage(received_msg.cmds[i].content[contentKey].name+received_msg.cmds[i].content[contentKey].customerid+'：'+received_msg.cmds[i].content[contentKey].content,false);
+                _this.barrage('user'+received_msg.cmds[i].content[contentKey].customerid+'：'+received_msg.cmds[i].content[contentKey].content,false);
               }
             };
 
@@ -400,6 +399,7 @@ export default {
 
               //console.log(JSON.stringify(received_msg.cmds[i].wallet.app_dc.king_token))
               _this.received_msg_box = received_msg.cmds[i];
+              //alert(JSON.stringify(_this.received_msg_box))
               //console.log(JSON.stringify(_this.received_msg_box.wallet.app_dc.king_token))
               console.log(_this.received_msg_box.wallet.app_dc.king_token)
               if(_this.candy!=undefined){
@@ -437,7 +437,7 @@ export default {
                 .then(function(dataJson){
                   console.log(JSON.stringify(dataJson.data))
                   _this.portraitImg = dataJson.data.images[0];
-                  _this.continueBox_val = _this.$store.state.language?'Congratulations!You caught it！':'恭喜您！抓到了！';
+                  _this.continueBox_val = _this.$store.state.language?'Congratulations! You caught it and has been added to your Cart automatically.':'成功！兑换过程将需要90分钟。如90分钟后您的兑换未被确认请发送留言至support@bluetoken.io';
                   _this.bollStart = true;
                   _this.continueBoll = true;
                   _this.uesBoll = false;
@@ -520,7 +520,7 @@ export default {
   methods:{
     // 排队
     lineUp(){
-      if(this.received_msg_box.balance<this.received_msg_box.play_pool || this.received_msg_box.balance==NaN || this.received_msg_box.balance==''){
+      if(this.received_msg_box.balance<this.received_msg_box.play_pool || this.received_msg_box.balance==undefined || this.received_msg_box.play_pool==undefined){
         alert(this.$store.state.language?'Sorry, your credit is running low！':'余额不足！');
         return false;
       };
@@ -547,6 +547,7 @@ export default {
         
          ws.onmessage = function (evt) {
           console.log(evt.data)
+          _this.lineUpBoll = true;
           let received_msg = JSON.parse(evt.data);
           if(received_msg.cmd==66){
             //确认时间配置
@@ -559,7 +560,7 @@ export default {
               let str = _this.gamePlayer.nickname+_this.$route.query.cid;
               if(str.length>10){
                 let strVal = str.substring(0,10);
-                _this.nickname = strVal+'...';
+                _this.nickname = 'user'+_this.$route.query.cid;
               }
 
 
@@ -587,7 +588,6 @@ export default {
          alert("您的浏览器不支持 WebSocket!");
       }
 
-      this.lineUpBoll = true;
       //console.log(1+'*********')
 
     },
@@ -1295,5 +1295,14 @@ a {
   transform : translate(-50%,-50%);
   top: 50%;
   width: 100%;
+}
+
+
+
+@media screen and (max-height: 700px){
+  .continueBox div{
+    height: 400px;
+    overflow: auto;
+  }
 }
 </style>

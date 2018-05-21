@@ -313,7 +313,8 @@ export default {
       loginBoll:false,
       language_boll:0,
       height_room:300,
-      wawaHeight:''
+      wawaHeight:'',
+      config_agora_key_hand:''
     }
   },
   updated(){
@@ -457,6 +458,16 @@ export default {
 	}
 
 
+	//视频appid
+	axios.post('https://config.alice.live/app/config?store=aliceico&platform=android')
+	.then(function(dataJson){
+		//console.log(JSON.stringify(dataJson.data.config_agora_key_hand))
+		_this.config_agora_key_hand = dataJson.data.config_agora_key_hand;
+	})
+	.catch(function(err){
+		//alert(err);
+	});
+
 
 
 
@@ -491,7 +502,8 @@ export default {
 				uid2:this.broadcastList[key].uid2,
 				streaming:this.broadcastList[key].streaming,
 				product_id:this.broadcastList[key].product_id,
-				height:this.wawaHeight
+				height:this.wawaHeight,
+				appid:this.config_agora_key_hand
 			}})
   		}
   	},

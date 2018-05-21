@@ -22,11 +22,11 @@
 	    </header>
 		
 		<nav class="shoppingl_global settlement">
-			<p class="settlement_global">
+			<!-- <p class="settlement_global">
 				<img v-if="globalImg_tips_boll" @click="global_product()" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_choose_click@2x.png"/>
 				<img v-else @click="global_product()" width="20px;" src="https://resource.bluecandy.io/wawaImg/liveBroadcast/btn_choose@2x.png"/>
 				<span>{{parseInt($store.state.language)?'Check All':'全选'}}</span>
-			</p>
+			</p> -->
 			<ul class="product_list" :style="{ height: height + 'px' }">
 				<li class="settlement_nav" v-for="(val,key) in shoppingCart" @click="shoppingCart_eve(key)">
 					
@@ -38,17 +38,17 @@
 
 						<div class=" introduce_val">
 							<h4>{{val.ch_name}}</h4>
-							<p>
+							<!-- <p>
 								<span>{{parseInt($store.state.language)?'SIZE：':'大小：'}}</span>
 								<strong>{{val.product_size}}</strong>
-							</p>
+							</p> -->
 							<p>
 								<span>{{parseInt($store.state.language)?'QTY：':'数量：'}}</span>
 								<strong>{{val.product_amount}}</strong>
 							</p>
-							<h3 class="color_aimai">
-								￥{{parseFloat(val.product_price/100).toFixed(2)}}
-							</h3>
+							<!-- <h3 class="color_aimai">
+								{{parseFloat(val.product_price/100).toFixed(2)}}
+							</h3> -->
 						</div>
 
 					</div>
@@ -65,7 +65,8 @@
 					<ul>
 						<li>
 							<label>{{parseInt($store.state.language)?'TOTAL':'合计'}}:</label>
-							<strong>￥{{parseFloat(priceVal/100).toFixed(2)}}</strong>
+							<!-- <strong>￥{{parseFloat(priceVal/100).toFixed(2)}}</strong> -->
+							<strong>0.00</strong>
 						</li>
 					</ul>
 					<p class="checkout" @click="register()">{{parseInt($store.state.language)?'Checkout':'支付'}}</p>
@@ -115,7 +116,7 @@ export default {
 	.then(function(dataJson){
 		_this.shoppingCart = dataJson.data
 		
-		//console.log(JSON.stringify(dataJson.data))
+		console.log(JSON.stringify(dataJson.data))
 		for(let id in dataJson.data){
 			_this.priceVal+=dataJson.data[id].product_price*dataJson.data[id].product_amount;
 			// function getLocalTime(nS) {     
@@ -150,12 +151,18 @@ export default {
   		if(this.shoppingCart.length>0){
 	  		for(let i in this.shoppingCart){
 	  			if(this.shoppingCart[i].boll){
-	  				attr.push(this.shoppingCart[i].id)
+	  				attr.push(this.shoppingCart[i].product_id)
 	  				ch_name = this.shoppingCart[i].ch_name;
 	  			}
 	  		};
 	  		if(_this.$route.query.candy!=undefined){
 	  			console.log(JSON.stringify(this.shoppingCart))
+	  			let qty = 0;
+	  			for(let i in this.shoppingCart){
+	  				if(this.shoppingCart[i].boll){
+	  					qty = this.shoppingCart[i].product_amount;
+	  				}
+	  			}
 	  			//return false;
 	  			this.$router.push({ name: 'checkout',query:{
 	  				cid:_this.$route.query.cid,
@@ -163,7 +170,8 @@ export default {
 	  				candy:_this.$route.query.candy,
 	  				product_id:attr,
 	  				name:ch_name,
-	  				height:_this.$route.query.height
+	  				height:_this.$route.query.height,
+	  				qty:qty
 	  			}});
 	  		}else{
   				this.$router.push({ name: 'newSettlement',query:{cid:_this.$route.query.cid,session_id:_this.$route.query.session_id,candy:_this.$route.query.candy,product_id:attr}});
@@ -252,6 +260,7 @@ export default {
 	border-radius: 3px;
 	background-color: #fff;
 	position: relative;
+	margin-top: 7px;
 }
 
 .administration{

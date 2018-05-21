@@ -62,7 +62,7 @@
             <p>
               <label>{{val.location}}</label>
               <img width="37px" src="https://resource.bluecandy.io/wawaImg/avatar@2x.png"/>
-              <strong>{{val.nickname}}{{val.customer_id}}</strong>
+              <strong>user{{val.customer_id}}</strong>
             </p>
             <p>
               <span>{{parseInt($store.state.language)?'Tried':'抓取'}}</span>

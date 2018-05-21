@@ -12,7 +12,7 @@
 						</router-link>
 					</li>
 					<li style="display: inline-block;">
-						<strong class="color_aimai">{{parseInt($store.state.language)?'checkout':'checkout'}}</strong>
+						<strong class="color_aimai">{{parseInt($store.state.language)?'checkout':'结算'}}</strong>
 					</li>
 					<li class="floatRight">
 					</li>
@@ -22,15 +22,20 @@
 			<div class="checkoutBox">
 				<ul>
 					<li>
-						<h3>Currency：<span>{{$route.query.name}}</span></h3>
+						<h3>{{parseInt($store.state.language)?'Currency':'币种'}}：<span>{{$route.query.name}}</span></h3>
 					</li>
 					<li>
-						<h3>Account</h3>
-						<input v-model="account" type="" placeholder="Electronic wallet"/>
+						<h3>{{parseInt($store.state.language)?'Qty':'数量'}}：<span>{{$route.query.qty}}</span></h3>
 					</li>
 					<li>
-						<h3>E-Mail<span class="optional">（Optional）</span></h3>
-						<input v-model="email" type="" placeholder="E-Mail"/>
+						<h3>{{parseInt($store.state.language)?'Account':'账号'}}</h3>
+						<input v-if="$store.state.language" v-model="account" type="" placeholder="Wallet address"/>
+						<input v-else v-model="account" type="" placeholder="请输入电子钱包！"/>
+					</li>
+					<li>
+						<h3>{{parseInt($store.state.language)?'E-Mail':'邮箱'}}</h3>
+						<input v-if="$store.state.language" v-model="email" type="" placeholder="E-Mail"/>
+						<input v-else v-model="email" type="" placeholder="请输入邮箱"/>
 					</li>
 					<!-- <li>
 						<h3>Select Payment</h3>
@@ -48,16 +53,21 @@
 				<p class="tipsNote">
 					<strong>
 						<img src=""/>
-						NOTE：
+						{{parseInt($store.state.language)?'NOTE：':'提示：'}}
 					</strong>
-					Please fill in the right email address to confirm your order,any question pls contact our customer service (support@bluetoken.io).
+					<span v-if="$store.state.language">
+						Please fill in the right email address to confirm your order,any question pls contact our customer service (support@bluetoken.io).
+					</span>
+					<span v-else>
+						请正确填写有效的邮箱地址，用于您的订单确认，如有疑问请联系客服(support@bluetoken.io)
+					</span>
 				</p>
 			</div>
 
 			<div class="orderBox">
 				<p>
-					<strong>TOTAL:0.00({{$route.query.name}})</strong>
-					<span @click="order()">CONFIRM</span>
+					<strong>{{parseInt($store.state.language)?'TOTAL':'总价'}}:0.00</strong>
+					<span @click="order()">{{parseInt($store.state.language)?'CONFIRM':'提交'}}</span>
 				</p>
 			</div>
 
@@ -107,13 +117,23 @@ export default {
   	},
   	order(){
   		let _this = this;
+  		if(this.account.length<3){
+  			_this.tipsBoll = true;
+	  		_this.tipsText = _this.$store.state.language?'Please fill in the Wallet address':'请输入电子钱包！';
+	  		_this.thisBoll = true;
+	  		window.setTimeout(function(){
+	  			_this.tipsBoll = false;
+	  			_this.thisBoll = false;
+			},3000);
+  			return false;
+  		};
   		let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
   		if(_this.thisBoll){
   			return false;
   		};
   		if(!reg.test(_this.email)){
 			_this.tipsBoll = true;
-	  		_this.tipsText = '请输入正确的邮箱！';
+	  		_this.tipsText = _this.$store.state.language?'Please fill in the right email address':'请输入正确的邮箱！';
 	  		_this.thisBoll = true;
 	  		window.setTimeout(function(){
 	  			_this.tipsBoll = false;
@@ -128,12 +148,14 @@ export default {
   			product_id:_this.$route.query.product_id[0],
   			account:_this.account,
   			email:_this.email,
-  			type:_this.$route.query.name
+  			type:_this.$route.query.name,
+  			op:'wawa',
+  			amount:_this.$route.query.qty
   		}))
 		.then(function(dataJson){
 			console.log(dataJson.data);
 			_this.tipsBoll = true;
-	  		_this.tipsText = '兑换成功！稍后工作人员将会联系您！';
+	  		_this.tipsText = _this.$store.state.language?'Success! Transactions can take up to 90 minutes to be confirmed. If your transaction is not confirmed after 90 minutes, please send us a note at support@bluetoken.io':'兑换成功！稍后工作人员将会联系您！';
 	  		_this.thisBoll = true;
 			window.setTimeout(function(){
 	  			_this.tipsBoll = false;

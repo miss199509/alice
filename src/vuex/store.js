@@ -11,7 +11,7 @@ if(url.indexOf('candy')>0){
     let valUrl = url.substring(url.indexOf('language')+9)
     parseInt(valUrl)?lan = 0:lan = 1;
   }else{
-    lan = 1;
+    lan = parseInt(localStorage.getItem('language'));
   }
 }else{
   lan = parseInt(localStorage.getItem('language'));
