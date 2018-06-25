@@ -265,7 +265,7 @@ export default {
     //console.log(height_)
     // document.getElementById('jsmpeg-player').style.height = height_+"px";
     // document.getElementById('jsmpeg-player2').style.height = height_+"px";
-    var client = AgoraCMH5SDK.createClient();
+    var client = AgoraCMH5SDK.createClient({mode: "mpeg"});
     this.client = client;
     client.init(_this.$route.query.appid,_this.$route.query.streaming, {
       //对应的动态key，如果没有请不需要传null，直接不带这个参数即可，可选 alicerm1 AliceRm1

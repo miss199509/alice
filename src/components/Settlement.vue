@@ -28,7 +28,7 @@
 				<span>{{parseInt($store.state.language)?'Check All':'全选'}}</span>
 			</p> -->
 			<ul class="product_list" :style="{ height: height + 'px' }">
-				<li class="settlement_nav" v-for="(val,key) in shoppingCart" @click="shoppingCart_eve(key)">
+				<li class="settlement_nav" v-for="(val,key) in shoppingCart" @click="shoppingCart_eve(val,key)">
 					
 					<div class="administration">
 
@@ -64,9 +64,9 @@
 				<div>
 					<ul>
 						<li>
-							<label>{{parseInt($store.state.language)?'TOTAL':'合计'}}:</label>
+							<label>{{parseInt($store.state.language)?'QTY':'数量：'}}:</label>
 							<!-- <strong>￥{{parseFloat(priceVal/100).toFixed(2)}}</strong> -->
-							<strong>0.00</strong>
+							<strong>{{product_amount*0.01}}</strong>
 						</li>
 					</ul>
 					<p class="checkout" @click="register()">{{parseInt($store.state.language)?'Checkout':'支付'}}</p>
@@ -95,13 +95,14 @@ export default {
       shoppingCart:[],
       priceVal:0,
       globalImg_tips_boll:true,
-      height:20
+      height:20,
+      product_amount:''
     }
   },
   mounted(){//mounted
   	//alert(this.$route.query.height);
   	if(this.$route.query.height==undefined){
-  		this.height = document.documentElement.clientHeight-143;
+  		this.height = document.documentElement.clientHeight-100;
   	}else{
   		this.height = this.$route.query.height-143;
   	}
@@ -129,6 +130,7 @@ export default {
 				_this.$set(_this.shoppingCart[id],'images',dataJson.data.images[0])
 				_this.$set(_this.shoppingCart[id],'boll',false);
 				_this.$set(_this.shoppingCart[0],'boll',true);
+				_this.product_amount = _this.shoppingCart[0].product_amount;
 			})
 			.catch(function(err){
 				alert(err);
@@ -178,8 +180,9 @@ export default {
   			}
 	  	}
   	},
-  	shoppingCart_eve(key){
-  		 //console.log(key)
+  	shoppingCart_eve(val,key){
+  		this.product_amount = val.product_amount;
+  		 console.log(JSON.stringify(val))
   	},
   	img_selectEve(val,key){
   		if(this.$route.query.candy!=undefined){
